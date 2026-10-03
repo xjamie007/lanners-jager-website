@@ -77,14 +77,14 @@
       "quelle": "https://unsplash.com/photos/LumWaD-gTLQ"
     },
     {
-      "datei": "src/assets/fotos/anprobe.jpg",
-      "fotograf": "Gordon Burt (Museum of New Zealand Te Papa Tongarewa)",
-      "quelle": "https://unsplash.com/photos/man-in-a-suit-looks-in-a-mirror-pz5E_Kc14vs"
-    },
-    {
       "datei": "src/assets/fotos/textur-stoff.jpg",
       "fotograf": "Tyler Coleman",
       "quelle": "https://unsplash.com/photos/a-dark-blue-background-with-a-pattern-on-it-aYz6jx7T7Kk"
+    },
+    {
+      "datei": "src/assets/fotos/anprobe-spiegel.jpg",
+      "fotograf": "Vitaly Gariev",
+      "quelle": "https://unsplash.com/photos/XlEOoHjSmYs"
     }
   ],
   "artikelfotos": [

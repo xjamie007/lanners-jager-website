@@ -22,7 +22,7 @@ const faqData = faqIds
   .filter((i) => (i === 5 ? features.payShip : true))
   .map((i) => ({ q: t(lang, `faq.q${i}`), a: t(lang, `faq.a${i}`, { n }) }));
 ---
-<Page suchbar lang={lang} route="howto" section="service" foto="anprobe" fotoPosition="center 30%" h1={t(lang, "howto.h1")} intro={t(lang, "howto.intro")} title={t(lang, "seo.howto.title")} description={t(lang, "seo.howto.desc")} jsonLd={[faqJsonLd(faqData)]}>
+<Page suchbar lang={lang} route="howto" section="service" foto="anprobe-spiegel" fotoPosition="70% 45%" h1={t(lang, "howto.h1")} intro={t(lang, "howto.intro")} title={t(lang, "seo.howto.title")} description={t(lang, "seo.howto.desc")} jsonLd={[faqJsonLd(faqData)]}>
   <h2 class="t-h2" id="howto-schritte">{t(lang, "howto.schritteH2")}</h2>
   <Steps lang={lang} />
 

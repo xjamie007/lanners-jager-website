@@ -89,7 +89,16 @@ const crumbs = [
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgb(0 22 42 / 0.3) 0%, rgb(0 22 42 / 0.55) 45%, rgb(0 22 42 / 0.92) 100%), linear-gradient(90deg, rgb(0 46 82 / 0.6), rgb(35 31 32 / 0.35));
+    /* Text steht links unten: dort dunkel genug für weiße Schrift, rechts bleibt das Foto sichtbar */
+    background:
+      linear-gradient(180deg, rgb(0 22 42 / 0) 30%, rgb(0 22 42 / 0.55) 100%),
+      linear-gradient(90deg, rgb(0 30 56 / 0.88) 0%, rgb(0 30 56 / 0.7) 38%, rgb(0 30 56 / 0.18) 72%, rgb(0 30 56 / 0.05) 100%);
+  }
+  @media (max-width: 700px) {
+    /* schmal läuft der Text über die ganze Breite: Verlauf von oben nach unten */
+    .seiten-kopf-bild::after {
+      background: linear-gradient(180deg, rgb(0 30 56 / 0.25) 0%, rgb(0 30 56 / 0.6) 40%, rgb(0 30 56 / 0.9) 100%);
+    }
   }
   .seiten-kopf-inhalt {
     display: flex;
