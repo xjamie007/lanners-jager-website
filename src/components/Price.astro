@@ -1,0 +1,69 @@
+---
+/**
+ * Preis (C2, D3): netto_price; bei Rabatt der alte Preis durchgestrichen mit
+ * "statt" für Screenreader und "−30 %" in tusche, kein rotes Badge.
+ */
+import { formatPrice, formatDiscount } from "@shared/format.ts";
+import { t, type Lang } from "../i18n/index.ts";
+interface Props {
+  lang: Lang;
+  price: number;
+  netto: number;
+  nettoMax?: number;
+  discount: number;
+  size?: "karte" | "produkt";
+}
+const { lang, price, netto, nettoMax, discount, size = "karte" } = Astro.props;
+const sale = netto < price;
+const ab = nettoMax !== undefined && nettoMax > netto;
+---
+<p class={`preis preis-${size}`} data-preis>
+  {
+    sale ? (
+      <>
+        <del class="preis-alt">
+          <span class="sr-only">{t(lang, "karte.statt")} </span>
+          {formatPrice(price, lang)}
+        </del>
+        <ins class="preis-neu t-preis">
+          <span class="sr-only">{t(lang, "karte.jetzt")} </span>
+          {ab ? t(lang, "produkt.ab", { preis: formatPrice(netto, lang) }) : formatPrice(netto, lang)}
+        </ins>
+        <span class="preis-rabatt">{formatDiscount(discount || Math.round((1 - netto / price) * 100), lang)}</span>
+      </>
+    ) : (
+      <span class="t-preis">{ab ? t(lang, "produkt.ab", { preis: formatPrice(netto, lang) }) : formatPrice(netto, lang)}</span>
+    )
+  }
+</p>
+
+<style is:global>
+  .preis {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 8px;
+    margin: 0;
+  }
+  .preis-karte {
+    font-size: 0.9375rem;
+  }
+  .preis-produkt {
+    font-size: 1.25rem;
+  }
+  .preis-alt {
+    color: var(--color-schiefer);
+    text-decoration-thickness: 1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .preis-produkt .preis-alt {
+    font-size: 1rem;
+  }
+  .preis-neu {
+    text-decoration: none;
+  }
+  .preis-rabatt {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

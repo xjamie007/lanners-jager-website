@@ -1,0 +1,121 @@
+---
+/**
+ * Öffnungszeiten-Tabelle (D9). "Heute" fett und mit dem Wort "heute", nicht nur
+ * farbig; das setzt src/scripts/zeiten.ts im Browser (Zeitzone Luxemburg), damit
+ * eine gespeicherte Seite nicht den falschen Tag markiert.
+ */
+import hours from "../content/oeffnungszeiten.json" with { type: "json" };
+import { WEEKDAYS, addDays, hoursOn, todayInLux, type HouseHours } from "@shared/hours.ts";
+import { formatDay } from "@shared/format.ts";
+import { t, localized, type Lang } from "../i18n/index.ts";
+import Offen from "./Offen.astro";
+import { doppelpunkt } from "@shared/text.ts";
+
+interface Props {
+  lang: Lang;
+  haus: "lanners" | "jager";
+  /** Feiertage und Ausnahmen der nächsten Wochen zeigen (Hausseiten, Kontakt) */
+  ausblick?: boolean;
+  caption?: boolean;
+  headingLevel?: 2 | 3;
+}
+const { lang, haus, ausblick = false, caption = true } = Astro.props;
+const h = (hours as unknown as Record<string, HouseHours & { status: { op: string } }>)[haus];
+const feiertagsnamen = hours.feiertagsnamen as unknown as Record<string, Record<string, string | { text: string }>>;
+// Word Joiner (U+2060) um den Strich: Zeilen brechen nur zwischen zwei Zeiträumen, nie in "13:30–18:00"
+const fmtRanges = (ranges: [string, string][]) =>
+  ranges.length === 0
+    ? t(lang, "zeiten.geschlossen")
+    : ranges.map(([a, b]) => t(lang, "zeiten.von_bis", { von: a, bis: b }).replace(/–/g, "\u2060–\u2060")).join(t(lang, "zeiten.und"));
+
+const today = todayInLux();
+// Feiertage und Ausnahmen der nächsten 60 Tage, damit "heute" im Browser stimmt
+const sonder: Record<string, string> = {};
+for (let i = 0; i <= 60; i++) {
+  const d = addDays(today, i);
+  const day = hoursOn(h, d);
+  if (day.grund !== "regulaer") sonder[d] = fmtRanges(day.ranges);
+}
+const ahead: { date: string; text: string; label: string }[] = [];
+if (ausblick) {
+  for (let i = 0; i <= 60 && ahead.length < 4; i++) {
+    const d = addDays(today, i);
+    const day = hoursOn(h, d);
+    if (day.grund === "feiertag" && day.feiertag) ahead.push({ date: d, text: fmtRanges([]), label: localized(feiertagsnamen[day.feiertag] as never, lang) });
+    if (day.grund === "ausnahme") ahead.push({ date: d, text: fmtRanges(day.ranges), label: day.ausnahme?.text ? localized(day.ausnahme.text as never, lang) : "" });
+  }
+}
+---
+<div class="zeiten-block" data-zeiten={haus} data-sonder={JSON.stringify(sonder)}>
+  <table class="zeiten">
+    {caption && <caption class="sr-only">{t(lang, "zeiten.titel")}</caption>}
+    <tbody>
+      {
+        WEEKDAYS.map((wd) => (
+          <tr data-wochentag={wd}>
+            <th scope="row">
+              {t(lang, `zeiten.tage.${wd}`)}<span class="heute-wort" hidden data-pagefind-ignore>, {t(lang, "zeiten.heute")}</span>
+            </th>
+            <td>{fmtRanges(h.regulaer[wd] ?? [])}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  <p class="t-klein nebentext zeiten-hinweis">
+    {t(lang, "zeiten.feiertage")} <Offen op="OP-03.3" lang={lang} />
+  </p>
+  <p class="t-klein nebentext zeiten-status">{t(lang, "zeiten.titel")}{doppelpunkt(lang)}<Offen op={h.status.op} lang={lang} /></p>
+  {
+    ausblick && ahead.length > 0 && (
+      <div class="ausblick">
+        <p class="t-klein" style="font-weight:600">{t(lang, "zeiten.naechsteFeiertage")}</p>
+        <ul class="t-klein">
+          {ahead.map((a) => (
+            <li>
+              <time datetime={a.date}>{formatDay(a.date, lang)}</time>
+              {a.label ? `, ${a.label}` : ""}{doppelpunkt(lang)}{a.text}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</div>
+
+<style is:global>
+  .zeiten {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 420px;
+    font-variant-numeric: tabular-nums;
+  }
+  .zeiten th,
+  .zeiten td {
+    text-align: left;
+    padding: 3px 0;
+    font-weight: 400;
+    vertical-align: top;
+  }
+  .zeiten th {
+    padding-right: 20px;
+    white-space: nowrap;
+  }
+  .zeiten tr[data-heute] th,
+  .zeiten tr[data-heute] td {
+    font-weight: 700;
+  }
+  .zeiten-hinweis {
+    margin-top: 8px;
+  }
+  .zeiten-status {
+    margin-top: 2px;
+  }
+  .ausblick {
+    margin-top: 12px;
+  }
+  .ausblick ul {
+    margin: 4px 0 0;
+    padding-left: 1.1em;
+  }
+</style>

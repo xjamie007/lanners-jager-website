@@ -1,0 +1,105 @@
+---
+/**
+ * Schnellleiste auf Hausseiten, nur auf dem Handy und Tablet (unter 1024 px):
+ * fest am unteren Rand Anrufen, Route (Google Maps) und Öffnungszeiten mit
+ * Live-Status (Punkt aus src/scripts/offen-status.ts). Darunter hält der Body
+ * Platz frei, damit der Fuß nicht verdeckt wird.
+ */
+import { getHouse, telHref } from "../config/houses.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { mapsRoute } from "../lib/karte.ts";
+import Icon from "./Icon.astro";
+interface Props {
+  lang: Lang;
+  haus: "lanners" | "jager";
+}
+const { lang, haus } = Astro.props;
+const h = getHouse(haus);
+---
+<nav class="schnellleiste" aria-label={t(lang, "schnell.label", { haus: h.short })}>
+  <a href={telHref(h)}>
+    <Icon name="telefon" size={22} />
+    <span>{t(lang, "schnell.anrufen")}</span>
+  </a>
+  <a href={mapsRoute(h)} rel="noopener">
+    <Icon name="ort" size={22} />
+    <span>{t(lang, "schnell.route")}</span>
+    <span class="sr-only"> ({t(lang, "site.externerLink")})</span>
+  </a>
+  <a href="#zeiten-titel">
+    <span class="schnell-icon">
+      <Icon name="uhr" size={22} />
+      <span class="schnell-punkt" data-offen-punkt={haus}></span>
+    </span>
+    <span>{t(lang, "schnell.zeiten")}</span>
+  </a>
+</nav>
+
+<style>
+  .schnellleiste {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: rgb(255 255 255 / 0.96);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -12px 30px -18px rgb(0 30 60 / 0.45), 0 -1px 0 rgb(0 46 82 / 0.08);
+  }
+  .schnellleiste a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 62px;
+    color: var(--color-tusche);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+  }
+  .schnellleiste a + a {
+    box-shadow: inset 1px 0 0 rgb(0 46 82 / 0.08);
+  }
+  .schnellleiste a:first-child :global(.icon) {
+    color: var(--haus);
+  }
+  .schnellleiste a:active {
+    background: var(--color-glas);
+  }
+  .schnell-icon {
+    position: relative;
+    display: inline-flex;
+  }
+  .schnell-punkt {
+    position: absolute;
+    top: -1px;
+    right: -3px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--color-weiss);
+  }
+  .schnell-punkt:not([data-zustand]) {
+    display: none;
+  }
+  .schnell-punkt[data-zustand="offen"] {
+    background: #22c55e;
+  }
+  .schnell-punkt[data-zustand="zu"] {
+    background: #ef4444;
+  }
+  @media (max-width: 1023.98px) {
+    :global(body:has(.schnellleiste)) {
+      padding-bottom: calc(62px + env(safe-area-inset-bottom));
+    }
+  }
+  @media (min-width: 1024px) {
+    .schnellleiste {
+      display: none;
+    }
+  }
+</style>

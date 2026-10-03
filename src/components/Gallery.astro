@@ -1,0 +1,150 @@
+---
+/**
+ * Galerie (C3): ab 1024 px untereinander gestapelt (wie bei Breuninger),
+ * darunter eine wischbare Reihe mit scroll-snap, Zähler "1 von 4" für
+ * Screenreader und Pfeilen ab 768 px. Der ganze Block blendet beim
+ * Farbwechsel über (view-transition-name: galerie).
+ */
+import { t, type Lang } from "../i18n/index.ts";
+import type { Article } from "../lib/catalog/types.ts";
+import ProductImage from "./ProductImage.astro";
+import Icon from "./Icon.astro";
+interface Props {
+  lang: Lang;
+  article: Article;
+}
+const { lang, article: a } = Astro.props;
+const n = a.photos.length;
+---
+<div class="galerie" data-galerie role="region" aria-label={t(lang, "produkt.galerie")}>
+  <ul class="galerie-liste" data-galerie-liste>
+    {
+      a.photos.map((p, i) => (
+        <li class="galerie-bild" data-galerie-bild>
+          <ProductImage
+            photo={p}
+            lang={lang}
+            alt={t(lang, "produkt.alt", { marke: a.brand.name, name: a.name, farbe: a.colorName, i: i + 1, n })}
+            sizes="(min-width: 1024px) 58vw, 100vw"
+            eager={i === 0}
+            vtHaupt={i === 0}
+          />
+        </li>
+      ))
+    }
+  </ul>
+  {
+    n > 1 && (
+      <div class="galerie-steuerung nur-js">
+        <button type="button" class="galerie-pfeil" data-galerie-zurueck>
+          <Icon name="links" />
+          <span class="sr-only">{t(lang, "produkt.fotoZurueck")}</span>
+        </button>
+        <p class="galerie-zaehler t-klein" data-galerie-zaehler aria-live="polite">
+          {t(lang, "produkt.ansicht", { i: 1, n })}
+        </p>
+        <button type="button" class="galerie-pfeil" data-galerie-weiter>
+          <Icon name="rechts" />
+          <span class="sr-only">{t(lang, "produkt.fotoWeiter")}</span>
+        </button>
+      </div>
+    )
+  }
+</div>
+
+<script>
+  for (const g of document.querySelectorAll<HTMLElement>("[data-galerie]")) {
+    const liste = g.querySelector<HTMLElement>("[data-galerie-liste]")!;
+    const bilder = [...g.querySelectorAll<HTMLElement>("[data-galerie-bild]")];
+    const zaehler = g.querySelector<HTMLElement>("[data-galerie-zaehler]");
+    const vorlage = zaehler?.textContent ?? "";
+    let aktuell = 0;
+    const gehe = (i: number) => {
+      const ziel = bilder[Math.max(0, Math.min(bilder.length - 1, i))];
+      liste.scrollTo({ left: ziel.offsetLeft - liste.offsetLeft, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    };
+    g.querySelector("[data-galerie-zurueck]")?.addEventListener("click", () => gehe(aktuell - 1));
+    g.querySelector("[data-galerie-weiter]")?.addEventListener("click", () => gehe(aktuell + 1));
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting && e.intersectionRatio > 0.6) {
+            aktuell = bilder.indexOf(e.target as HTMLElement);
+            if (zaehler) zaehler.textContent = vorlage.replace(/\d+/, String(aktuell + 1));
+          }
+        }
+      },
+      { root: liste, threshold: [0.6] },
+    );
+    for (const b of bilder) io.observe(b);
+  }
+</script>
+
+<style is:global>
+  .galerie {
+    view-transition-name: galerie;
+    position: relative;
+  }
+  .galerie-liste {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    gap: 8px;
+    list-style: none;
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .galerie-liste::-webkit-scrollbar {
+    display: none;
+  }
+  .galerie-bild {
+    scroll-snap-align: start;
+  }
+  .galerie-steuerung {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .galerie-pfeil {
+    display: none;
+  }
+  .galerie-zaehler {
+    color: var(--color-schiefer);
+  }
+  @media (min-width: 768px) {
+    .galerie-pfeil {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      min-height: 44px;
+      background: none;
+      border: 0;
+      box-shadow: inset 0 0 0 var(--stroke) var(--color-tusche);
+      cursor: pointer;
+    }
+    .galerie-liste {
+      grid-auto-columns: 80%;
+    }
+  }
+  @media (min-width: 1024px) {
+    .galerie-liste {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      gap: 16px;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+    }
+    .galerie-steuerung {
+      display: none;
+    }
+  }
+</style>

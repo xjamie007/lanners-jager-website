@@ -1,0 +1,198 @@
+---
+/**
+ * Große Karte eines Hauses mit Foto im Hausverlauf, Logo, Abteilungen,
+ * Live-Öffnungsstatus, Adresse und Telefon. Führt in den Shop des Hauses.
+ * Die ganze Karte ist ein Link (Titel-Link mit ::after), Telefon liegt darüber.
+ */
+import { getHouse, telHref } from "../config/houses.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import Foto from "./Foto.astro";
+import HouseLogo from "./HouseLogo.astro";
+import Icon from "./Icon.astro";
+interface Props {
+  lang: Lang;
+  haus: "lanners" | "jager";
+  level?: 2 | 3;
+}
+const { lang, haus, level = 3 } = Astro.props;
+const h = getHouse(haus);
+const H = `h${level}` as "h2" | "h3";
+---
+<article class={`shopkarte shopkarte-${haus} auf-dunkel`} data-haeuser={haus} data-vt-karte>
+  <div class="shopkarte-bild" aria-hidden="true" data-vt-quelle="hausbild">
+    <Foto name={`${haus}-shop`} alt="" sizes="(min-width: 900px) 48vw, 100vw" />
+  </div>
+  <div class="shopkarte-inhalt">
+    <div class="shopkarte-oben">
+      <HouseLogo haus={haus} hell />
+      <span class="offen-abzeichen" data-offen-box hidden>
+        <span class="status-punkt" data-offen-punkt={haus} />
+        <span data-offen-status={haus} />
+      </span>
+    </div>
+    <div class="shopkarte-unten">
+      <H class="shopkarte-titel">
+        <a href={link(lang, { kind: "haus", id: haus })} class="shopkarte-link">
+          <span class="sr-only">{h.name}: </span>
+          {t(lang, `shop.${haus}Claim`)}
+        </a>
+      </H>
+      <p class="shopkarte-text">{t(lang, `haeuser.${haus}Kurz`)}</p>
+      <ul class="shopkarte-fakten">
+        <li>
+          <Icon name="ort" size={18} />
+          {h.streetAddress}, {h.locality}
+        </li>
+        <li class="shopkarte-tel">
+          <Icon name="telefon" size={18} />
+          <a href={telHref(h)}>{h.phoneDisplay}</a>
+        </li>
+        <li>
+          <Icon name="stern" size={18} />
+          {t(lang, `haeuser.${haus}Abteilungen`)}
+        </li>
+      </ul>
+      <span class="shopkarte-cta" aria-hidden="true">
+        {t(lang, "shop.zumShop")}
+        <Icon name="pfeil" size={20} />
+      </span>
+    </div>
+  </div>
+</article>
+
+<style is:global>
+  .shopkarte {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    min-height: 520px;
+    border-radius: calc(var(--radius-bild) + 6px);
+    overflow: hidden;
+    color: var(--color-weiss);
+    box-shadow: 0 40px 70px -45px rgb(0 20 40 / 0.8);
+    transition: transform 300ms var(--ease-schaufenster), box-shadow 300ms ease-out;
+  }
+  .shopkarte:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 50px 80px -45px rgb(0 20 40 / 0.9);
+  }
+  .shopkarte-bild {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .shopkarte-bild .foto {
+    transition: transform 900ms var(--ease-schaufenster);
+  }
+  .shopkarte:hover .shopkarte-bild .foto {
+    transform: scale(1.04);
+  }
+  .shopkarte-bild::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .shopkarte-lanners .shopkarte-bild::after {
+    background: linear-gradient(180deg, rgb(0 29 54 / 0.35) 0%, rgb(0 46 82 / 0.55) 40%, rgb(0 22 42 / 0.95) 100%);
+  }
+  .shopkarte-jager .shopkarte-bild::after {
+    background: linear-gradient(180deg, rgb(22 20 21 / 0.3) 0%, rgb(74 62 46 / 0.55) 40%, rgb(16 14 15 / 0.95) 100%);
+  }
+  .shopkarte-inhalt {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+    padding: clamp(22px, 3vw, 36px);
+  }
+  .shopkarte-oben {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .shopkarte-oben .hauslogo {
+    font-size: clamp(12px, 0.6vw + 8px, 15px);
+  }
+  .shopkarte-oben .offen-abzeichen {
+    backdrop-filter: blur(8px);
+  }
+  .shopkarte-unten {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .shopkarte-titel {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 1.6rem + 2vw, 3.25rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .shopkarte-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .shopkarte-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .shopkarte-link:focus-visible {
+    outline: none;
+  }
+  .shopkarte-link:focus-visible::after {
+    outline: 3px solid var(--color-weiss);
+    outline-offset: -6px;
+    border-radius: inherit;
+  }
+  .shopkarte-text {
+    max-width: 46ch;
+    opacity: 0.92;
+  }
+  .shopkarte-fakten {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    list-style: none;
+    margin: 4px 0 0;
+    padding: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .shopkarte-fakten li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .shopkarte-fakten svg {
+    opacity: 0.8;
+  }
+  .shopkarte-tel {
+    position: relative;
+    z-index: 1;
+  }
+  .shopkarte-tel a {
+    color: inherit;
+  }
+  .shopkarte-cta {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    min-height: 48px;
+    padding: 0 22px;
+    border-radius: 999px;
+    background: var(--color-weiss);
+    color: var(--color-tusche);
+    font-weight: 600;
+    transition: gap 200ms ease-out;
+  }
+  .shopkarte:hover .shopkarte-cta {
+    gap: 16px;
+  }
+</style>

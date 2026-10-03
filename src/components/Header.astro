@@ -1,0 +1,889 @@
+---
+/**
+ * Kopf (C3), drei Ebenen:
+ *  1. Infoleiste (scrollt weg): Öffnungsstatus beider Häuser live, Telefon, Sprache
+ *  2. Hauptzeile (sticky): Logo, Navigation mit Untermenüs (ab 1100 px), Suche,
+ *     Tasche, Sprachauswahl, "Menü" (darunter)
+ *  3. Hausschalter-Leiste (sticky unter dem Kopf): Beide Häuser | Lanners | Jager;
+ *     schiebt sich beim Herunterscrollen unter den Kopf, kommt beim Hochscrollen wieder
+ * "Menü" öffnet einen <dialog> (Fokusfalle durch showModal, Escape schließt).
+ * Ohne JavaScript springt "Menü" zur Navigation im Fuß; die Untermenüs öffnen
+ * dann über :hover und :focus-within, die Sprachauswahl ist ein <details>.
+ */
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import { houses, telHref } from "../config/houses.ts";
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import HouseSwitcher from "./HouseSwitcher.astro";
+import LangSwitcher from "./LangSwitcher.astro";
+import LangMenu from "./LangMenu.astro";
+import { getImage } from "astro:assets";
+import lannersFoto from "../assets/fotos/lanners-shop.jpg";
+import jagerFoto from "../assets/fotos/jager-shop.jpg";
+
+export type Section = "damen" | "herren" | "accessoires" | "marken" | "sale" | "haeuser" | "lanners" | "jager" | "geschichte" | "service" | "sortiment" | null;
+interface Props {
+  lang: Lang;
+  alternates: { lang: Lang; href: string }[];
+  section?: Section;
+  seitenHaus?: "beide" | "lanners" | "jager";
+}
+const { lang, alternates, section = null, seitenHaus } = Astro.props;
+
+const sortiment = [
+  { href: link(lang, { kind: "abteilung", id: "damen" }), label: t(lang, "nav.damen"), id: "damen" },
+  { href: link(lang, { kind: "abteilung", id: "herren" }), label: t(lang, "nav.herren"), id: "herren" },
+  { href: link(lang, { kind: "accessoires" }), label: t(lang, "nav.accessoires"), id: "accessoires" },
+  { href: link(lang, "neu"), label: t(lang, "nav.neu"), id: "neu" },
+  { href: link(lang, "sale"), label: t(lang, "nav.sale"), id: "sale" },
+  { href: link(lang, "sortiment"), label: t(lang, "nav.alleArtikel"), id: "alle" },
+];
+const service = [
+  { href: link(lang, "howto"), label: t(lang, "footer.howto") },
+  { href: link(lang, "gutscheine"), label: t(lang, "footer.gutscheine") },
+  { href: link(lang, "kontakt"), label: t(lang, "footer.kontakt") },
+];
+const imSortiment = section === "damen" || section === "herren" || section === "accessoires" || section === "sortiment";
+// kleine Fotos für die Haus-Kacheln (CSS-Hintergrund, lädt erst, wenn sichtbar)
+const kachelFoto: Record<string, string> = {
+  lanners: (await getImage({ src: lannersFoto, width: 480, format: "webp" })).src,
+  jager: (await getImage({ src: jagerFoto, width: 480, format: "webp" })).src,
+};
+const lanners = houses.find((h) => h.id === "lanners")!;
+const jager = houses.find((h) => h.id === "jager")!;
+---
+<div class="infoleiste auf-dunkel">
+  <div class="container-lj infoleiste-zeile">
+    <ul class="infoleiste-status" aria-label={t(lang, "zeiten.titel")}>
+      {
+        [lanners, jager].map((h) => (
+          <li>
+            <a href={link(lang, { kind: "haus", id: h.id })} class="status-link">
+              <span class={`status-punkt punkt-${h.id}`} data-offen-punkt={h.id} aria-hidden="true" />
+              <strong>{h.short}</strong>
+              <span class="status-text" data-offen-status={h.id}>
+                {t(lang, "haus.adresse", { nr: h.nr })}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <ul class="infoleiste-tel">
+      {
+        [lanners, jager].map((h) => (
+          <li>
+            <a href={telHref(h)}>
+              <Icon name="telefon" size={16} />
+              <span>
+                {h.short} {h.phoneDisplay}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<header class="kopf">
+  <div class="kopf-zeile container-lj">
+    <Logo lang={lang} />
+    <nav class="kopf-nav" aria-label={t(lang, "nav.haupt")}>
+      <ul class="kopf-nav-liste">
+        <li class="nav-gruppe" data-nav-gruppe>
+          <a href={link(lang, "sortiment")} aria-current={imSortiment ? "page" : undefined}>{t(lang, "nav.sortiment")}</a>
+          <button type="button" class="nav-auf nur-js" aria-expanded="false" aria-controls="nav-panel-sortiment">
+            <Icon name="runter" size={16} />
+            <span class="sr-only">{t(lang, "nav.untermenu", { name: t(lang, "nav.sortiment") })}</span>
+          </button>
+          <div class="nav-panel nav-panel-breit" id="nav-panel-sortiment">
+            <ul class="nav-panel-liste">
+              {
+                sortiment.map((s) => (
+                  <li>
+                    <a href={s.href} class={`nav-panel-link nav-${s.id}`} aria-current={section === s.id ? "page" : undefined}>
+                      {s.label}
+                      <Icon name="pfeil" size={18} />
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+            <div class="nav-panel-haeuser">
+              {
+                [lanners, jager].map((h) => (
+                  <a href={link(lang, { kind: "haus", id: h.id })} class={`nav-haus-kachel kachel-${h.id}`} style={`--foto-kachel:url(${kachelFoto[h.id]})`}>
+                    <span class="nav-haus-name">{h.short}</span>
+                    <span class="nav-haus-text">{t(lang, `haeuser.${h.id}Abteilungen`)}</span>
+                    <span class="nav-haus-mehr">
+                      {t(lang, "shop.zumShop")}
+                      <Icon name="pfeil" size={16} />
+                    </span>
+                  </a>
+                ))
+              }
+            </div>
+          </div>
+        </li>
+        <li>
+          <a href={link(lang, "marken")} aria-current={section === "marken" ? "page" : undefined}>{t(lang, "nav.marken")}</a>
+        </li>
+        {
+          [lanners, jager].map((h) => (
+            <li>
+              <a href={link(lang, { kind: "haus", id: h.id })} class="nav-haus" aria-current={section === h.id ? "page" : undefined}>
+                <span class={`haus-punkt punkt-${h.id}`} aria-hidden="true" />
+                {h.short}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href={link(lang, "geschichte")} aria-current={section === "geschichte" ? "page" : undefined}>{t(lang, "nav.geschichte")}</a>
+        </li>
+        <li class="nav-gruppe" data-nav-gruppe>
+          <a href={link(lang, "howto")} aria-current={section === "service" ? "page" : undefined}>{t(lang, "nav.service")}</a>
+          <button type="button" class="nav-auf nur-js" aria-expanded="false" aria-controls="nav-panel-service">
+            <Icon name="runter" size={16} />
+            <span class="sr-only">{t(lang, "nav.untermenu", { name: t(lang, "nav.service") })}</span>
+          </button>
+          <div class="nav-panel" id="nav-panel-service">
+            <ul class="nav-panel-liste">
+              {
+                service.map((s) => (
+                  <li>
+                    <a href={s.href} class="nav-panel-link">
+                      {s.label}
+                      <Icon name="pfeil" size={18} />
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </li>
+        <li>
+          <a href={link(lang, "sale")} class="nav-sale" aria-current={section === "sale" ? "page" : undefined}>{t(lang, "nav.sale")}</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="kopf-aktionen">
+      <a class="kopf-icon" href={link(lang, "suche")} data-suche-oeffnen>
+        <Icon name="suche" />
+        <span class="sr-only">{t(lang, "nav.suche")}</span>
+      </a>
+      <a class="kopf-icon kopf-tasche" href={link(lang, "tasche")} data-tasche-link>
+        <Icon name="tasche" />
+        <span class="tasche-zahl" data-tasche-zahl aria-hidden="true" hidden></span>
+        <span class="sr-only" data-tasche-label>{t(lang, "nav.tascheLeer")}</span>
+      </a>
+      <LangMenu lang={lang} alternates={alternates} id="kopf" />
+      <a class="kopf-menu" href="#fuss-nav" data-menu-oeffnen>
+        <Icon name="menu" />
+        <span class="kopf-menu-text">{t(lang, "nav.menu")}</span>
+      </a>
+    </div>
+  </div>
+</header>
+<div class="kopf-hausleiste nur-js" data-hausleiste>
+  <div class="container-lj hausleiste-zeile">
+    <span class="hausleiste-label" aria-hidden="true">{t(lang, "haus.shopWaehlen")}</span>
+    <HouseSwitcher lang={lang} id="leiste" seitenHaus={seitenHaus} />
+  </div>
+</div>
+
+<dialog class="menu-dialog" id="menu-dialog" aria-label={t(lang, "nav.menu")}>
+  {/* Fokus beim Öffnen auf den Inhalt statt aufs Logo (sonst Fokusrahmen am Logo, v. a. in Safari) */}
+  <div class="menu-inhalt container-lj" tabindex="-1" autofocus>
+    <div class="menu-kopf">
+      <Logo lang={lang} />
+      <button type="button" class="kopf-icon menu-zu" data-menu-schliessen>
+        <Icon name="schliessen" />
+        <span class="sr-only">{t(lang, "nav.schliessen")}</span>
+      </button>
+    </div>
+    <div class="menu-haeuser">
+      {
+        [lanners, jager].map((h) => (
+          <a href={link(lang, { kind: "haus", id: h.id })} class={`menu-haus kachel-${h.id}`} style={`--foto-kachel:url(${kachelFoto[h.id]})`} aria-current={section === h.id ? "page" : undefined}>
+            <span class="menu-haus-name">{h.short}</span>
+            <span class="menu-haus-text">{t(lang, "shop.zumShop")}</span>
+          </a>
+        ))
+      }
+    </div>
+    <nav aria-label={t(lang, "nav.haupt")}>
+      <ul class="menu-haupt">
+        {
+          sortiment.map((n) => (
+            <li>
+              <a href={n.href} aria-current={section === n.id ? "page" : undefined}>
+                {n.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href={link(lang, "marken")} aria-current={section === "marken" ? "page" : undefined}>{t(lang, "nav.marken")}</a>
+        </li>
+        <li>
+          <a href={link(lang, "haeuser")} aria-current={section === "haeuser" ? "page" : undefined}>{t(lang, "nav.haeuser")}</a>
+        </li>
+        <li>
+          <a href={link(lang, "geschichte")} aria-current={section === "geschichte" ? "page" : undefined}>{t(lang, "nav.geschichte")}</a>
+        </li>
+      </ul>
+    </nav>
+    <nav aria-label={t(lang, "nav.service")}>
+      <ul class="menu-service">
+        {
+          service.map((n) => (
+            <li>
+              <a href={n.href}>{n.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <LangSwitcher lang={lang} alternates={alternates} id="menu" variant="menu" />
+  </div>
+</dialog>
+
+<style is:global>
+  .menu-inhalt:focus {
+    outline: none;
+  }
+  /* ── 1. Infoleiste ─────────────────────────────────────────────────────── */
+  .infoleiste {
+    background: var(--verlauf-marke);
+    color: var(--color-weiss);
+    font-size: 0.8125rem;
+    line-height: 1.3;
+  }
+  .infoleiste a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .infoleiste a:hover {
+    text-decoration: underline;
+  }
+  .infoleiste-zeile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 36px;
+  }
+  .infoleiste ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .status-link,
+  .infoleiste-tel a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 32px;
+  }
+  .status-text {
+    opacity: 0.88;
+  }
+  .status-punkt {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.5);
+    flex: none;
+  }
+  .status-punkt[data-zustand="offen"] {
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgb(74 222 128 / 0.25);
+  }
+  .status-punkt[data-zustand="zu"] {
+    background: #fca5a5;
+  }
+  .infoleiste-tel {
+    display: none !important;
+  }
+  @media (max-width: 767px) {
+    .infoleiste-status li + li {
+      display: none;
+    }
+    .infoleiste-status {
+      flex-wrap: nowrap;
+    }
+    .status-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  @media (min-width: 1024px) {
+    .infoleiste-tel {
+      display: flex !important;
+    }
+  }
+
+  /* ── 2. Hauptzeile ─────────────────────────────────────────────────────── */
+  .kopf {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgb(255 255 255 / 0.94);
+    backdrop-filter: saturate(1.4) blur(12px);
+    -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    box-shadow: 0 1px 0 rgb(0 46 82 / 0.08), 0 8px 24px -18px rgb(0 46 82 / 0.35);
+    transition: box-shadow 250ms ease-out;
+    view-transition-name: kopf;
+  }
+  .kopf-zeile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    height: var(--header-h);
+  }
+  .kopf-nav {
+    display: none;
+  }
+  .kopf-aktionen {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .kopf-icon,
+  .kopf-menu {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: background-color 200ms ease-out;
+  }
+  .kopf-icon:hover {
+    background: var(--color-glas);
+  }
+  .kopf-menu {
+    padding-inline: 8px 6px;
+  }
+  .tasche-zahl {
+    position: absolute;
+    top: 4px;
+    right: 2px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    box-sizing: border-box;
+    border-radius: 999px;
+    background: var(--haus-verlauf, var(--haus));
+    color: var(--color-weiss);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    transition: opacity 200ms ease-out, background-color 250ms ease-out;
+  }
+  /* Neuer Artikel im Warenkorb: die Zahl springt kurz auf, der Wagen ruckelt (global.ts setzt data-neu) */
+  .tasche-zahl[data-neu] {
+    animation: lj-pop 420ms var(--ease-schaufenster);
+  }
+  .kopf-tasche:has(.tasche-zahl[data-neu]) > .icon {
+    animation: lj-ruck 520ms ease-in-out;
+  }
+  @keyframes lj-pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    60% {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lj-ruck {
+    0%,
+    100% {
+      transform: translateX(0) rotate(0);
+    }
+    30% {
+      transform: translateX(-2px) rotate(-8deg);
+    }
+    60% {
+      transform: translateX(2px) rotate(5deg);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .kopf-nav {
+      display: block;
+      margin-inline: auto;
+    }
+    .kopf-menu {
+      display: none;
+    }
+    .kopf-zeile {
+      gap: 24px;
+    }
+  }
+  /* Kleine Handys: "Menü" nur als Symbol (der Name bleibt für Screenreader), Sprachwahl
+     ohne Globus (die Sprachen stehen auch im Menü). Mit der kleineren Wortmarke
+     (Logo.astro) passt die Zeile ab 320 px ohne seitliches Scrollen. */
+  @media (max-width: 479.98px) {
+    .kopf-zeile {
+      gap: 8px;
+    }
+    .kopf-aktionen {
+      gap: 0;
+    }
+    .kopf-menu {
+      padding: 0;
+    }
+    .kopf-menu-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+    .kopf-aktionen .sprachwahl-knopf {
+      justify-content: center;
+      gap: 3px;
+      min-width: 44px;
+      padding: 0 5px;
+    }
+    .kopf-aktionen .sprachwahl-knopf > .icon:first-child {
+      display: none;
+    }
+  }
+  @media (max-width: 359.98px) {
+    .kopf-zeile {
+      gap: 4px;
+    }
+    .kopf-icon,
+    .kopf-menu,
+    .kopf-aktionen .sprachwahl-knopf {
+      min-width: 40px;
+    }
+    .kopf-aktionen .sprachwahl-knopf {
+      padding: 0 3px;
+    }
+  }
+  .kopf-nav-liste {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .kopf-nav-liste > li {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .kopf-nav-liste > li > a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 44px;
+    padding: 0 10px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  /* Unterstreichung: wischt beim Überfahren von links herein und beim Verlassen nach
+     rechts hinaus; unter der aktuellen Seite steht sie, und sie zeichnet sich beim Laden ein */
+  .kopf-nav-liste > li > a::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 6px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--verlauf-marke);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 320ms var(--ease-schaufenster);
+  }
+  .kopf-nav-liste > li > a:hover::after,
+  .kopf-nav-liste > li > a:focus-visible::after,
+  .kopf-nav-liste > li > a[aria-current="page"]::after,
+  .nav-gruppe:focus-within > a::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .kopf-nav-liste > li > a[aria-current="page"]::after {
+    animation: lj-unterstrich 520ms var(--ease-schaufenster) 120ms backwards;
+  }
+  @keyframes lj-unterstrich {
+    from {
+      transform: scaleX(0);
+    }
+  }
+  .nav-gruppe > a {
+    padding-right: 2px !important;
+  }
+  .nav-gruppe > a::after {
+    right: 2px !important;
+  }
+  .nav-auf {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 44px;
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: transform 200ms ease-out;
+  }
+  html:not(.js) .nav-gruppe > a {
+    padding-right: 10px !important;
+  }
+  .nav-gruppe[data-offen] .nav-auf svg {
+    transform: rotate(180deg);
+  }
+  .nav-auf svg {
+    transition: transform 200ms ease-out;
+  }
+  .haus-punkt {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex: none;
+  }
+  .punkt-lanners {
+    background: var(--verlauf-lanners);
+  }
+  .punkt-jager {
+    background: var(--verlauf-jager);
+  }
+  .nav-sale {
+    color: var(--color-signal);
+  }
+
+  /* Untermenüs */
+  .nav-panel {
+    position: absolute;
+    top: 100%;
+    left: -12px;
+    z-index: 50;
+    display: none;
+    min-width: 260px;
+    padding: 12px;
+    background: var(--color-weiss);
+    border-radius: 14px;
+    box-shadow: 0 24px 48px -16px rgb(0 30 60 / 0.28), 0 0 0 1px rgb(0 46 82 / 0.06);
+  }
+  .nav-panel::before {
+    /* Brücke über den Spalt, damit :hover beim Hinüberfahren bleibt */
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -14px;
+    height: 14px;
+  }
+  .nav-gruppe:hover > .nav-panel,
+  html:not(.js) .nav-gruppe:focus-within > .nav-panel,
+  .nav-gruppe[data-offen] > .nav-panel {
+    display: block;
+    animation: lj-panel 180ms ease-out;
+  }
+  html.js .nav-gruppe[data-zu] > .nav-panel {
+    display: none;
+  }
+  @keyframes lj-panel {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+  .nav-panel-breit {
+    display: none;
+    width: min(640px, 70vw);
+  }
+  .nav-gruppe:hover > .nav-panel-breit,
+  html:not(.js) .nav-gruppe:focus-within > .nav-panel-breit,
+  .nav-gruppe[data-offen] > .nav-panel-breit {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .nav-panel-liste {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-panel-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 150ms ease-out;
+  }
+  .nav-panel-link svg {
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 150ms ease-out, transform 150ms ease-out;
+  }
+  .nav-panel-link:hover,
+  .nav-panel-link:focus-visible {
+    background: var(--color-creme);
+  }
+  .nav-panel-link:hover svg,
+  .nav-panel-link:focus-visible svg {
+    opacity: 1;
+    transform: none;
+  }
+  .nav-panel-link.nav-sale,
+  .nav-panel-link.nav-sale:hover {
+    color: var(--color-signal);
+  }
+  .nav-panel-haeuser {
+    display: grid;
+    gap: 10px;
+  }
+  .nav-haus-kachel {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2px;
+    min-height: 120px;
+    padding: 16px;
+    border-radius: 10px;
+    color: var(--color-weiss);
+    text-decoration: none;
+    background-size: cover;
+    background-position: center;
+    transition: transform 200ms var(--ease-schaufenster);
+  }
+  .nav-haus-kachel:hover {
+    transform: translateY(-2px);
+  }
+  .kachel-lanners {
+    background-image: linear-gradient(160deg, rgb(0 46 82 / 0.35), rgb(0 30 56 / 0.92)), var(--foto-kachel, none), var(--verlauf-lanners);
+  }
+  .kachel-jager {
+    background-image: linear-gradient(160deg, rgb(35 31 32 / 0.3), rgb(16 14 15 / 0.92)), var(--foto-kachel, none), var(--verlauf-jager);
+  }
+  .nav-haus-name {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .nav-haus-text {
+    font-size: 0.8125rem;
+    opacity: 0.85;
+  }
+  .nav-haus-mehr {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  /* ── 3. Hausschalter-Leiste ───────────────────────────────────────────────
+     Eigene Leiste, klebt unter dem Kopf. Beim Herunterscrollen schiebt sie sich
+     unter den Kopf (global.ts setzt html[data-leiste-weg]), beim Hochscrollen
+     kommt sie zurück. Nur transform: Das Layout der Seite bewegt sich nicht. */
+  .kopf-hausleiste {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 39;
+    height: var(--switch-h);
+    display: flex;
+    align-items: center;
+    background: rgb(255 255 255 / 0.94);
+    backdrop-filter: saturate(1.4) blur(12px);
+    -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    border-top: 1px solid rgb(0 46 82 / 0.07);
+    box-shadow: 0 8px 24px -18px rgb(0 46 82 / 0.35);
+    view-transition-name: hausleiste;
+    transition:
+      transform 250ms ease-out,
+      visibility 0s linear 0s;
+  }
+  html[data-leiste-weg] .kopf-hausleiste {
+    transform: translateY(-100%);
+    visibility: hidden;
+    transition:
+      transform 250ms ease-out,
+      visibility 0s linear 250ms;
+  }
+  /* Steht die Leiste unter dem Kopf, trägt sie den Schatten (sonst läge er dazwischen) */
+  html.js:not([data-leiste-weg]) .kopf {
+    box-shadow: none;
+  }
+  .hausleiste-zeile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  .hausleiste-label {
+    display: none;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-schiefer);
+    white-space: nowrap;
+  }
+  .kopf-hausleiste .hausschalter {
+    width: 100%;
+    max-width: 520px;
+  }
+  @media (min-width: 768px) {
+    .hausleiste-label {
+      display: inline;
+    }
+  }
+
+  /* ── Menü-Dialog: ganzer Bildschirm, Einblenden ohne Gleiten (200 ms) ── */
+  .menu-dialog {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--color-weiss);
+    color: var(--color-tusche);
+    opacity: 0;
+    transition: opacity 200ms ease-out, display 200ms allow-discrete, overlay 200ms allow-discrete;
+  }
+  .menu-dialog[open] {
+    opacity: 1;
+  }
+  @starting-style {
+    .menu-dialog[open] {
+      opacity: 0;
+    }
+  }
+  .menu-dialog::backdrop {
+    background: transparent;
+  }
+  .menu-inhalt {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-bottom: 52px;
+  }
+  .menu-kopf {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-h);
+  }
+  .menu-haeuser {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .menu-haus {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 110px;
+    padding: 14px;
+    border-radius: 12px;
+    color: var(--color-weiss);
+    text-decoration: none;
+    background-size: cover;
+    background-position: center;
+  }
+  .menu-haus-name {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .menu-haus-text {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .menu-haupt,
+  .menu-service {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .menu-haupt a {
+    position: relative;
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    line-height: 1.1;
+    padding: 4px 0;
+    text-decoration: none;
+  }
+  .menu-haupt a[aria-current="page"] {
+    background: var(--verlauf-marke);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Wie oben in der Navigation: Unterstreichung wischt herein, unter der aktuellen Seite
+     zeichnet sie sich beim Öffnen des Menüs ein */
+  .menu-haupt a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--verlauf-marke);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 320ms var(--ease-schaufenster);
+  }
+  .menu-haupt a:hover::after,
+  .menu-haupt a:focus-visible::after,
+  .menu-haupt a[aria-current="page"]::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .menu-dialog[open] .menu-haupt a[aria-current="page"]::after {
+    animation: lj-unterstrich 520ms var(--ease-schaufenster) 180ms backwards;
+  }
+  .menu-service a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+</style>

@@ -1,0 +1,321 @@
+---
+/**
+ * Hero (C4): die zwei Häuser der Grand-Rue als weiße Strichzeichnungen auf
+ * einer gemeinsamen Straßenlinie, über einem Foto im Verlauf der Hausfarben
+ * (Marine → Tabak). h1, Text und Buttons sind sofort sichtbar (LCP).
+ * Beim ersten Besuch der Sitzung zeichnen sich Straße und Fassaden (1,4 s);
+ * beim Hovern gehen in der Fassade die Lichter an. Unter jedem Haus der
+ * Live-Öffnungsstatus.
+ */
+import { houses } from "../config/houses.ts";
+import { buyEnabled } from "../config/site.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import Fassade from "./Fassade.astro";
+import Foto from "./Foto.astro";
+import Icon from "./Icon.astro";
+import Offen from "./Offen.astro";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+// Hausnummern aufsteigend: 18 links, 32 rechts
+const order = [...houses].sort((a, b) => Number(a.nr) - Number(b.nr));
+---
+<section class="hero auf-dunkel" aria-labelledby="hero-titel">
+  <div class="hero-bild" aria-hidden="true">
+    <Foto name="hero-strasse" alt="" sizes="100vw" eager />
+  </div>
+  <div class="hero-inhalt container-lj">
+    <div class="hero-text">
+      <p class="vorzeile">{t(lang, "hero.vorzeile")}</p>
+      <h1 class="t-h1-start" id="hero-titel">{t(lang, "hero.h1")}</h1>
+      <p class="hero-unterzeile">
+        {t(lang, "hero.sub")}
+        {buyEnabled && <> {t(lang, "hero.subKauf")}</>}
+      </p>
+      <div class="hero-buttons">
+        <a class="btn btn-hell" href={link(lang, "sortiment")}>
+          {t(lang, "hero.btnSortiment")}
+          <Icon name="pfeil" size={18} />
+        </a>
+        <a class="btn btn-rand-hell" href={link(lang, "howto")}>{t(lang, "hero.btnHowto")}</a>
+      </div>
+    </div>
+    <div class="hero-strasse">
+      <div class="strasse-raster">
+        {
+          order.map((h, i) => (
+            <a class="haus-link" href={link(lang, { kind: "haus", id: h.id })} data-haus-link={h.id} style={`grid-column:${i + 1}`}>
+              <span class="haus-fassade">
+                <span class={`haus-schein schein-${h.id}`} aria-hidden="true" />
+                <Fassade haus={h.id} />
+              </span>
+              <span class="haus-name">
+                <span class="t-hausname">{h.short}</span>
+                <span class="haus-adresse">{t(lang, "haus.adresse", { nr: h.nr })}</span>
+                <span class="offen-abzeichen haus-status" data-offen-box hidden>
+                  <span class="status-punkt" data-offen-punkt={h.id} />
+                  <span data-offen-status={h.id} />
+                </span>
+                <span class="haus-mehr">
+                  {t(lang, "shop.zumShop")}
+                  <Icon name="pfeil" size={16} />
+                </span>
+              </span>
+            </a>
+          ))
+        }
+        <svg class="strasse-linie" viewBox="0 0 100 2" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <line x1="0" y1="1" x2="100" y2="1" pathLength="1" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+        </svg>
+      </div>
+      <p class="hero-platzhalter"><Offen op="OP-08.3" lang={lang} /></p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: var(--color-weiss);
+  }
+  .hero-bild {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .hero-bild::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(60% 80% at 75% 35%, rgb(255 210 140 / 0.16), transparent 60%),
+      linear-gradient(105deg, rgb(0 22 42 / 0.94) 0%, rgb(0 46 82 / 0.86) 38%, rgb(43 40 70 / 0.78) 62%, rgb(74 62 46 / 0.84) 100%);
+  }
+  .hero-inhalt {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+    padding-block: 44px 40px;
+  }
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .hero-text :global(.t-h1-start) {
+    text-shadow: 0 2px 30px rgb(0 0 0 / 0.25);
+  }
+  .hero-unterzeile {
+    max-width: 52ch;
+    font-size: 1.0625rem;
+    opacity: 0.92;
+  }
+  .hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .hero-buttons .btn {
+    flex: 1 1 220px;
+  }
+
+  .strasse-raster {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto 2px auto;
+    column-gap: clamp(20px, 6vw, 72px);
+    position: relative;
+  }
+  .haus-link {
+    grid-row: 1 / span 3;
+    display: grid;
+    grid-template-rows: subgrid;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 300ms ease-out;
+    position: relative;
+    z-index: 1;
+  }
+  .haus-fassade {
+    position: relative;
+    grid-row: 1;
+    display: block;
+    align-self: end;
+    padding-inline: 4%;
+    color: var(--color-weiss);
+  }
+  .haus-fassade :global(.fassade) {
+    position: relative;
+    color: var(--color-weiss);
+  }
+  .haus-fassade :global(.glas) {
+    fill: rgb(255 255 255 / 0.08);
+  }
+  .haus-link[data-haus-link="lanners"] :global(.band) {
+    fill: var(--color-marine-hell);
+  }
+  .haus-link[data-haus-link="jager"] :global(.band) {
+    fill: var(--color-jager-hell);
+  }
+  /* Licht an: die Fenster leuchten warm */
+  .haus-link:hover .haus-fassade :global(.glas),
+  .haus-link:focus-visible .haus-fassade :global(.glas) {
+    fill: rgb(255 214 150 / 0.62);
+  }
+  .haus-schein {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 120%;
+    aspect-ratio: 1;
+    transform: translate(-50%, 30%);
+    border-radius: 50%;
+    opacity: 0.55;
+    filter: blur(30px);
+    transition: opacity 400ms ease-out;
+  }
+  .schein-lanners {
+    background: radial-gradient(circle, rgb(40 140 220 / 0.7), transparent 65%);
+  }
+  .schein-jager {
+    background: radial-gradient(circle, rgb(222 178 104 / 0.65), transparent 65%);
+  }
+  .haus-link:hover .haus-schein {
+    opacity: 0.95;
+  }
+  .haus-name {
+    grid-row: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding-top: 14px;
+  }
+  .haus-adresse {
+    font-size: 0.875rem;
+    line-height: 1.45;
+    opacity: 0.85;
+  }
+  .haus-status {
+    font-size: 0.8125rem;
+  }
+  .haus-status :global(.status-punkt[data-zustand="offen"]) {
+    background: #4ade80;
+    opacity: 1;
+    box-shadow: 0 0 0 3px rgb(74 222 128 / 0.25);
+  }
+  .haus-status :global(.status-punkt[data-zustand="zu"]) {
+    background: #fca5a5;
+    opacity: 1;
+  }
+  .haus-mehr {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-bottom: 1.5px solid rgb(255 255 255 / 0.5);
+    padding-bottom: 2px;
+    transition: gap 200ms ease-out, border-color 200ms ease-out;
+  }
+  .haus-link:hover .haus-mehr {
+    gap: 10px;
+    border-color: var(--color-weiss);
+  }
+  .haus-link:hover .t-hausname,
+  .haus-link:focus-visible .t-hausname {
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 5px;
+  }
+  .strasse-linie {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    width: calc(100% + 2 * var(--gutter));
+    margin-left: calc(-1 * var(--gutter));
+    max-width: none;
+    height: 2px;
+    color: rgb(255 255 255 / 0.85);
+    overflow: visible;
+  }
+  .strasse-linie line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  .hero-platzhalter {
+    margin-top: 12px;
+    text-align: right;
+  }
+  .hero-platzhalter :global(.offen) {
+    color: rgb(255 255 255 / 0.8);
+    border-color: rgb(255 255 255 / 0.6);
+  }
+  /* Hausschalter: die andere Fassade tritt zurück (bleibt ein Link) */
+  :global(html[data-haus="lanners"]) .haus-link[data-haus-link="jager"],
+  :global(html[data-haus="jager"]) .haus-link[data-haus-link="lanners"] {
+    opacity: 0.35;
+  }
+  @media (min-width: 1024px) {
+    .hero-inhalt {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 16px;
+      align-items: center;
+      padding-block: 72px 56px;
+      min-height: min(720px, calc(100vh - 180px));
+    }
+    .hero-strasse {
+      grid-column: 7 / span 6;
+      grid-row: 1;
+    }
+    .hero-text {
+      grid-column: 1 / span 6;
+      grid-row: 1;
+      padding-right: 24px;
+    }
+    .hero-buttons .btn {
+      flex: 0 0 auto;
+    }
+    /* Die Straßenlinie läuft bis an den rechten Bildschirmrand */
+    .strasse-linie {
+      margin-left: 0;
+      width: calc(100% + var(--gutter) + max(0px, (100vw - 1440px) / 2));
+    }
+  }
+
+  /* Der eine Moment beim Laden (C4) */
+  :global(html[data-hero-zeichnen]) .strasse-linie line {
+    stroke-dashoffset: 1;
+    animation: lj-zeichnen 500ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+  :global(html[data-hero-zeichnen]) .haus-fassade :global(.s) {
+    stroke-dashoffset: 1;
+    animation: lj-zeichnen 900ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+    animation-delay: var(--start);
+  }
+  :global(html[data-hero-zeichnen]) .haus-fassade :global(.fl) {
+    opacity: 0;
+    animation: lj-einblenden 300ms ease-out forwards;
+    animation-delay: calc(var(--start) + 900ms);
+  }
+  .haus-link[data-haus-link="jager"] {
+    --start: 200ms;
+  }
+  .haus-link[data-haus-link="lanners"] {
+    --start: 320ms;
+  }
+  @keyframes lj-zeichnen {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes lj-einblenden {
+    to {
+      opacity: 1;
+    }
+  }
+</style>

@@ -1,0 +1,210 @@
+---
+/**
+ * Kasse (F2), je Haus und Weg (?haus=lanners&modus=collect|ship).
+ * Keine Einwilligungs-Checkbox: Rechtsgrundlage ist die Vertragserfüllung
+ * (Art. 6 Abs. 1 lit. b DSGVO), bewusste Abweichung vom Nave-Standard (README).
+ * Summen und Versandkosten rechnet der Server (Function `checkout`).
+ */
+import Page from "../layouts/Page.astro";
+import Field from "../components/form/Field.astro";
+import FormParts from "../components/form/FormParts.astro";
+import HoursTable from "../components/HoursTable.astro";
+import Telefone from "../components/Telefone.astro";
+import Offen from "../components/Offen.astro";
+import Vertrauen from "../components/Vertrauen.astro";
+import { FUNCTIONS_URL } from "../config/site.ts";
+import { houses } from "../config/houses.ts";
+import { shop } from "../config/shop.ts";
+import { versand } from "../config/versand.ts";
+import hours from "../content/oeffnungszeiten.json" with { type: "json" };
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import { pathFor, staticRef } from "../i18n/routes.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const [ohneJsVor, ohneJsNach] = t(lang, "kasse.ohneJs").split("{telefone}");
+const laender = versand.laender.map((l) => ({ value: l.code, label: t(lang, `land.${l.code}`) }));
+const kasseConfig = {
+  maxTage: shop.reservierung.abholungMaxTage,
+  hours: { lanners: hours.lanners, jager: hours.jager },
+  firmen: Object.fromEntries(houses.map((h) => [h.id, typeof h.legal.firma === "string" ? h.legal.firma : (h.legal.firma.wert ?? h.name)])),
+  versand: versand.laender,
+};
+const rechtlich = t(lang, "kasse.rechtliches");
+---
+<Page lang={lang} route="kasse" h1={t(lang, "kasse.h1")} title={t(lang, "seo.kasse.title")} description={t(lang, "seo.kasse.desc")} noindex breit strings={["kasse.", "form.", "tasche.", "land.", "demo."]}>
+  <p class="ohne-js kasse-ohnejs">{ohneJsVor}<Telefone lang={lang} />{ohneJsNach}</p>
+  <div class="kasse nur-js" data-kasse-leer hidden>
+    <p>{t(lang, "form.fehlerTasche")}</p>
+    <p><a href={link(lang, "tasche")}>{t(lang, "danke.zurTasche")}</a></p>
+  </div>
+
+  <form class="kasse nur-js formular-breit" method="post" action={`${FUNCTIONS_URL}/checkout`} data-formular="kasse" hidden>
+    <FormParts lang={lang} ok={pathFor(staticRef("kasseDanke"), lang)} back={pathFor(staticRef("kasse"), lang)} />
+    <input type="hidden" name="haus" value="" data-kasse-haus />
+    <input type="hidden" name="modus" value="" data-kasse-modus />
+    <input type="hidden" name="positionen" value="" data-positionen />
+    <input type="hidden" name="erwartet" value="" data-erwartet />
+
+    <div class="kasse-raster">
+      <div class="kasse-links">
+        <p class="kasse-bei t-h3" data-kasse-bei></p>
+
+        <h2 class="t-h2 kasse-h2">{t(lang, "kasse.kontaktH2")}</h2>
+        <div class="formular">
+          <Field lang={lang} id="k-vorname" name="vorname" label={t(lang, "form.vorname")} required autocomplete="given-name" fehler="form.fehlerVorname" />
+          <Field lang={lang} id="k-name" name="name" label={t(lang, "form.name")} required autocomplete="family-name" fehler="form.fehlerName" />
+          <Field lang={lang} id="k-email" name="email" type="email" label={t(lang, "form.email")} required autocomplete="email" hint={t(lang, "form.emailHinweis")} fehler="form.fehlerEmail" />
+          <Field lang={lang} id="k-telefon" name="telefon" type="tel" label={t(lang, "form.telefon")} required autocomplete="tel" fehler="form.fehlerTelefon" />
+        </div>
+
+        <div data-nur-abholung hidden>
+          <h2 class="t-h2 kasse-h2">{t(lang, "kasse.abholungH2")}</h2>
+          <p data-kasse-abholtext></p>
+          <div class="formular">
+            <div class="feld-gruppe" data-feld="abholung">
+              <label class="feld-label" for="k-abholung">{t(lang, "form.abholung")}</label>
+              <input class="feld kasse-datum" type="date" id="k-abholung" name="abholung" required aria-describedby="k-abholung-hinweis k-abholung-fehler" />
+              <span class="feld-hinweis" id="k-abholung-hinweis"></span>
+              <p class="feld-fehler" id="k-abholung-fehler" hidden></p>
+            </div>
+            {houses.map((h) => (
+              <template data-kasse-zeiten={h.id}>
+                <HoursTable lang={lang} haus={h.id} caption={false} />
+              </template>
+            ))}
+            <div data-kasse-zeiten-ziel></div>
+          </div>
+        </div>
+
+        <div data-nur-versand hidden>
+          <h2 class="t-h2 kasse-h2">{t(lang, "kasse.lieferungH2")}</h2>
+          <div class="formular">
+            <Field lang={lang} id="k-strasse" name="strasse" label={t(lang, "kasse.strasse")} required autocomplete="address-line1" fehler="kasse.fehlerStrasse" />
+            <Field lang={lang} id="k-zusatz" name="zusatz" label={t(lang, "kasse.zusatz")} autocomplete="address-line2" />
+            <Field lang={lang} id="k-plz" name="plz" label={t(lang, "kasse.plz")} required autocomplete="postal-code" fehler="kasse.fehlerPlz" />
+            <Field lang={lang} id="k-ort" name="ort" label={t(lang, "kasse.ort")} required autocomplete="address-level2" fehler="kasse.fehlerOrt" />
+            <Field lang={lang} id="k-land" name="land" as="select" label={t(lang, "kasse.land")} required autocomplete="country" options={laender} value={laender[0]?.value} fehler="kasse.fehlerLand" />
+            <label class="auswahl">
+              <input type="checkbox" name="rechnung_gleich" value="1" checked data-rechnung-gleich />
+              <span>{t(lang, "kasse.rechnungGleich")}</span>
+            </label>
+          </div>
+          <div data-rechnung hidden>
+            <h2 class="t-h2 kasse-h2">{t(lang, "kasse.rechnungH2")}</h2>
+            <div class="formular">
+              <Field lang={lang} id="k-r-strasse" name="r_strasse" label={t(lang, "kasse.strasse")} required autocomplete="billing address-line1" fehler="kasse.fehlerRStrasse" />
+              <Field lang={lang} id="k-r-zusatz" name="r_zusatz" label={t(lang, "kasse.zusatz")} autocomplete="billing address-line2" />
+              <Field lang={lang} id="k-r-plz" name="r_plz" label={t(lang, "kasse.plz")} required autocomplete="billing postal-code" fehler="kasse.fehlerRPlz" />
+              <Field lang={lang} id="k-r-ort" name="r_ort" label={t(lang, "kasse.ort")} required autocomplete="billing address-level2" fehler="kasse.fehlerROrt" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="kasse-rechts" aria-labelledby="kasse-summe-titel">
+        <h2 class="t-h3" id="kasse-summe-titel">{t(lang, "kasse.zusammenfassung")}</h2>
+        <div data-kasse-summe></div>
+        <p class="t-klein kasse-gutschein">{t(lang, "kasse.gutschein")}</p>
+        <p class="t-klein kasse-zahlarten" data-kasse-zahlarten hidden></p>
+        <p class="t-klein kasse-recht" data-kasse-recht data-vorlage={rechtlich}></p>
+        <button class="btn btn-primaer btn-voll" type="submit">{t(lang, "kasse.bestellen")}</button>
+        <p class="t-klein nebentext">{t(lang, "kasse.weiter")}</p>
+        <p class="t-klein" data-kasse-danach hidden></p>
+        <div class="kasse-vertrauen">
+          <Vertrauen lang={lang} kompakt nur={["zahlung", "umtausch", "beratung"]} />
+        </div>
+      </aside>
+    </div>
+  </form>
+  <script type="application/json" id="lj-kasse" set:html={JSON.stringify(kasseConfig)} />
+  <template data-links>
+    <a data-l="agb" href={link(lang, "agb")}>{t(lang, "kasse.agbLink")}</a>
+    <a data-l="widerruf" href={link(lang, "widerruf")}>{t(lang, "kasse.widerrufLink")}</a>
+    <a data-l="datenschutz" href={link(lang, "datenschutz")}>{t(lang, "kasse.datenschutzLink")}</a>
+  </template>
+  {
+    houses.map(
+      (h) =>
+        typeof h.legal.firma !== "string" && (
+          <template data-firma-offen={h.id}>
+            <Offen op={h.legal.firma.op} lang={lang} />
+          </template>
+        ),
+    )
+  }
+  <script>
+    import "../scripts/kasse.ts";
+  </script>
+</Page>
+
+<style>
+  .kasse,
+  .kasse-ohnejs {
+    margin-top: 32px;
+  }
+  .kasse-raster {
+    display: grid;
+    gap: 52px;
+  }
+  @media (min-width: 1024px) {
+    .kasse-raster {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: 40px;
+      align-items: start;
+    }
+    .kasse-rechts {
+      position: sticky;
+      top: calc(var(--header-h) + var(--switch-h) + 20px);
+    }
+  }
+  .kasse-h2 {
+    margin: 52px 0 0;
+  }
+  .kasse-rechts {
+    background: var(--color-glas);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .kasse-datum {
+    max-width: 280px;
+  }
+  .kasse-vertrauen {
+    margin-top: 6px;
+    padding-top: 18px;
+    border-top: 1px solid rgb(0 46 82 / 0.1);
+  }
+  .kasse :global(.summe-pos) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .kasse :global(.summe-pos li) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+  }
+  .kasse :global(.summe-zeilen) {
+    margin: 16px 0 0;
+    display: grid;
+    gap: 6px;
+  }
+  .kasse :global(.summe-zeilen div) {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .kasse :global(.summe-zeilen dd) {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .kasse :global(.summe-gesamt) {
+    font-weight: 700;
+  }
+</style>

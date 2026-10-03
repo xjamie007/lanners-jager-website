@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto polo, hinten</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M128 64C138 70 162 70 172 64L214 76C224 79 232 86 236 94L262 160L234 176L218 140L222 346L78 346L82 140L66 176L38 160L64 94C68 86 76 79 86 76Z" vector-effect="non-scaling-stroke"/>
+<path d="M128 64C138 54 162 54 172 64" vector-effect="non-scaling-stroke"/>
+<path d="M42 150L66 164M234 164L258 150" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

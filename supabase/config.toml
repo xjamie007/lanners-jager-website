@@ -1,0 +1,36 @@
+# Supabase-Konfiguration (CLI). Projekt in einer EU-Region anlegen (D10.2).
+# Alle Functions prüfen selbst: öffentlich (stock, Formulare, Webhook, Status mit
+# HMAC) oder mit Geheimnis (Cron, Build). Ein Formular-POST oder ein Webhook kann
+# keinen Supabase-JWT mitschicken, deshalb verify_jwt = false.
+project_id = "lanners-jager"
+
+[functions.stock]
+verify_jwt = false
+[functions.reserve]
+verify_jwt = false
+[functions.checkout]
+verify_jwt = false
+[functions.payment-webhook]
+verify_jwt = false
+[functions.demo-payment]
+verify_jwt = false
+[functions.order-status]
+verify_jwt = false
+[functions.forms]
+verify_jwt = false
+[functions.demo-mail]
+verify_jwt = false
+[functions.catalog-export]
+verify_jwt = false
+[functions.sync-full]
+verify_jwt = false
+[functions.sync-delta]
+verify_jwt = false
+[functions.outbox]
+verify_jwt = false
+[functions.rebuild]
+verify_jwt = false
+[functions.retention]
+verify_jwt = false
+[functions.order-ready]
+verify_jwt = false

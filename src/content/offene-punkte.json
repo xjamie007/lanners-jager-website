@@ -1,0 +1,873 @@
+{
+  "$hinweis": "Register der offenen Punkte. Daraus erzeugt scripts/offene-punkte.ts die Datei OFFENE-PUNKTE.md. Jeder sichtbare Platzhalter auf der Seite (<Offen op=…>) verweist hierher. status: fehlt | unbestaetigt | entscheidung",
+  "punkte": [
+    {
+      "id": "OP-01.1",
+      "bereich": "Firma Lanners",
+      "status": "unbestaetigt",
+      "was": "Rechtsform und Firmenname von Confection Lanners SA im LBR prüfen",
+      "seiten": [
+        "Impressum",
+        "JSON-LD (legalName erst nach Bestätigung)"
+      ],
+      "schluessel": [
+        "src/config/houses.ts: legal.firma, legal.rechtsform"
+      ]
+    },
+    {
+      "id": "OP-01.2",
+      "bereich": "Firma Lanners",
+      "status": "fehlt",
+      "was": "RCS-Nummer von Confection Lanners",
+      "seiten": [
+        "Impressum"
+      ],
+      "schluessel": [
+        "src/config/houses.ts: legal.rcs"
+      ]
+    },
+    {
+      "id": "OP-01.3",
+      "bereich": "Firma Lanners",
+      "status": "fehlt",
+      "was": "MwSt-Nummer von Confection Lanners",
+      "seiten": [
+        "Impressum",
+        "JSON-LD (vatID erst nach Bestätigung)"
+      ],
+      "schluessel": [
+        "src/config/houses.ts: legal.mwst"
+      ]
+    },
+    {
+      "id": "OP-01.4",
+      "bereich": "Firma Lanners",
+      "status": "fehlt",
+      "was": "Verantwortliche bzw. Verwaltungsrat von Confection Lanners",
+      "seiten": [
+        "Impressum"
+      ],
+      "schluessel": [
+        "src/config/houses.ts: legal.vertreten"
+      ]
+    },
+    {
+      "id": "OP-01.5",
+      "bereich": "Firma Lanners",
+      "status": "fehlt",
+      "was": "Gewerbegenehmigung von Confection Lanners",
+      "seiten": [
+        "Impressum"
+      ],
+      "schluessel": [
+        "src/config/houses.ts: legal.gewerbe"
+      ]
+    },
+    {
+      "id": "OP-01.6",
+      "bereich": "Firma Lanners",
+      "status": "fehlt",
+      "was": "Gründungsjahr von Confection Lanners",
+      "seiten": [
+        "Hausseite Lanners"
+      ],
+      "schluessel": [
+        "src/config/houses.ts: legal.gruendung"
+      ]
+    },
+    {
+      "id": "OP-01.7",
+      "bereich": "Firma Jager",
+      "status": "unbestaetigt",
+      "was": "Jager Sàrl: RCS B200967 im LBR und MwSt LU28026605 in VIES vor dem Livegang prüfen (Quelle Letzshop)",
+      "seiten": [
+        "Impressum",
+        "JSON-LD"
+      ],
+      "schluessel": [
+        "src/config/houses.ts: legal.rcs, legal.mwst"
+      ]
+    },
+    {
+      "id": "OP-01.8",
+      "bereich": "Firma Jager",
+      "status": "unbestaetigt",
+      "was": "Ist die Betriebsnummer 10063104 / 0 die Gewerbegenehmigung?",
+      "seiten": [
+        "Impressum"
+      ],
+      "schluessel": [
+        "src/config/houses.ts: legal.gewerbe"
+      ]
+    },
+    {
+      "id": "OP-02.1",
+      "bereich": "Website",
+      "status": "fehlt",
+      "was": "Betreiber der Website: welche der beiden Firmen, oder beide",
+      "seiten": [
+        "Impressum",
+        "Datenschutz"
+      ],
+      "schluessel": [
+        "recht.impressum.betreiber",
+        "recht.datenschutz.verantwortlich"
+      ]
+    },
+    {
+      "id": "OP-02.2",
+      "bereich": "Website",
+      "status": "unbestaetigt",
+      "was": "Name der Website und gemeinsames Logo ('Lanners & Jager' ist Arbeitstitel)",
+      "seiten": [
+        "alle (Logo.astro, Titles)"
+      ],
+      "schluessel": [
+        "site.name",
+        "src/components/Logo.astro"
+      ]
+    },
+    {
+      "id": "OP-02.3",
+      "bereich": "Website",
+      "status": "fehlt",
+      "was": "Domain (SITE_URL, Platzhalter https://www.DOMAIN.lu)",
+      "seiten": [
+        "Canonical, hreflang, JSON-LD, Sitemap"
+      ],
+      "schluessel": [
+        "SITE_URL"
+      ]
+    },
+    {
+      "id": "OP-02.4",
+      "bereich": "Website",
+      "status": "fehlt",
+      "was": "Absender und Empfänger der Mails (MAIL_FROM, MAIL_TO_LANNERS, MAIL_TO_JAGER, ALERT_RECIPIENT) und Mailanbieter in der EU",
+      "seiten": [
+        "alle Formulare"
+      ],
+      "schluessel": [
+        "MAIL_FROM",
+        "MAIL_TO_*",
+        "ALERT_RECIPIENT"
+      ]
+    },
+    {
+      "id": "OP-03.1",
+      "bereich": "Öffnungszeiten",
+      "status": "unbestaetigt",
+      "was": "Öffnungszeiten Lanners (Quelle Google Maps) bestätigen",
+      "seiten": [
+        "Footer",
+        "Startseite",
+        "Hausseite",
+        "Kontakt",
+        "JSON-LD",
+        "F1/F2 Abholdatum"
+      ],
+      "schluessel": [
+        "src/content/oeffnungszeiten.json: lanners"
+      ]
+    },
+    {
+      "id": "OP-03.2",
+      "bereich": "Öffnungszeiten",
+      "status": "unbestaetigt",
+      "was": "Öffnungszeiten Jager: 08:30 (Letzshop) oder 09:00 (Google)?",
+      "seiten": [
+        "Footer",
+        "Startseite",
+        "Hausseite",
+        "Kontakt",
+        "JSON-LD",
+        "F1/F2 Abholdatum"
+      ],
+      "schluessel": [
+        "src/content/oeffnungszeiten.json: jager"
+      ]
+    },
+    {
+      "id": "OP-03.3",
+      "bereich": "Öffnungszeiten",
+      "status": "unbestaetigt",
+      "was": "An allen gesetzlichen Feiertagen geschlossen? Ausnahmen wie offene Sonntage oder Inventur",
+      "seiten": [
+        "Öffnungszeiten-Tabellen",
+        "F1/F2 Abholdatum"
+      ],
+      "schluessel": [
+        "src/content/oeffnungszeiten.json: feiertage, ausnahmen"
+      ]
+    },
+    {
+      "id": "OP-04.1",
+      "bereich": "SoftTouch",
+      "status": "fehlt",
+      "was": "API-Angebot und Kosten (Kunde fordert bei SoftTouch an)",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "–"
+      ]
+    },
+    {
+      "id": "OP-04.2",
+      "bereich": "SoftTouch",
+      "status": "unbestaetigt",
+      "was": "Ein Konto mit zwei Filialen oder zwei Konten? Bei zwei Konten: Können Artikelnummern (uid8) kollidieren?",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "ST_ACCOUNT_LANNERS",
+        "ST_ACCOUNT_JAGER"
+      ]
+    },
+    {
+      "id": "OP-04.3",
+      "bereich": "SoftTouch",
+      "status": "fehlt",
+      "was": "IDs der Filialen (Demo: 01 Lanners, 02 Jager)",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "ST_STORES_LANNERS",
+        "ST_STORES_JAGER"
+      ]
+    },
+    {
+      "id": "OP-04.4",
+      "bereich": "SoftTouch",
+      "status": "unbestaetigt",
+      "was": "Welcher online-Kanal (1 bis 5) gilt für diesen Shop? (Demo: 1)",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "ST_ONLINE_CHANNEL",
+        "src/config/softtouch.ts: onlineChannel"
+      ]
+    },
+    {
+      "id": "OP-04.5",
+      "bereich": "SoftTouch",
+      "status": "fehlt",
+      "was": "Basis-URL des Foto-Servers der Häuser",
+      "seiten": [
+        "Produktfotos"
+      ],
+      "schluessel": [
+        "ST_PHOTO_BASE_URL"
+      ]
+    },
+    {
+      "id": "OP-04.6",
+      "bereich": "SoftTouch",
+      "status": "unbestaetigt",
+      "was": "Datei-Presets: welches ist Hauptfoto, welche sind Zusatzfotos, Freisteller oder Modellfoto (contain/cover)",
+      "seiten": [
+        "Produktkarte",
+        "Produktseite"
+      ],
+      "schluessel": [
+        "src/config/softtouch.ts: filePresets"
+      ]
+    },
+    {
+      "id": "OP-04.7",
+      "bereich": "SoftTouch",
+      "status": "unbestaetigt",
+      "was": "Text-Presets: Die festen S-Presets sind Niederländisch, Französisch und Englisch, nicht Deutsch. Welche (kundeneigenen) Presets enthalten die deutschen Texte? Demo-Annahme D1–D3.",
+      "seiten": [
+        "Produktseite (Beschreibung, Material)"
+      ],
+      "schluessel": [
+        "src/config/softtouch.ts: textPresets"
+      ]
+    },
+    {
+      "id": "OP-04.8",
+      "bereich": "SoftTouch",
+      "status": "fehlt",
+      "was": "Kategoriegruppen: welche Gruppe ist die Abteilung (Demo: category1), welche die Warengruppe (Demo: category2), und die echten Codes",
+      "seiten": [
+        "Navigation",
+        "Listenseiten"
+      ],
+      "schluessel": [
+        "src/config/softtouch.ts: categoryGroups",
+        "src/content/warengruppen.json"
+      ]
+    },
+    {
+      "id": "OP-04.9",
+      "bereich": "SoftTouch",
+      "status": "fehlt",
+      "was": "Anzahl der Online-Artikel (für Aufrufbudget und Build-Zeit)",
+      "seiten": [
+        "README: Aufrufbudget"
+      ],
+      "schluessel": [
+        "–"
+      ]
+    },
+    {
+      "id": "OP-04.10",
+      "bereich": "SoftTouch",
+      "status": "fehlt",
+      "was": "discount_type_id für Web-Preise: Bei bezahlten Bestellungen senden wir den bezahlten Stückpreis (net_price) mit; die Doku verlangt dazu eine passende discount_type_id",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "src/config/softtouch.ts: webPriceDiscountTypeId"
+      ]
+    },
+    {
+      "id": "OP-04.11",
+      "bereich": "SoftTouch",
+      "status": "unbestaetigt",
+      "was": "Eigene POS-ID für Web-Reservierungen (z. B. 0199)? Soll zusätzlich eine App_notification an MyFasMan Mobile gehen?",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "ST_POS_LANNERS",
+        "ST_POS_JAGER"
+      ]
+    },
+    {
+      "id": "OP-04.12",
+      "bereich": "SoftTouch",
+      "status": "unbestaetigt",
+      "was": "Nutzen die Häuser Verkaufsaktionen vom Typ 55001–55004 (Kombi-, Staffel-, X-für-Y-Rabatte)? Die API wendet sie nicht an; netto_price wäre dann nicht der Kassenpreis",
+      "seiten": [
+        "Preise"
+      ],
+      "schluessel": [
+        "–"
+      ]
+    },
+    {
+      "id": "OP-04.13",
+      "bereich": "SoftTouch",
+      "status": "unbestaetigt",
+      "was": "Kundenanlage: Die Doku erwartet beim Anlegen 'mindestens eine Adresse'. Reservierungen erheben keine Adresse. Geht POST customers ohne Adresse, oder sollen Web-Reservierungen auf einen Sammelkunden laufen?",
+      "seiten": [
+        "F1"
+      ],
+      "schluessel": [
+        "–"
+      ]
+    },
+    {
+      "id": "OP-04.14",
+      "bereich": "SoftTouch",
+      "status": "unbestaetigt",
+      "was": "Farbnamen je Sprache: Die Doku nennt sie für display=full, aber nicht die Feldnamen. Demo-Annahme: lang1 Deutsch, lang2 Französisch, lang3 Englisch",
+      "seiten": [
+        "Farbfilter"
+      ],
+      "schluessel": [
+        "src/lib/catalog/assemble.ts: colorGroup"
+      ]
+    },
+    {
+      "id": "OP-04.15",
+      "bereich": "SoftTouch",
+      "status": "entscheidung",
+      "was": "Pflegesymbole: SoftTouch liefert Titel nur auf Niederländisch, Französisch und Englisch. Deutsche und luxemburgische Seiten zeigen sie deshalb auf Französisch. Eigene DE/LB-Übersetzung der Symbolliste gewünscht?",
+      "seiten": [
+        "Produktseite (Pflege)"
+      ],
+      "schluessel": [
+        "produkt.nurSprachePflege"
+      ]
+    },
+    {
+      "id": "OP-05.1",
+      "bereich": "Reservierung",
+      "status": "unbestaetigt",
+      "was": "Haltedauer (Vorschlag: 3 Werktage ab dem gewählten Abholdatum)",
+      "seiten": [
+        "Produktseite",
+        "So funktioniert's",
+        "FAQ",
+        "Bestätigung"
+      ],
+      "schluessel": [
+        "wege.reserve",
+        "howto.s3Text",
+        "howto.reservierenText",
+        "faq.a3",
+        "src/config/shop.ts: haltedauerTage"
+      ]
+    },
+    {
+      "id": "OP-05.2",
+      "bereich": "Reservierung",
+      "status": "unbestaetigt",
+      "was": "Abholung im anderen Haus möglich?",
+      "seiten": [
+        "FAQ",
+        "So funktioniert's"
+      ],
+      "schluessel": [
+        "faq.a4",
+        "howto.anderesHaus"
+      ]
+    },
+    {
+      "id": "OP-05.3",
+      "bereich": "Reservierung",
+      "status": "unbestaetigt",
+      "was": "Wer bestätigt Reservierungen, und wie schnell?",
+      "seiten": [
+        "Bestätigung (Fall: SoftTouch nicht erreichbar)"
+      ],
+      "schluessel": [
+        "danke.resAusstehend"
+      ]
+    },
+    {
+      "id": "OP-05.4",
+      "bereich": "Reservierung",
+      "status": "unbestaetigt",
+      "was": "Wer gibt nicht abgeholte Reservierungen in FasMan wieder frei? (README beschreibt den Ablauf)",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "README"
+      ]
+    },
+    {
+      "id": "OP-05.5",
+      "bereich": "Reservierung",
+      "status": "unbestaetigt",
+      "was": "Ist die Reservierung kostenlos und unverbindlich?",
+      "seiten": [
+        "Startseite",
+        "So funktioniert's",
+        "FAQ"
+      ],
+      "schluessel": [
+        "howto.s2TextReserve",
+        "howto.reservierenFrei",
+        "faq.a2"
+      ]
+    },
+    {
+      "id": "OP-06.1",
+      "bereich": "Online-Kauf",
+      "status": "fehlt",
+      "was": "Zahlungsanbieter und Konten je Firma (Demo: Mock; vorbereitet: Mollie im Testmodus)",
+      "seiten": [
+        "Kasse"
+      ],
+      "schluessel": [
+        "PAYMENT_PROVIDER",
+        "PAY_KEY_LANNERS",
+        "PAY_KEY_JAGER"
+      ]
+    },
+    {
+      "id": "OP-06.2",
+      "bereich": "Online-Kauf",
+      "status": "unbestaetigt",
+      "was": "Versandländer, Versandkosten und Lieferzeit (Demo: nur Luxemburg, 0,00 €, 3 Werktage)",
+      "seiten": [
+        "Produktseite",
+        "Kasse",
+        "So funktioniert's",
+        "Versand & Zahlung",
+        "FAQ"
+      ],
+      "schluessel": [
+        "src/config/versand.ts",
+        "wege.ship",
+        "howto.liefernText",
+        "faq.a5"
+      ]
+    },
+    {
+      "id": "OP-06.3",
+      "bereich": "Online-Kauf",
+      "status": "fehlt",
+      "was": "Versanddienst",
+      "seiten": [
+        "Versand & Zahlung"
+      ],
+      "schluessel": [
+        "recht.versand.dienst"
+      ]
+    },
+    {
+      "id": "OP-06.4",
+      "bereich": "Online-Kauf",
+      "status": "fehlt",
+      "was": "Rückgabe und Umtausch im Laden",
+      "seiten": [
+        "So funktioniert's",
+        "FAQ"
+      ],
+      "schluessel": [
+        "howto.umtausch",
+        "faq.a6Umtausch"
+      ]
+    },
+    {
+      "id": "OP-06.5",
+      "bereich": "Online-Kauf",
+      "status": "fehlt",
+      "was": "AGB und Widerrufsbelehrung, juristisch geprüft (die Letzshop-Belehrung von Jager ist nur eine Vorlage)",
+      "seiten": [
+        "AGB",
+        "Widerruf"
+      ],
+      "schluessel": [
+        "recht.agb.*",
+        "recht.widerruf.*"
+      ]
+    },
+    {
+      "id": "OP-06.6",
+      "bereich": "Online-Kauf",
+      "status": "unbestaetigt",
+      "was": "Abholung online bezahlter Ware ab dem nächsten Öffnungstag?",
+      "seiten": [
+        "Produktseite",
+        "Tasche",
+        "Bestätigung"
+      ],
+      "schluessel": [
+        "wege.collect"
+      ]
+    },
+    {
+      "id": "OP-06.7",
+      "bereich": "Online-Kauf",
+      "status": "unbestaetigt",
+      "was": "Wer schließt den Verkauf in FasMan ab? Die Website ruft `process` nicht auf",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "src/config/shop.ts: processAufrufen"
+      ]
+    },
+    {
+      "id": "OP-06.8",
+      "bereich": "Datenschutz",
+      "status": "unbestaetigt",
+      "was": "Aufbewahrungsfristen (Vorschlag: Reservierungen 30 Tage nach Abholdatum, Bestellungen 90 Tage nach Abschluss, Anfragen 12 Monate)",
+      "seiten": [
+        "Datenschutz"
+      ],
+      "schluessel": [
+        "src/config/shop.ts: aufbewahrung"
+      ]
+    },
+    {
+      "id": "OP-06.9",
+      "bereich": "Online-Kauf",
+      "status": "unbestaetigt",
+      "was": "Ablauf beim Versand: Mail 'Paket unterwegs'. Vorbereitet: Function order-ready für die FasMan-Programmvariablen WebshopPickupConfirmURL / WebshopDeliveryConfirmURL",
+      "seiten": [
+        "Bestätigung Kauf"
+      ],
+      "schluessel": [
+        "danke.kaufLiefern"
+      ]
+    },
+    {
+      "id": "OP-06.10",
+      "bereich": "Recht",
+      "status": "unbestaetigt",
+      "was": "Omnibus-Angabe juristisch prüfen: Berechnet wird der niedrigste Preis der 30 Tage VOR der Preissenkung; der Wortlaut lautet 'Niedrigster Preis der letzten 30 Tage'",
+      "seiten": [
+        "Produktseite"
+      ],
+      "schluessel": [
+        "produkt.omnibus"
+      ]
+    },
+    {
+      "id": "OP-07.1",
+      "bereich": "Gutscheine",
+      "status": "entscheidung",
+      "was": "Gutscheine weiter über Letzshop oder später als SoftTouch-Cheque im eigenen Shop?",
+      "seiten": [
+        "Gutscheine",
+        "Kasse"
+      ],
+      "schluessel": [
+        "kasse.gutschein"
+      ]
+    },
+    {
+      "id": "OP-07.2",
+      "bereich": "Gutscheine",
+      "status": "unbestaetigt",
+      "was": "Genaue Letzshop-URL des Gutscheinprodukts (verlinkt ist die Händlerseite)",
+      "seiten": [
+        "Gutscheine"
+      ],
+      "schluessel": [
+        "src/config/shop.ts: gutscheine.letzshopUrl"
+      ]
+    },
+    {
+      "id": "OP-07.3",
+      "bereich": "Gutscheine",
+      "status": "unbestaetigt",
+      "was": "Gibt es den Gutschein auch im Laden?",
+      "seiten": [
+        "Gutscheine"
+      ],
+      "schluessel": [
+        "gutschein.auchImLaden"
+      ]
+    },
+    {
+      "id": "OP-07.4",
+      "bereich": "Gutscheine",
+      "status": "unbestaetigt",
+      "was": "Sind die Letzshop-Gutscheine SoftTouch-Cheques?",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "–"
+      ]
+    },
+    {
+      "id": "OP-08.1",
+      "bereich": "Logos",
+      "status": "fehlt",
+      "was": "Lanners-Wortmarke als Vektordatei. Bis dahin ist der Schriftzug vom Gutschein nachgesetzt (Confection / LANNERS / Ettelbruck)",
+      "seiten": [
+        "Hausseite Lanners",
+        "Startseite (Shop-Karten)",
+        "Fuß",
+        "Geschichte"
+      ],
+      "schluessel": [
+        "src/components/HouseLogo.astro"
+      ]
+    },
+    {
+      "id": "OP-08.2",
+      "bereich": "Logos",
+      "status": "fehlt",
+      "was": "Jager-Zeichnung als Vektordatei mit Strichen (stroke). Die Gebäudezeichnung aus dem Logo (Letzshop-Datei, freigestellt) steht schon auf Hausseite, Shop-Karten und im Fuß; der Hero zeigt noch den Platzhalter",
+      "seiten": [
+        "Startseite (Hero)",
+        "Hausseite Jager",
+        "OG-Bild"
+      ],
+      "schluessel": [
+        "src/components/Fassade.astro",
+        "public/logos/jager-gebaeude*.webp"
+      ]
+    },
+    {
+      "id": "OP-08.3",
+      "bereich": "Logos",
+      "status": "fehlt",
+      "was": "Strichzeichnung der Lanners-Fassade (Grand-Rue 18) im selben Stil beauftragen",
+      "seiten": [
+        "Startseite (Hero)",
+        "Hausseite Lanners",
+        "OG-Bild"
+      ],
+      "schluessel": [
+        "src/components/Fassade.astro"
+      ]
+    },
+    {
+      "id": "OP-09",
+      "bereich": "Hoflieferant",
+      "status": "unbestaetigt",
+      "was": "Freigabe für 'Fournisseur de la Cour' und das Wappen (Flag PUBLIC_FEATURE_HOFLIEFERANT, Standard aus, ohne Wappen)",
+      "seiten": [
+        "Hausseite Lanners"
+      ],
+      "schluessel": [
+        "haeuser.lannersHoflieferant"
+      ]
+    },
+    {
+      "id": "OP-10",
+      "bereich": "Marken",
+      "status": "unbestaetigt",
+      "was": "Freigabe der Marken für die Darstellung online, insbesondere Markenlogos (Markenband, Markenseite) und Markenfotos; eigene Markentexte (Vorlage ist Platzhalter); 'offizieller Händler' wird nie behauptet",
+      "seiten": [
+        "Markenseiten",
+        "Markenband (Start, Häuser, Marken)",
+        "Produktseiten"
+      ],
+      "schluessel": [
+        "marken.vorlageEins",
+        "marken.vorlageBeide",
+        "src/config/marken.ts"
+      ]
+    },
+    {
+      "id": "OP-12",
+      "bereich": "Google",
+      "status": "fehlt",
+      "was": "Google-Profile beider Häuser übernehmen und pflegen (README, Abschnitt G4)",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "README"
+      ]
+    },
+    {
+      "id": "OP-13",
+      "bereich": "Sprache",
+      "status": "fehlt",
+      "was": "Alle luxemburgischen Texte und Slugs muttersprachlich prüfen (docs/lb-review.csv)",
+      "seiten": [
+        "alle LB-Seiten"
+      ],
+      "schluessel": [
+        "src/i18n/lb.json (review: lb-native)"
+      ]
+    },
+    {
+      "id": "OP-14",
+      "bereich": "Inhalte",
+      "status": "fehlt",
+      "was": "Nächste Parkplätze",
+      "seiten": [
+        "FAQ",
+        "Hausseiten (Anfahrt & Parken)"
+      ],
+      "schluessel": [
+        "faq.a9",
+        "anfahrt.parkenText"
+      ]
+    },
+    {
+      "id": "OP-15",
+      "bereich": "Inhalte",
+      "status": "unbestaetigt",
+      "was": "In welchen Sprachen wird beraten?",
+      "seiten": [
+        "FAQ"
+      ],
+      "schluessel": [
+        "faq.a10"
+      ]
+    },
+    {
+      "id": "OP-16",
+      "bereich": "Inhalte",
+      "status": "fehlt",
+      "was": "Antwortzeit auf Anfragen (F3, F4)",
+      "seiten": [
+        "Bestätigung Anfrage"
+      ],
+      "schluessel": [
+        "danke.anfrageText"
+      ]
+    },
+    {
+      "id": "OP-17",
+      "bereich": "Inhalte",
+      "status": "fehlt",
+      "was": "Fotos der Läden und des Teams, mit Freigabe. Bis dahin stehen Stockfotos (Unsplash) auf Start-, Haus-, Service- und Geschichtsseiten und als Demo-Fotos der Artikel (src/content/bildnachweis.json)",
+      "seiten": [
+        "Hausseiten",
+        "Startseite",
+        "Geschichte",
+        "Service-Seiten",
+        "Produktfotos (Demo)"
+      ],
+      "schluessel": [
+        "src/assets/fotos/",
+        "public/demo-fotos/"
+      ]
+    },
+    {
+      "id": "OP-18",
+      "bereich": "Inhalte",
+      "status": "fehlt",
+      "was": "Echte Kundenzitate nur mit Erlaubnis der Verfasser (bis dahin keine)",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "–"
+      ]
+    },
+    {
+      "id": "OP-19",
+      "bereich": "Inhalte",
+      "status": "unbestaetigt",
+      "was": "Satz 'Oft bedienen Marc und Jean-Marie Jager selbst.' nur mit Freigabe (nicht eingebaut)",
+      "seiten": [
+        "Hausseite Jager"
+      ],
+      "schluessel": [
+        "–"
+      ]
+    },
+    {
+      "id": "OP-23",
+      "bereich": "Inhalte",
+      "status": "fehlt",
+      "was": "Anfahrt mit Bahn und Bus: Fußweg vom Bahnhof Ettelbruck zur Grand-Rue (Minuten) sowie nächste Bushaltestelle mit Linien",
+      "seiten": [
+        "Hausseiten (Anfahrt & Parken)"
+      ],
+      "schluessel": [
+        "anfahrt.zugText",
+        "anfahrt.busText"
+      ]
+    },
+    {
+      "id": "OP-20",
+      "bereich": "Recht",
+      "status": "unbestaetigt",
+      "was": "Vor dem Livegang prüfen: kein Link auf die EU-Plattform zur Online-Streitbeilegung (2025 eingestellt)",
+      "seiten": [
+        "Impressum"
+      ],
+      "schluessel": [
+        "recht.impressum.streit"
+      ]
+    },
+    {
+      "id": "OP-21",
+      "bereich": "Typografie",
+      "status": "entscheidung",
+      "was": "Libre Franklin hat keine Tabellenziffern (tnum); Preise und Größen stehen in proportionalen Ziffern. League Gothic fehlen « » × (fallen auf die Fallback-Schrift zurück). Entscheidung: so lassen, oder Ziffern im Font ergänzen?",
+      "seiten": [
+        "Preise",
+        "Größenleiste"
+      ],
+      "schluessel": [
+        "src/styles/global.css"
+      ]
+    },
+    {
+      "id": "OP-22",
+      "bereich": "Website",
+      "status": "entscheidung",
+      "was": "'Jager Junior' (Kindermode bei Google) ist nicht eingebaut; Zugehörigkeit unbekannt",
+      "seiten": [
+        "–"
+      ],
+      "schluessel": [
+        "–"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+---
+/**
+ * AGB und Widerruf (D8): nur mit Kauf-Flag. Gliederung und Platzhalter; jeder
+ * Abschnitt trägt den Hinweis "Entwurf, rechtlich prüfen" (OP-06.5).
+ * Kein erfundener Rechtstext.
+ */
+import Page from "../layouts/Page.astro";
+import Offen from "../components/Offen.astro";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import type { StaticRoute } from "../i18n/routes.ts";
+interface Props {
+  lang: Lang;
+  route: StaticRoute;
+}
+const { lang, route } = Astro.props;
+const ns = route === "agb" ? "agb" : "widerruf";
+const abschnitte = route === "agb" ? ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10"] : ["s1", "s2", "s3", "s4"];
+---
+<Page lang={lang} route={route} h1={t(lang, `recht.${ns}.h1`)} title={t(lang, `seo.${ns}.title`)} description={t(lang, `seo.${ns}.desc`)}>
+  <p class="t-klein entwurf"><span class="offen">{t(lang, "recht.entwurf")}</span> <Offen op="OP-06.5" lang={lang} /></p>
+  {route === "agb" && <p class="prosa einleitung">{t(lang, "recht.agb.partner")}</p>}
+  {
+    route === "widerruf" && (
+      <div class="prosa einleitung">
+        <p>{t(lang, "recht.widerruf.frist")}</p>
+        <p class="nebentext">{t(lang, "recht.widerruf.vorlage")}</p>
+      </div>
+    )
+  }
+  {
+    abschnitte.map((s, i) => (
+      <section aria-labelledby={`abschnitt-${s}`}>
+        <h2 class="t-h2" id={`abschnitt-${s}`}>
+          {i + 1}. {t(lang, `recht.${ns}.${s}`)}
+        </h2>
+        <p class="nebentext">
+          <span class="offen">{t(lang, "recht.entwurf")}</span> {t(lang, "recht.textFolgt")}
+        </p>
+        {route === "agb" && s === "s6" && (
+          <p>
+            <a href={link(lang, "widerruf")}>{t(lang, "footer.widerruf")}</a>
+          </p>
+        )}
+      </section>
+    ))
+  }
+</Page>
+
+<style>
+  .entwurf {
+    margin-top: 12px;
+  }
+  .einleitung {
+    margin-top: 20px;
+  }
+</style>

@@ -1,0 +1,666 @@
+{
+  "$hinweis": "Nachweis der Fotos und Logos (Impressum). Fotos: Unsplash-Lizenz (https://unsplash.com/license), frei nutzbar, Nennung freiwillig. Logos: Warenzeichen der Marken bzw. der Häuser; Freigabe offen (OP-10, OP-02.2).",
+  "fotos": [
+    {
+      "datei": "src/assets/fotos/hero-boutique.jpg",
+      "fotograf": "Clark Street Mercantile",
+      "quelle": "https://unsplash.com/photos/clothing-boutique-interior-with-hanging-racks-qnKhZJPKFD8"
+    },
+    {
+      "datei": "src/assets/fotos/hero-strasse.jpg",
+      "fotograf": "Zhu Yunxiao",
+      "quelle": "https://unsplash.com/photos/a-cobblestone-street-lined-with-old-buildings-a5KkNtSEK3A"
+    },
+    {
+      "datei": "src/assets/fotos/kategorie-damen.jpg",
+      "fotograf": "Ahmed (@mutecevvil)",
+      "quelle": "https://unsplash.com/photos/a-woman-standing-on-a-bridge-with-a-scarf-around-her-neck-3ngQsP6YLTU"
+    },
+    {
+      "datei": "src/assets/fotos/kategorie-herren.jpg",
+      "fotograf": "Taras Chernus",
+      "quelle": "https://unsplash.com/photos/man-in-brown-coat-and-black-pants-iIjResyhhW0"
+    },
+    {
+      "datei": "src/assets/fotos/kategorie-accessoires.jpg",
+      "fotograf": "Marcin Kempa",
+      "quelle": "https://unsplash.com/photos/a-pair-of-shoes-a-wallet-and-a-belt-laid-out-on-a-table-cjUxiJoVzc0"
+    },
+    {
+      "datei": "src/assets/fotos/kategorie-sale.jpg",
+      "fotograf": "Thom Bradley",
+      "quelle": "https://unsplash.com/photos/clothing-racks-with-neutral-toned-garments-mwa_nzFpnJw"
+    },
+    {
+      "datei": "src/assets/fotos/lanners-shop.jpg",
+      "fotograf": "A65 Design",
+      "quelle": "https://unsplash.com/photos/clothes-hanged-on-clothes-rack-1eJVSUfT5yA"
+    },
+    {
+      "datei": "src/assets/fotos/lanners-detail.jpg",
+      "fotograf": "Yasamine June",
+      "quelle": "https://unsplash.com/photos/a-man-is-working-on-a-piece-of-cloth-U4Ewfl8ewq0"
+    },
+    {
+      "datei": "src/assets/fotos/jager-shop.jpg",
+      "fotograf": "Fumiaki Hayashi",
+      "quelle": "https://unsplash.com/photos/assorted-fedoras-on-wooden-shop-shelves-20Gq4_JMkIU"
+    },
+    {
+      "datei": "src/assets/fotos/jager-hut.jpg",
+      "fotograf": "Alina Bordunova",
+      "quelle": "https://unsplash.com/photos/hats-are-lined-up-on-a-shelf-against-a-white-wall-zfm7vcOG4Lo"
+    },
+    {
+      "datei": "src/assets/fotos/jager-country.jpg",
+      "fotograf": "Rydale Clothing",
+      "quelle": "https://unsplash.com/photos/a-man-standing-in-a-field-with-trees-in-the-background-u_33GcITZlI"
+    },
+    {
+      "datei": "src/assets/fotos/geschichte-alt.jpg",
+      "fotograf": "Nationaal Archief",
+      "quelle": "https://unsplash.com/photos/a-group-of-men-in-suits-and-hats-looking-at-hats-auKkJeTkbAI"
+    },
+    {
+      "datei": "src/assets/fotos/geschichte-schneider.jpg",
+      "fotograf": "Salvador Godoy",
+      "quelle": "https://unsplash.com/photos/person-in-black-suit-holding-brown-leather-bag-ksLWYYmK-0k"
+    },
+    {
+      "datei": "src/assets/fotos/service-beratung.jpg",
+      "fotograf": "Vitaly Gariev",
+      "quelle": "https://unsplash.com/photos/a-seamstress-measures-a-woman-for-a-custom-shirt-2WEw9_LIk3o"
+    },
+    {
+      "datei": "src/assets/fotos/service-gutschein.jpg",
+      "fotograf": "Baibhav Kumar",
+      "quelle": "https://unsplash.com/photos/LumWaD-gTLQ"
+    },
+    {
+      "datei": "src/assets/fotos/anprobe.jpg",
+      "fotograf": "Gordon Burt (Museum of New Zealand Te Papa Tongarewa)",
+      "quelle": "https://unsplash.com/photos/man-in-a-suit-looks-in-a-mirror-pz5E_Kc14vs"
+    },
+    {
+      "datei": "src/assets/fotos/textur-stoff.jpg",
+      "fotograf": "Tyler Coleman",
+      "quelle": "https://unsplash.com/photos/a-dark-blue-background-with-a-pattern-on-it-aYz6jx7T7Kk"
+    }
+  ],
+  "artikelfotos": [
+    {
+      "datei": "public/demo-fotos/demo-410101-1.webp",
+      "fotograf": "Sirio",
+      "quelle": "https://unsplash.com/photos/HRe9IRwGKBY"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410101-2.webp",
+      "fotograf": "Sirio",
+      "quelle": "https://unsplash.com/photos/HRe9IRwGKBY"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410102-1.webp",
+      "fotograf": "Rydale Clothing",
+      "quelle": "https://unsplash.com/photos/C--PZEHBPqM"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410102-2.webp",
+      "fotograf": "Rydale Clothing",
+      "quelle": "https://unsplash.com/photos/C--PZEHBPqM"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410103-1.webp",
+      "fotograf": "Bulbul Ahmed",
+      "quelle": "https://unsplash.com/photos/TcRaVI3LXds"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410103-2.webp",
+      "fotograf": "Bulbul Ahmed",
+      "quelle": "https://unsplash.com/photos/TcRaVI3LXds"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410104-1.webp",
+      "fotograf": "MOHAMMAD AL JANNAT RAKIN",
+      "quelle": "https://unsplash.com/photos/MBmFhrQwAXw"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410104-2.webp",
+      "fotograf": "MOHAMMAD AL JANNAT RAKIN",
+      "quelle": "https://unsplash.com/photos/MBmFhrQwAXw"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410105-1.webp",
+      "fotograf": "Caio Coelho",
+      "quelle": "https://unsplash.com/photos/NA9dtyWAFV4"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410105-2.webp",
+      "fotograf": "Caio Coelho",
+      "quelle": "https://unsplash.com/photos/NA9dtyWAFV4"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410201-1.webp",
+      "fotograf": "Luiz Rogério Nunes",
+      "quelle": "https://unsplash.com/photos/6GJvXl1fyx0"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410201-2.webp",
+      "fotograf": "Luiz Rogério Nunes",
+      "quelle": "https://unsplash.com/photos/6GJvXl1fyx0"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410202-1.webp",
+      "fotograf": "Rainier Watch",
+      "quelle": "https://unsplash.com/photos/AHKaxRjLvKk"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410202-2.webp",
+      "fotograf": "Rainier Watch",
+      "quelle": "https://unsplash.com/photos/AHKaxRjLvKk"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410203-1.webp",
+      "fotograf": "tanaka pendeke",
+      "quelle": "https://unsplash.com/photos/iHfBBeiAVCE"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410203-2.webp",
+      "fotograf": "tanaka pendeke",
+      "quelle": "https://unsplash.com/photos/iHfBBeiAVCE"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410204-1.webp",
+      "fotograf": "Cosmin Ursea",
+      "quelle": "https://unsplash.com/photos/SGZmzGx0dG0"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410204-2.webp",
+      "fotograf": "Cosmin Ursea",
+      "quelle": "https://unsplash.com/photos/SGZmzGx0dG0"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410301-1.webp",
+      "fotograf": "TuanAnh Blue",
+      "quelle": "https://unsplash.com/photos/GAL2r5COzUU"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410301-2.webp",
+      "fotograf": "TuanAnh Blue",
+      "quelle": "https://unsplash.com/photos/GAL2r5COzUU"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410302-1.webp",
+      "fotograf": "Micheal Ogungbe",
+      "quelle": "https://unsplash.com/photos/jbWCOc01aT4"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410302-2.webp",
+      "fotograf": "Micheal Ogungbe",
+      "quelle": "https://unsplash.com/photos/jbWCOc01aT4"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410303-1.webp",
+      "fotograf": "TuanAnh Blue",
+      "quelle": "https://unsplash.com/photos/9yoXrG6Er_g"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410303-2.webp",
+      "fotograf": "TuanAnh Blue",
+      "quelle": "https://unsplash.com/photos/9yoXrG6Er_g"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410401-1.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/QnbQ7faZus0"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410401-2.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/QnbQ7faZus0"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410402-1.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/-1N-X4NP3AQ"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410402-2.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/-1N-X4NP3AQ"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410403-1.webp",
+      "fotograf": "Liam Davids",
+      "quelle": "https://unsplash.com/photos/d0zMTnM9-rg"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410403-2.webp",
+      "fotograf": "Liam Davids",
+      "quelle": "https://unsplash.com/photos/d0zMTnM9-rg"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410501-1.webp",
+      "fotograf": "Anton Acosta",
+      "quelle": "https://unsplash.com/photos/fAF_H95M16g"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410501-2.webp",
+      "fotograf": "Anton Acosta",
+      "quelle": "https://unsplash.com/photos/fAF_H95M16g"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410502-1.webp",
+      "fotograf": "Nynne Schrøder",
+      "quelle": "https://unsplash.com/photos/Sied4fp3-Dc"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410502-2.webp",
+      "fotograf": "Nynne Schrøder",
+      "quelle": "https://unsplash.com/photos/Sied4fp3-Dc"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410601-1.webp",
+      "fotograf": "Sincerely Media",
+      "quelle": "https://unsplash.com/photos/JODBomf2WJU"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410601-2.webp",
+      "fotograf": "Sincerely Media",
+      "quelle": "https://unsplash.com/photos/JODBomf2WJU"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410701-1.webp",
+      "fotograf": "Fashion Needles",
+      "quelle": "https://unsplash.com/photos/HuUNKuoJjaM"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410701-2.webp",
+      "fotograf": "Fashion Needles",
+      "quelle": "https://unsplash.com/photos/HuUNKuoJjaM"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410801-1.webp",
+      "fotograf": "Fares Hamouche",
+      "quelle": "https://unsplash.com/photos/ZvqjS4vyQz8"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410801-2.webp",
+      "fotograf": "Fares Hamouche",
+      "quelle": "https://unsplash.com/photos/ZvqjS4vyQz8"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410802-1.webp",
+      "fotograf": "Christian Agbede",
+      "quelle": "https://unsplash.com/photos/CPztBtp6rQg"
+    },
+    {
+      "datei": "public/demo-fotos/demo-410802-2.webp",
+      "fotograf": "Christian Agbede",
+      "quelle": "https://unsplash.com/photos/CPztBtp6rQg"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420101-1.webp",
+      "fotograf": "Golf Modz",
+      "quelle": "https://unsplash.com/photos/4L-ZdOiSONs"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420101-2.webp",
+      "fotograf": "Golf Modz",
+      "quelle": "https://unsplash.com/photos/4L-ZdOiSONs"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420102-1.webp",
+      "fotograf": "TuanAnh Blue",
+      "quelle": "https://unsplash.com/photos/OFTHdmGpcP4"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420102-2.webp",
+      "fotograf": "TuanAnh Blue",
+      "quelle": "https://unsplash.com/photos/OFTHdmGpcP4"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420103-1.webp",
+      "fotograf": "nkosie MAPHUMULO",
+      "quelle": "https://unsplash.com/photos/kNVl-jxS_X0"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420103-2.webp",
+      "fotograf": "nkosie MAPHUMULO",
+      "quelle": "https://unsplash.com/photos/kNVl-jxS_X0"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420104-1.webp",
+      "fotograf": "Mediamodifier",
+      "quelle": "https://unsplash.com/photos/F5i3PZXYkvY"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420104-2.webp",
+      "fotograf": "Mediamodifier",
+      "quelle": "https://unsplash.com/photos/F5i3PZXYkvY"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420105-1.webp",
+      "fotograf": "Bulbul Ahmed",
+      "quelle": "https://unsplash.com/photos/lo3pH83mFx4"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420105-2.webp",
+      "fotograf": "Bulbul Ahmed",
+      "quelle": "https://unsplash.com/photos/lo3pH83mFx4"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420106-1.webp",
+      "fotograf": "Or Hakim",
+      "quelle": "https://unsplash.com/photos/Kk0i7djqcCA"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420106-2.webp",
+      "fotograf": "Or Hakim",
+      "quelle": "https://unsplash.com/photos/Kk0i7djqcCA"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420107-1.webp",
+      "fotograf": "Ihor Rapita",
+      "quelle": "https://unsplash.com/photos/-M_hSW-KnWY"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420107-2.webp",
+      "fotograf": "Ihor Rapita",
+      "quelle": "https://unsplash.com/photos/-M_hSW-KnWY"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420108-1.webp",
+      "fotograf": "TuanAnh Blue",
+      "quelle": "https://unsplash.com/photos/L5AjfBe-sVk"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420108-2.webp",
+      "fotograf": "TuanAnh Blue",
+      "quelle": "https://unsplash.com/photos/L5AjfBe-sVk"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420109-1.webp",
+      "fotograf": "Noor Alam",
+      "quelle": "https://unsplash.com/photos/bMnDI7WpJDM"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420109-2.webp",
+      "fotograf": "Noor Alam",
+      "quelle": "https://unsplash.com/photos/bMnDI7WpJDM"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420110-1.webp",
+      "fotograf": "Neakasa",
+      "quelle": "https://unsplash.com/photos/HGqPrIJAOBY"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420110-2.webp",
+      "fotograf": "Neakasa",
+      "quelle": "https://unsplash.com/photos/HGqPrIJAOBY"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420111-1.webp",
+      "fotograf": "Fashion Needles",
+      "quelle": "https://unsplash.com/photos/dok_9cz53Is"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420111-2.webp",
+      "fotograf": "Fashion Needles",
+      "quelle": "https://unsplash.com/photos/dok_9cz53Is"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420112-1.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/d11gc85L_ys"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420112-2.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/d11gc85L_ys"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420113-1.webp",
+      "fotograf": "Ryan Hoffman",
+      "quelle": "https://unsplash.com/photos/2BK0JEwQSpQ"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420113-2.webp",
+      "fotograf": "Ryan Hoffman",
+      "quelle": "https://unsplash.com/photos/2BK0JEwQSpQ"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420114-1.webp",
+      "fotograf": "Temuujin Purevjav",
+      "quelle": "https://unsplash.com/photos/m2mLqew6JmM"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420114-2.webp",
+      "fotograf": "Temuujin Purevjav",
+      "quelle": "https://unsplash.com/photos/m2mLqew6JmM"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420115-1.webp",
+      "fotograf": "Ihor Rapita",
+      "quelle": "https://unsplash.com/photos/GlEMt2rjaEs"
+    },
+    {
+      "datei": "public/demo-fotos/demo-420115-2.webp",
+      "fotograf": "Ihor Rapita",
+      "quelle": "https://unsplash.com/photos/GlEMt2rjaEs"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430101-1.webp",
+      "fotograf": "Yuliia Pakhomova",
+      "quelle": "https://unsplash.com/photos/g3AwbdZut70"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430101-2.webp",
+      "fotograf": "Yuliia Pakhomova",
+      "quelle": "https://unsplash.com/photos/g3AwbdZut70"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430102-1.webp",
+      "fotograf": "Mel Elías",
+      "quelle": "https://unsplash.com/photos/BFl7cJd7CsM"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430102-2.webp",
+      "fotograf": "Mel Elías",
+      "quelle": "https://unsplash.com/photos/BFl7cJd7CsM"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430103-1.webp",
+      "fotograf": "Bulbul Ahmed",
+      "quelle": "https://unsplash.com/photos/1CT5TFFvF_Q"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430103-2.webp",
+      "fotograf": "Bulbul Ahmed",
+      "quelle": "https://unsplash.com/photos/1CT5TFFvF_Q"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430104-1.webp",
+      "fotograf": "MohamadReza Khashay",
+      "quelle": "https://unsplash.com/photos/aLcvRUgtZoY"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430104-2.webp",
+      "fotograf": "MohamadReza Khashay",
+      "quelle": "https://unsplash.com/photos/aLcvRUgtZoY"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430105-1.webp",
+      "fotograf": "Alireza Dolati",
+      "quelle": "https://unsplash.com/photos/1M5X5kyB6uc"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430105-2.webp",
+      "fotograf": "Alireza Dolati",
+      "quelle": "https://unsplash.com/photos/1M5X5kyB6uc"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430106-1.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/Nd7S-2PQqyI"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430106-2.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/Nd7S-2PQqyI"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430107-1.webp",
+      "fotograf": "TuanAnh Blue",
+      "quelle": "https://unsplash.com/photos/UinXCaBz44A"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430107-2.webp",
+      "fotograf": "TuanAnh Blue",
+      "quelle": "https://unsplash.com/photos/UinXCaBz44A"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430108-1.webp",
+      "fotograf": "GALINA BOGDANOVA",
+      "quelle": "https://unsplash.com/photos/BjJNVibNro0"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430108-2.webp",
+      "fotograf": "GALINA BOGDANOVA",
+      "quelle": "https://unsplash.com/photos/BjJNVibNro0"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430109-1.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/iriI0wmQa3c"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430109-2.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/iriI0wmQa3c"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430110-1.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/pRP3RLTYfoA"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430110-2.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/pRP3RLTYfoA"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430111-1.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/5vcMgxyXSTI"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430111-2.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/5vcMgxyXSTI"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430112-1.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/skZE0RBvBW4"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430112-2.webp",
+      "fotograf": "engin akyurt",
+      "quelle": "https://unsplash.com/photos/skZE0RBvBW4"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430113-1.webp",
+      "fotograf": "Lance Reis",
+      "quelle": "https://unsplash.com/photos/Yk4o4-IxtvU"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430113-2.webp",
+      "fotograf": "Lance Reis",
+      "quelle": "https://unsplash.com/photos/Yk4o4-IxtvU"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430114-1.webp",
+      "fotograf": "Laura Chouette",
+      "quelle": "https://unsplash.com/photos/CtOA9wbFAdQ"
+    },
+    {
+      "datei": "public/demo-fotos/demo-430114-2.webp",
+      "fotograf": "Laura Chouette",
+      "quelle": "https://unsplash.com/photos/CtOA9wbFAdQ"
+    }
+  ],
+  "logos": [
+    {
+      "datei": "public/marken/barbour.svg",
+      "marke": "Barbour",
+      "quelle": "https://www.barbour.com/on/demandware.static/Sites-barbour-row-Site/-/en_SM/v1790921427766/images/sprite.svg#logo-green"
+    },
+    {
+      "datei": "public/marken/lacoste.svg",
+      "marke": "Lacoste",
+      "quelle": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Logo_Lacoste_2026.svg"
+    },
+    {
+      "datei": "public/marken/levis.svg",
+      "marke": "Levi's",
+      "quelle": "https://upload.wikimedia.org/wikipedia/commons/7/75/Levi%27s_logo.svg"
+    },
+    {
+      "datei": "public/marken/stetson.svg",
+      "marke": "Stetson",
+      "quelle": "https://stetson.eu/"
+    },
+    {
+      "datei": "public/marken/gardeur.svg",
+      "marke": "Gardeur",
+      "quelle": "https://gardeur.com/bundles/gardeur/logo/gardeur-logo.svg"
+    },
+    {
+      "datei": "public/marken/fynch-hatton.png",
+      "marke": "Fynch-Hatton",
+      "quelle": "https://fynch-hatton.de/cdn/shop/files/Fynch-Hatton_Master_Logo_grey_694cea57-738a-4281-a703-c684542febfa.png?v=1751546986"
+    },
+    {
+      "datei": "public/marken/boss.svg",
+      "marke": "BOSS (Hugo Boss)",
+      "quelle": "https://www.hugoboss.com/on/demandware.static/Sites-WW-Site/-/default/dw088ebc1a/svg/output_files/boss_logo.svg"
+    },
+    {
+      "datei": "public/marken/maerz.svg",
+      "marke": "MAERZ Muenchen",
+      "quelle": "https://www.maerz.de/"
+    },
+    {
+      "datei": "public/marken/pme-legend.svg",
+      "marke": "PME Legend",
+      "quelle": "https://www.pme-legend.com/"
+    },
+    {
+      "datei": "public/marken/save-the-duck.svg",
+      "marke": "Save The Duck",
+      "quelle": "https://www.savetheduck.com/"
+    },
+    {
+      "datei": "public/marken/scotch-soda.svg",
+      "marke": "Scotch & Soda",
+      "quelle": "https://www.scotchandsoda.com/cdn/shop/files/scotch-soda-white-black_d1ebdc5e-a073-4ed5-98f7-edd750baf34b.svg?v=1757502163"
+    },
+    {
+      "datei": "public/marken/camel-active.svg",
+      "marke": "camel active",
+      "quelle": "https://www.camelactive.com/media/52/78/ef/1575632021/ca-logo.svg?ts=1575632021"
+    },
+    {
+      "datei": "public/marken/state-of-art.svg",
+      "marke": "State of Art",
+      "quelle": "https://www.stateofart.com/cdn/shop/files/logo.svg?v=1782209793"
+    }
+  ],
+  "hauslogos": [
+    {
+      "datei": "public/logos/jager-gebaeude.webp",
+      "haus": "Jager-Oberlinkels",
+      "quelle": "Letzshop (Logo des Hauses), freigestellt"
+    }
+  ]
+}

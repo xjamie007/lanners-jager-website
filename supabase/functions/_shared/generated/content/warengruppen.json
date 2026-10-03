@@ -1,0 +1,103 @@
+{
+  "$hinweis": "Bildet die SoftTouch-Kategorien (category1 = Abteilung, category2 = Warengruppe; Zuordnung in src/config/softtouch.ts) auf Abteilung, Warengruppe und URL-Slug in vier Sprachen ab. Die Codes sind Demo-Werte: Die echten Kategorien der Häuser fehlen noch (OP-04.8). LB-Namen und -Slugs sind Entwürfe (review: lb-native).",
+  "abteilungen": {
+    "herren": {
+      "st": ["0101"],
+      "name": { "lb": { "text": "Hären", "review": "lb-native" }, "de": "Herren", "fr": "Homme", "en": "Men" },
+      "slug": { "lb": { "text": "haeren", "review": "lb-native" }, "de": "herren", "fr": "homme", "en": "men" },
+      "fuer": { "lb": { "text": "fir Hären", "review": "lb-native" }, "de": "für Herren", "fr": "pour homme", "en": "for men" }
+    },
+    "damen": {
+      "st": ["0102"],
+      "name": { "lb": { "text": "Fraen", "review": "lb-native" }, "de": "Damen", "fr": "Femme", "en": "Women" },
+      "slug": { "lb": { "text": "fraen", "review": "lb-native" }, "de": "damen", "fr": "femme", "en": "women" },
+      "fuer": { "lb": { "text": "fir Fraen", "review": "lb-native" }, "de": "für Damen", "fr": "pour femme", "en": "for women" }
+    }
+  },
+  "accessoires": {
+    "name": { "lb": { "text": "Hitt & Accessoiren", "review": "lb-native" }, "de": "Hüte & Accessoires", "fr": "Chapeaux & accessoires", "en": "Hats & accessories" },
+    "slug": { "lb": { "text": "hitt-accessoiren", "review": "lb-native" }, "de": "huete-accessoires", "fr": "chapeaux-accessoires", "en": "hats-accessories" }
+  },
+  "warengruppen": [
+    {
+      "id": "jacken", "st": ["0201"], "accessoire": false, "silhouette": "jacke",
+      "name": { "lb": { "text": "Jacketten", "review": "lb-native" }, "de": "Jacken", "fr": "Vestes", "en": "Jackets" },
+      "slug": { "lb": { "text": "jacketten", "review": "lb-native" }, "de": "jacken", "fr": "vestes", "en": "jackets" }
+    },
+    {
+      "id": "maentel", "st": ["0202"], "accessoire": false, "silhouette": "mantel",
+      "name": { "lb": { "text": "Mäntel", "review": "lb-native" }, "de": "Mäntel", "fr": "Manteaux", "en": "Coats" },
+      "slug": { "lb": { "text": "maentel", "review": "lb-native" }, "de": "maentel", "fr": "manteaux", "en": "coats" }
+    },
+    {
+      "id": "anzuege", "st": ["0203"], "accessoire": false, "silhouette": "sakko",
+      "name": { "lb": { "text": "Kostumer & Sakkoen", "review": "lb-native" }, "de": "Anzüge & Sakkos", "fr": "Costumes & blazers", "en": "Suits & blazers" },
+      "slug": { "lb": { "text": "kostumer-sakkoen", "review": "lb-native" }, "de": "anzuege-sakkos", "fr": "costumes-blazers", "en": "suits-blazers" }
+    },
+    {
+      "id": "hemden", "st": ["0204"], "accessoire": false, "silhouette": "hemd",
+      "name": { "lb": { "text": "Hiemer", "review": "lb-native" }, "de": "Hemden", "fr": "Chemises", "en": "Shirts" },
+      "slug": { "lb": { "text": "hiemer", "review": "lb-native" }, "de": "hemden", "fr": "chemises", "en": "shirts" }
+    },
+    {
+      "id": "blusen", "st": ["0211"], "accessoire": false, "silhouette": "hemd",
+      "name": { "lb": { "text": "Blusen & Shirten", "review": "lb-native" }, "de": "Blusen & Shirts", "fr": "Blouses & tops", "en": "Blouses & tops" },
+      "slug": { "lb": { "text": "blusen-shirten", "review": "lb-native" }, "de": "blusen-shirts", "fr": "blouses-tops", "en": "blouses-tops" }
+    },
+    {
+      "id": "polos", "st": ["0205"], "accessoire": false, "silhouette": "polo",
+      "name": { "lb": { "text": "Polos & T-Shirten", "review": "lb-native" }, "de": "Polos & T-Shirts", "fr": "Polos & T-shirts", "en": "Polos & T-shirts" },
+      "slug": { "lb": { "text": "polos-t-shirten", "review": "lb-native" }, "de": "polos-t-shirts", "fr": "polos-t-shirts", "en": "polos-t-shirts" }
+    },
+    {
+      "id": "strick", "st": ["0206"], "accessoire": false, "silhouette": "strick",
+      "name": { "lb": { "text": "Strécksaachen", "review": "lb-native" }, "de": "Strick", "fr": "Mailles", "en": "Knitwear" },
+      "slug": { "lb": { "text": "strecksaachen", "review": "lb-native" }, "de": "strick", "fr": "mailles", "en": "knitwear" }
+    },
+    {
+      "id": "hosen", "st": ["0207"], "accessoire": false, "silhouette": "hose",
+      "name": { "lb": { "text": "Boxen", "review": "lb-native" }, "de": "Hosen", "fr": "Pantalons", "en": "Trousers" },
+      "slug": { "lb": { "text": "boxen", "review": "lb-native" }, "de": "hosen", "fr": "pantalons", "en": "trousers" }
+    },
+    {
+      "id": "jeans", "st": ["0208"], "accessoire": false, "silhouette": "jeans",
+      "name": { "lb": { "text": "Jeans", "review": "lb-native" }, "de": "Jeans", "fr": "Jeans", "en": "Jeans" },
+      "slug": { "lb": { "text": "jeans", "review": "lb-native" }, "de": "jeans", "fr": "jeans", "en": "jeans" }
+    },
+    {
+      "id": "kleider", "st": ["0209"], "accessoire": false, "silhouette": "kleid",
+      "name": { "lb": { "text": "Kleeder", "review": "lb-native" }, "de": "Kleider", "fr": "Robes", "en": "Dresses" },
+      "slug": { "lb": { "text": "kleeder", "review": "lb-native" }, "de": "kleider", "fr": "robes", "en": "dresses" }
+    },
+    {
+      "id": "waesche", "st": ["0210"], "accessoire": false, "silhouette": "polo",
+      "name": { "lb": { "text": "Ënnerwäsch", "review": "lb-native" }, "de": "Wäsche", "fr": "Sous-vêtements", "en": "Underwear" },
+      "slug": { "lb": { "text": "ennerwaesch", "review": "lb-native" }, "de": "waesche", "fr": "sous-vetements", "en": "underwear" }
+    },
+    {
+      "id": "huete", "st": ["0221"], "accessoire": true, "silhouette": "hut",
+      "name": { "lb": { "text": "Hitt", "review": "lb-native" }, "de": "Hüte", "fr": "Chapeaux", "en": "Hats" },
+      "slug": { "lb": { "text": "hitt", "review": "lb-native" }, "de": "huete", "fr": "chapeaux", "en": "hats" }
+    },
+    {
+      "id": "muetzen", "st": ["0222"], "accessoire": true, "silhouette": "muetze",
+      "name": { "lb": { "text": "Kappen", "review": "lb-native" }, "de": "Mützen & Kappen", "fr": "Bonnets & casquettes", "en": "Beanies & caps" },
+      "slug": { "lb": { "text": "kappen", "review": "lb-native" }, "de": "muetzen-kappen", "fr": "bonnets-casquettes", "en": "beanies-caps" }
+    },
+    {
+      "id": "guertel", "st": ["0223"], "accessoire": true, "silhouette": "guertel",
+      "name": { "lb": { "text": "Rimmen", "review": "lb-native" }, "de": "Gürtel", "fr": "Ceintures", "en": "Belts" },
+      "slug": { "lb": { "text": "rimmen", "review": "lb-native" }, "de": "guertel", "fr": "ceintures", "en": "belts" }
+    },
+    {
+      "id": "taschen", "st": ["0224"], "accessoire": true, "silhouette": "tasche",
+      "name": { "lb": { "text": "Täschen & Liederwueren", "review": "lb-native" }, "de": "Taschen & Lederwaren", "fr": "Sacs & maroquinerie", "en": "Bags & leather goods" },
+      "slug": { "lb": { "text": "taeschen-liederwueren", "review": "lb-native" }, "de": "taschen-lederwaren", "fr": "sacs-maroquinerie", "en": "bags-leather-goods" }
+    },
+    {
+      "id": "schals", "st": ["0225"], "accessoire": true, "silhouette": "schal",
+      "name": { "lb": { "text": "Schals", "review": "lb-native" }, "de": "Schals", "fr": "Écharpes", "en": "Scarves" },
+      "slug": { "lb": { "text": "schals", "review": "lb-native" }, "de": "schals", "fr": "echarpes", "en": "scarves" }
+    }
+  ]
+}

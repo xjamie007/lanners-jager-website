@@ -1,0 +1,870 @@
+---
+/**
+ * Hausseite = eigener Shop des Hauses (D6): nur, was dieses Haus verkauft.
+ * Foto-Hero im Hausverlauf mit Logo und Live-Öffnungsstatus, Infokacheln
+ * (heute, Adresse, Kontakt, Abteilungen), Markenband des Hauses, Sortiment
+ * des Hauses (Listen mit ?haus=), neue Artikel, Über das Haus mit Fakten und
+ * Fassade, Öffnungszeiten mit Ausblick, Kontakt, Anfahrt & Parken mit
+ * 2-Klick-Karte (Google Maps), Hinweis auf das andere Haus. Auf dem Handy
+ * steht unten die Schnellleiste (Anrufen, Route, Öffnungszeiten).
+ * Der Hausschalter steht hier immer auf diesem Haus (Base: seitenHaus).
+ */
+import Base from "../layouts/Base.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import Fassade from "../components/Fassade.astro";
+import HoursTable from "../components/HoursTable.astro";
+import ProductCard from "../components/ProductCard.astro";
+import BrandTicker from "../components/BrandTicker.astro";
+import ShopKarte from "../components/ShopKarte.astro";
+import HouseLogo from "../components/HouseLogo.astro";
+import Foto from "../components/Foto.astro";
+import Icon from "../components/Icon.astro";
+import Offen from "../components/Offen.astro";
+import GoogleKarte from "../components/GoogleKarte.astro";
+import Schnellleiste from "../components/Schnellleiste.astro";
+import { getHouse, telHref } from "../config/houses.ts";
+import { mapsOrt, mapsRoute } from "../lib/karte.ts";
+import { features } from "../config/site.ts";
+import { t, tp, type Lang } from "../i18n/index.ts";
+import { link, asset } from "../lib/page.ts";
+import { breadcrumbJsonLd } from "../lib/seo.ts";
+import { getCatalog, sortRecommended } from "../lib/catalog/index.ts";
+import { alleMarken } from "../lib/marken.ts";
+import { doppelpunkt } from "@shared/text.ts";
+
+interface Props {
+  lang: Lang;
+  haus: "lanners" | "jager";
+}
+const { lang, haus } = Astro.props;
+const h = getHouse(haus);
+const anderes = haus === "lanners" ? "jager" : "lanners";
+const cat = await getCatalog();
+const imHaus = cat.online.filter((a) => a.houses.includes(haus));
+const neuImHaus = sortRecommended(imHaus.filter((a) => a.inThePicture));
+const neu = (neuImHaus.length >= 4 ? neuImHaus : sortRecommended(imHaus)).slice(0, 8);
+const marken = alleMarken(cat, haus);
+const q = `?haus=${haus}`;
+const isSale = (a: (typeof imHaus)[number]) => a.nettoCents < a.priceCents;
+const kategorien = [
+  { id: "damen", href: link(lang, { kind: "abteilung", id: "damen" }) + q, label: t(lang, "nav.damen"), foto: "kategorie-damen", n: imHaus.filter((a) => a.abteilung === "damen").length },
+  { id: "herren", href: link(lang, { kind: "abteilung", id: "herren" }) + q, label: t(lang, "nav.herren"), foto: haus === "jager" ? "jager-country" : "kategorie-herren", n: imHaus.filter((a) => a.abteilung === "herren").length },
+  { id: "accessoires", href: link(lang, { kind: "accessoires" }) + q, label: t(lang, "nav.accessoires"), foto: haus === "jager" ? "jager-hut" : "kategorie-accessoires", n: imHaus.filter((a) => a.accessoire).length },
+  { id: "sale", href: link(lang, "sale") + q, label: t(lang, "nav.sale"), foto: "kategorie-sale", n: imHaus.filter(isSale).length },
+].filter((k) => k.n > 0);
+const crumbs = [
+  { name: t(lang, "nav.start"), href: link(lang, "home") },
+  { name: t(lang, "haeuser.h1"), href: link(lang, "haeuser") },
+  { name: h.name, href: link(lang, { kind: "haus", id: haus }) },
+];
+const route = mapsRoute(h);
+const ah = getHouse(anderes);
+---
+<Base lang={lang} ref={{ kind: "haus", id: haus }} title={t(lang, `seo.${haus}.title`)} description={t(lang, `seo.${haus}.desc`)} jsonLd={[breadcrumbJsonLd(crumbs)]} section={haus} seitenHaus={haus} strings={["karte.", "demo."]}>
+  <section class={`shop-hero shop-hero-${haus} auf-dunkel`} aria-labelledby="shop-titel">
+    <div class="shop-hero-bild" aria-hidden="true" data-vt-ziel="hausbild">
+      <Foto name={`${haus}-shop`} alt="" sizes="100vw" eager />
+    </div>
+    <div class="container-lj shop-hero-inhalt">
+      <Breadcrumb lang={lang} items={crumbs} />
+      <div class="shop-hero-raster">
+        <div class="shop-hero-text" data-pagefind-body data-pagefind-meta="typ:seite">
+          <HouseLogo haus={haus} hell class="shop-hero-logo" />
+          <h1 class="t-h1" id="shop-titel" data-pagefind-meta={`title:${h.name}`}>
+            <span class="sr-only">{h.name}: </span>{t(lang, `shop.${haus}Claim`)}
+          </h1>
+          <p class="shop-hero-adr">
+            <Icon name="ort" size={18} />
+            {h.streetAddress}, {h.postalCode} {h.locality}
+          </p>
+          <span class="offen-abzeichen shop-hero-status" data-offen-box hidden>
+            <span class="status-punkt" data-offen-punkt={haus} />
+            <span data-offen-status={haus} />
+          </span>
+          <div class="shop-hero-knoepfe">
+            <a class="btn btn-hell" href="#sortiment">
+              {t(lang, "shop.sortimentAnsehen")}
+              <Icon name="pfeil" size={18} />
+            </a>
+            <a class="btn btn-rand-hell" href={telHref(h)}>
+              <Icon name="telefon" size={18} />
+              {h.phoneDisplay}
+            </a>
+            <a class="btn btn-rand-hell" href={route} rel="noopener">
+              <Icon name="ort" size={18} />
+              {t(lang, "home.route")}
+              <span class="sr-only" data-pagefind-ignore> ({t(lang, "site.externerLink")})</span>
+            </a>
+          </div>
+        </div>
+        {
+          haus === "lanners" && (
+            <div class="shop-hero-fassade" aria-hidden="true">
+              <Fassade haus={haus} />
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <div class="container-lj">
+    <ul class="info-kacheln" aria-label={t(lang, "haeuser.fakten")}>
+      <li class="info-kachel">
+        <span class="info-icon"><Icon name="uhr" /></span>
+        <span class="info-titel">{t(lang, "shop.heute")}</span>
+        <span class="info-wert" data-offen-status={haus}>{t(lang, "zeiten.titel")}</span>
+        <a href="#zeiten-titel" class="info-link">{t(lang, "shop.alleZeiten")}</a>
+      </li>
+      <li class="info-kachel">
+        <span class="info-icon"><Icon name="ort" /></span>
+        <span class="info-titel">{t(lang, "shop.adresse")}</span>
+        <span class="info-wert">{h.streetAddress}, {h.locality}</span>
+        <a href={route} class="info-link" rel="noopener">
+          {t(lang, "home.route")}<span class="sr-only" data-pagefind-ignore> ({t(lang, "site.externerLink")})</span>
+        </a>
+      </li>
+      <li class="info-kachel">
+        <span class="info-icon"><Icon name="telefon" /></span>
+        <span class="info-titel">{t(lang, "shop.kontakt")}</span>
+        <span class="info-wert"><a href={telHref(h)}>{h.phone}</a></span>
+        <a href={`mailto:${h.email}`} class="info-link">{h.email}</a>
+      </li>
+      <li class="info-kachel">
+        <span class="info-icon"><Icon name="stern" /></span>
+        <span class="info-titel">{t(lang, "haeuser.abteilungen")}</span>
+        <span class="info-wert">{t(lang, `haeuser.${haus}Abteilungen`)}</span>
+        <span class="info-link info-ohne-link">{h.flaecheM2 ? `${h.flaecheM2} m²` : t(lang, "haeuser.jagerSeit")}</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="sektion">
+    <BrandTicker lang={lang} marken={marken} id={`marken-${haus}`} titel={t(lang, "shop.markenH2", { haus: h.short })} vorzeile={t(lang, "shop.markenVorzeile")} variante={haus} haus={haus} />
+  </div>
+
+  <section class="sektion container-lj" id="sortiment" aria-labelledby="sortiment-titel">
+    <div class="abschnitt-kopf">
+      <p class="vorzeile">{t(lang, "shop.sortimentVorzeile")}</p>
+      <h2 class="t-h2" id="sortiment-titel">{t(lang, "shop.sortimentH2", { haus: h.short })}</h2>
+    </div>
+    <ul class={`kacheln kacheln-${kategorien.length}`}>
+      {
+        kategorien.map((k) => (
+          <li class={`kachel kachel-${k.id}`} data-vt-karte>
+            <a href={k.href} class="kachel-link">
+              <span class="kachel-bild" aria-hidden="true">
+                <Foto name={k.foto} alt="" sizes="(min-width: 1024px) 25vw, 50vw" />
+              </span>
+              <span class="kachel-text">
+                <span class="kachel-titel" data-vt-quelle="kacheltitel">{k.label}</span>
+                <span class="kachel-unter">{tp(lang, "marken.anzahl", k.n)}</span>
+              </span>
+              <span class="kachel-pfeil" aria-hidden="true">
+                <Icon name="pfeil" size={20} />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {
+    neu.length > 0 && (
+      <section class="sektion container-lj" aria-labelledby="hausneu-titel">
+        <div class="kopfzeile">
+          <div>
+            <p class="vorzeile">{t(lang, "home.neuVorzeile")}</p>
+            <h2 class="t-h2" id="hausneu-titel">
+              {t(lang, "haeuser.neuH2", { haus: h.short })}
+            </h2>
+          </div>
+          <a href={link(lang, "sortiment") + q} class="pfeillink">
+            {t(lang, "shop.alleArtikel", { haus: h.short })}
+            <Icon name="pfeil" size={18} />
+          </a>
+        </div>
+        <ul class="raster">
+          {neu.map((a) => (
+            <li>
+              <ProductCard article={a} lang={lang} headingLevel={3} />
+            </li>
+          ))}
+        </ul>
+        <p class="mehr-knopf">
+          <a class="btn btn-primaer" href={link(lang, "sortiment") + q}>
+            {t(lang, "shop.alleArtikelAnzahl", { haus: h.short, n: imHaus.length })}
+            <Icon name="pfeil" size={18} />
+          </a>
+        </p>
+      </section>
+    )
+  }
+
+  <section class="sektion flaeche-creme ueber-band" aria-labelledby="ueber-titel">
+    <div class="container-lj ueber-raster">
+      <div class="ueber-bilder">
+        <div class="ueber-foto">
+          <Foto name={haus === "jager" ? "jager-hut" : "lanners-detail"} alt="" sizes="(min-width: 1024px) 30vw, 100vw" />
+        </div>
+        <div class="ueber-fassade">
+          {
+            haus === "jager" ? (
+              <img src={asset("logos/jager-gebaeude.webp")} alt={t(lang, "shop.jagerZeichnung")} width="609" height="592" loading="lazy" decoding="async" />
+            ) : (
+              <>
+                <Fassade haus={haus} />
+                <p class="haus-platzhalter">
+                  <Offen op="OP-08.3" lang={lang} />
+                </p>
+              </>
+            )
+          }
+        </div>
+      </div>
+      <div class="ueber-text" data-pagefind-body>
+        <p class="vorzeile">{t(lang, "shop.ueberVorzeile")}</p>
+        <h2 class="t-h2" id="ueber-titel">{t(lang, "shop.ueberH2", { haus: h.short })}</h2>
+        <div class="prosa">
+          <p>{t(lang, `haeuser.${haus}Text`)}</p>
+          {haus === "lanners" && features.hoflieferant && <p>{t(lang, "haeuser.lannersHoflieferant")} <Offen op="OP-09" lang={lang} /></p>}
+        </div>
+        <dl class="fakten">
+          <div>
+            <dt>{t(lang, "haeuser.abteilungen")}</dt>
+            <dd>{t(lang, `haeuser.${haus}Abteilungen`)}</dd>
+          </div>
+          <div>
+            <dt>{t(lang, "haeuser.marken")}</dt>
+            <dd>
+              {marken.map((m, i) => (
+                <>{m.slug ? <a href={`${link(lang, { kind: "marke", slug: m.slug })}${q}`}>{m.name}</a> : m.name}{i < marken.length - 1 ? ", " : ""}</>
+              ))}
+            </dd>
+          </div>
+          {h.flaecheM2 && (
+            <div>
+              <dt>{t(lang, "haeuser.flaeche")}</dt>
+              <dd>{h.flaecheM2} m²</dd>
+            </div>
+          )}
+          {haus === "lanners" && (
+            <div>
+              <dt>{t(lang, "haeuser.gegruendet")}</dt>
+              <dd>
+                <Offen op="OP-01.6" lang={lang} />
+              </dd>
+            </div>
+          )}
+          {h.seit && (
+            <>
+              <div>
+                <dt>{t(lang, "haeuser.seit")}</dt>
+                <dd>{t(lang, "haeuser.jagerSeit")}</dd>
+              </div>
+              <div>
+                <dt>{t(lang, "haeuser.geschichte")}</dt>
+                <dd>
+                  <ol class="geschichte">
+                    <li>{t(lang, "haeuser.jagerGeschichte1")}</li>
+                    <li>{t(lang, "haeuser.jagerGeschichte2")}</li>
+                    <li>{t(lang, "haeuser.jagerGeschichte3")}</li>
+                  </ol>
+                </dd>
+              </div>
+            </>
+          )}
+        </dl>
+        <p>
+          <a href={link(lang, "geschichte")} class="pfeillink">
+            {t(lang, "home.geschichteLink")}
+            <Icon name="pfeil" size={18} />
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="sektion container-lj haus-info" data-pagefind-body>
+    <section aria-labelledby="zeiten-titel" class="info-block">
+      <p class="vorzeile">{t(lang, "shop.zeitenVorzeile")}</p>
+      <h2 class="t-h2" id="zeiten-titel">{t(lang, "haeuser.zeitenH2")}</h2>
+      <span class="offen-abzeichen offen-abzeichen-hell info-status" data-offen-box hidden>
+        <span class="status-punkt" data-offen-punkt={haus} />
+        <span data-offen-status={haus} />
+      </span>
+      <div class="abstand">
+        <HoursTable lang={lang} haus={haus} ausblick />
+      </div>
+    </section>
+    <section aria-labelledby="kontakt-titel" class="info-block">
+      <p class="vorzeile">{t(lang, "shop.kontaktVorzeile")}</p>
+      <h2 class="t-h2" id="kontakt-titel">{t(lang, "haeuser.kontaktH2")}</h2>
+      <address class="abstand haus-kontakt">
+        <strong>{h.name}</strong>
+        <br />
+        {h.streetAddress}
+        <br />
+        {h.postalCode} {h.locality}
+        <br />
+        {t(lang, "footer.telefon")}{doppelpunkt(lang)}<a href={telHref(h)}>{h.phoneDisplay}</a>
+        <br />
+        {t(lang, "footer.email")}{doppelpunkt(lang)}<a href={`mailto:${h.email}`}>{h.email}</a>
+      </address>
+      <div class="kontakt-knoepfe">
+        <a class="btn btn-primaer" href={route} rel="noopener">
+          <Icon name="ort" size={18} />
+          {t(lang, "home.route")}
+          <span class="sr-only" data-pagefind-ignore> ({t(lang, "site.externerLink")})</span>
+        </a>
+        <a class="btn btn-sekundaer" href={h.facebook} rel="noopener">
+          {t(lang, "footer.facebook", { haus: h.short })}
+          <span class="sr-only" data-pagefind-ignore> ({t(lang, "site.externerLink")})</span>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <section class="sektion container-lj" id="anfahrt" aria-labelledby="anfahrt-titel">
+    <div class="abschnitt-kopf" data-pagefind-body>
+      <p class="vorzeile">{t(lang, "anfahrt.vorzeile")}</p>
+      <h2 class="t-h2" id="anfahrt-titel">{t(lang, "anfahrt.h2")}</h2>
+    </div>
+    <div class="anfahrt-raster">
+      <GoogleKarte lang={lang} haus={haus} />
+      <div class="anfahrt-info" data-pagefind-body>
+        <ul class="anfahrt-liste">
+          <li>
+            <span class="anfahrt-icon"><Icon name="parken" size={20} /></span>
+            <span>
+              <strong>{t(lang, "anfahrt.parken")}</strong>
+              {t(lang, "anfahrt.parkenText")} <Offen op="OP-14" lang={lang} />
+            </span>
+          </li>
+          <li>
+            <span class="anfahrt-icon"><Icon name="zug" size={20} /></span>
+            <span>
+              <strong>{t(lang, "anfahrt.zug")}</strong>
+              {t(lang, "anfahrt.zugText")} <Offen op="OP-23" lang={lang} />
+            </span>
+          </li>
+          <li>
+            <span class="anfahrt-icon"><Icon name="bus" size={20} /></span>
+            <span>
+              <strong>{t(lang, "anfahrt.bus")}</strong>
+              {t(lang, "anfahrt.busText")} <Offen op="OP-23" lang={lang} />
+            </span>
+          </li>
+          <li>
+            <span class="anfahrt-icon"><Icon name="fuss" size={20} /></span>
+            <span>
+              <strong>{t(lang, "anfahrt.fuss")}</strong>
+              {t(lang, "anfahrt.fussText", { haus: ah.short, nr: ah.nr })}
+            </span>
+          </li>
+        </ul>
+        <div class="anfahrt-knoepfe">
+          <a class="btn btn-primaer" href={route} rel="noopener">
+            <Icon name="ort" size={18} />
+            {t(lang, "home.route")}
+            <span class="sr-only" data-pagefind-ignore> ({t(lang, "site.externerLink")})</span>
+          </a>
+          <a class="btn btn-sekundaer" href={mapsOrt(h)} rel="noopener">
+            {t(lang, "maps.oeffnen")}
+            <Icon name="extern" size={16} />
+            <span class="sr-only" data-pagefind-ignore> ({t(lang, "site.externerLink")})</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sektion container-lj" aria-labelledby="anderes-titel">
+    <div class="abschnitt-kopf">
+      <p class="vorzeile">{t(lang, "shop.anderesVorzeile")}</p>
+      <h2 class="t-h2" id="anderes-titel">{t(lang, "shop.anderesH2", { haus: ah.short })}</h2>
+    </div>
+    <div class="anderes-haus">
+      <ShopKarte lang={lang} haus={anderes} />
+    </div>
+  </section>
+  <Schnellleiste lang={lang} haus={haus} />
+</Base>
+
+<style>
+  /* ── Hero ─────────────────────────────────────────────────────────────── */
+  .shop-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: var(--color-weiss);
+  }
+  .shop-hero-bild {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .shop-hero-bild::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .shop-hero-lanners .shop-hero-bild::after {
+    background: linear-gradient(100deg, rgb(0 22 42 / 0.95) 0%, rgb(0 46 82 / 0.85) 45%, rgb(15 95 151 / 0.6) 100%);
+  }
+  .shop-hero-jager .shop-hero-bild::after {
+    background: linear-gradient(100deg, rgb(16 14 15 / 0.95) 0%, rgb(74 62 46 / 0.85) 45%, rgb(150 116 66 / 0.55) 100%);
+  }
+  .shop-hero-inhalt :global(.pfad),
+  .shop-hero-inhalt :global(.pfad a),
+  .shop-hero-inhalt :global(.pfad [aria-current]),
+  .shop-hero-inhalt :global(.pfad li + li::before) {
+    color: rgb(255 255 255 / 0.8);
+  }
+  .shop-hero-raster {
+    display: grid;
+    gap: 32px;
+    align-items: end;
+    padding-block: 28px 56px;
+  }
+  @media (min-width: 1024px) {
+    .shop-hero-raster {
+      grid-template-columns: 7fr 4fr;
+      gap: 48px;
+      padding-block: 40px 72px;
+    }
+  }
+  .shop-hero-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .shop-hero-text :global(.shop-hero-logo) {
+    margin-bottom: 8px;
+    font-size: clamp(15px, 0.9vw + 10px, 21px);
+  }
+  .shop-hero-adr {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    opacity: 0.92;
+  }
+  .shop-hero-status {
+    background: rgb(255 255 255 / 0.16);
+    backdrop-filter: blur(8px);
+  }
+  .shop-hero-status :global(.status-punkt[data-zustand="offen"]),
+  .info-status :global(.status-punkt[data-zustand="offen"]) {
+    background: #22c55e;
+    opacity: 1;
+    box-shadow: 0 0 0 3px rgb(34 197 94 / 0.25);
+  }
+  .shop-hero-status :global(.status-punkt[data-zustand="zu"]),
+  .info-status :global(.status-punkt[data-zustand="zu"]) {
+    background: #ef4444;
+    opacity: 1;
+  }
+  .shop-hero-knoepfe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .shop-hero-fassade {
+    display: none;
+    color: var(--color-weiss);
+    max-width: 340px;
+    justify-self: end;
+    width: 100%;
+  }
+  .shop-hero-fassade :global(.fassade) {
+    color: var(--color-weiss);
+  }
+  .shop-hero-fassade :global(.glas) {
+    fill: rgb(255 214 150 / 0.35);
+  }
+  .shop-hero-lanners .shop-hero-fassade :global(.band) {
+    fill: var(--color-marine-hell);
+  }
+  .shop-hero-jager .shop-hero-fassade :global(.band) {
+    fill: var(--color-jager-hell);
+  }
+  @media (min-width: 1024px) {
+    .shop-hero-fassade {
+      display: block;
+    }
+  }
+
+  /* ── Infokacheln ──────────────────────────────────────────────────────── */
+  .info-kacheln {
+    position: relative;
+    z-index: 1;
+    list-style: none;
+    margin: -28px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  @media (min-width: 1024px) {
+    .info-kacheln {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+  }
+  .info-kachel {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 18px;
+    border-radius: var(--radius-bild);
+    background: var(--color-weiss);
+    box-shadow: 0 20px 40px -24px rgb(0 30 60 / 0.45), 0 0 0 1px rgb(0 46 82 / 0.06);
+    min-width: 0;
+  }
+  .info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 6px;
+    border-radius: 50%;
+    background: var(--haus-verlauf);
+    color: var(--color-weiss);
+  }
+  .info-titel {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-schiefer);
+  }
+  .info-wert {
+    font-weight: 700;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+  .info-link {
+    font-size: 0.875rem;
+    overflow-wrap: anywhere;
+  }
+  .info-ohne-link {
+    color: var(--color-schiefer);
+  }
+
+  /* ── Abschnitte ───────────────────────────────────────────────────────── */
+  .abschnitt-kopf {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .kopfzeile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px 20px;
+    margin-bottom: 24px;
+  }
+  .kopfzeile > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .pfeillink {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: gap 200ms ease-out;
+  }
+  .pfeillink:hover {
+    gap: 12px;
+    text-decoration: underline;
+  }
+  .mehr-knopf {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+  }
+  .abstand {
+    margin-top: 20px;
+  }
+
+  /* Kacheln (wie Startseite) */
+  .kacheln {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  @media (min-width: 1024px) {
+    .kacheln-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+    .kacheln-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+  }
+  .kachel-link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-bild);
+    overflow: hidden;
+    color: var(--color-weiss);
+    text-decoration: none;
+    isolation: isolate;
+  }
+  .kacheln-3 .kachel-link {
+    aspect-ratio: 4 / 5;
+  }
+  .kachel-bild {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .kachel-bild :global(.foto) {
+    transition: transform 700ms var(--ease-schaufenster);
+  }
+  .kachel-link:hover .kachel-bild :global(.foto) {
+    transform: scale(1.06);
+  }
+  .kachel-bild::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 35%, color-mix(in srgb, var(--haus) 92%, black));
+    opacity: 0.92;
+  }
+  .kachel-sale .kachel-bild::after {
+    background: linear-gradient(180deg, transparent 30%, rgb(120 20 15 / 0.92));
+  }
+  .kachel-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: clamp(14px, 2vw, 24px);
+    padding-right: 64px;
+  }
+  .kachel-titel {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .kachel-unter {
+    font-size: 0.875rem;
+    opacity: 0.88;
+  }
+  .kachel-pfeil {
+    position: absolute;
+    right: clamp(14px, 2vw, 22px);
+    bottom: clamp(14px, 2vw, 24px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.18);
+    backdrop-filter: blur(6px);
+    transition: background-color 200ms ease-out, color 200ms ease-out, transform 200ms ease-out;
+  }
+  .kachel-link:hover .kachel-pfeil {
+    background: var(--color-weiss);
+    color: var(--color-tusche);
+    transform: translateX(3px);
+  }
+
+  /* ── Über das Haus ────────────────────────────────────────────────────── */
+  .ueber-band {
+    padding-block: var(--section);
+  }
+  .ueber-raster {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .ueber-raster {
+      grid-template-columns: 5fr 7fr;
+      gap: 64px;
+    }
+  }
+  .ueber-bilder {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 16px;
+    align-items: end;
+  }
+  .ueber-foto {
+    aspect-ratio: 3 / 4;
+    border-radius: calc(var(--radius-bild) + 4px);
+    overflow: hidden;
+    box-shadow: 0 30px 60px -40px rgb(0 20 40 / 0.7);
+  }
+  .ueber-fassade {
+    padding: 12px;
+    border-radius: var(--radius-bild);
+    background: var(--color-weiss);
+  }
+  .ueber-fassade :global(.band) {
+    fill: var(--haus);
+  }
+  .ueber-fassade img {
+    width: 100%;
+    height: auto;
+  }
+  .haus-platzhalter {
+    margin-top: 6px;
+    text-align: right;
+  }
+  .ueber-text {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .ueber-text .prosa {
+    margin-top: 8px;
+    font-size: 1.0625rem;
+  }
+  .fakten {
+    margin: 16px 0 8px;
+    display: grid;
+    gap: 14px;
+    padding: 20px;
+    border-radius: var(--radius-bild);
+    background: var(--color-weiss);
+  }
+  .fakten > div {
+    display: grid;
+    gap: 2px;
+  }
+  @media (min-width: 768px) {
+    .fakten > div {
+      grid-template-columns: 170px 1fr;
+      gap: 20px;
+    }
+  }
+  .fakten dt {
+    font-weight: 700;
+  }
+  .fakten dd {
+    margin: 0;
+  }
+  .geschichte {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  /* ── Zeiten und Kontakt ───────────────────────────────────────────────── */
+  .haus-info {
+    display: grid;
+    gap: 24px;
+  }
+  @media (min-width: 900px) {
+    .haus-info {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .info-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: clamp(22px, 3vw, 36px);
+    border-radius: calc(var(--radius-bild) + 4px);
+    background: var(--color-weiss);
+    box-shadow: 0 30px 60px -45px rgb(0 30 60 / 0.5), 0 0 0 1px rgb(0 46 82 / 0.07);
+    border-top: 5px solid transparent;
+    border-image: var(--haus-verlauf) 1;
+    border-image-slice: 1;
+    border-radius: 0 0 calc(var(--radius-bild) + 4px) calc(var(--radius-bild) + 4px);
+  }
+  .info-block > :global(.zeiten-block),
+  .info-block .abstand {
+    width: 100%;
+  }
+  .info-status {
+    margin-top: 8px;
+  }
+  .haus-kontakt {
+    font-style: normal;
+    line-height: 1.8;
+  }
+  .kontakt-knoepfe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  /* ── Anfahrt & Parken ─────────────────────────────────────────────────── */
+  .anfahrt-raster {
+    display: grid;
+    gap: 28px;
+    align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .anfahrt-raster {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: 48px;
+      align-items: center;
+    }
+  }
+  .anfahrt-liste {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 20px;
+  }
+  .anfahrt-liste li {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 14px;
+    align-items: start;
+    line-height: 1.5;
+  }
+  .anfahrt-liste strong {
+    display: block;
+    margin-bottom: 2px;
+  }
+  .anfahrt-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-creme);
+    color: var(--haus);
+  }
+  .anfahrt-knoepfe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  .anderes-haus {
+    max-width: 760px;
+  }
+  .anderes-haus :global(.shopkarte) {
+    min-height: 420px;
+  }
+</style>

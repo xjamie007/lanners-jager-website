@@ -1,0 +1,124 @@
+# Website bauen und auf GitHub Pages veröffentlichen (Briefing D10.7)
+#  - bei Push auf main
+#  - wenn der Katalog sich geändert hat (Edge Function `rebuild` → repository_dispatch "catalog-updated")
+#  - jeden Morgen um 05:00 Uhr Luxemburger Zeit (zwei UTC-Zeiten wegen Sommer-/Winterzeit, das Tor lässt nur eine durch)
+# Die Daten liest der Build über die Function `catalog-export` mit BUILD_SECRET (README: Abweichung vom Service-Key).
+name: Bauen und veröffentlichen
+
+on:
+  push:
+    branches: [main]
+  repository_dispatch:
+    types: [catalog-updated]
+  schedule:
+    - cron: "0 3 * * *" # 05:00 in Luxemburg im Sommer (UTC+2)
+    - cron: "0 4 * * *" # 05:00 in Luxemburg im Winter (UTC+1)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  tor:
+    name: Zeitplan prüfen
+    runs-on: ubuntu-latest
+    outputs:
+      bauen: ${{ steps.zeit.outputs.bauen }}
+    steps:
+      - id: zeit
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ] || [ "$(TZ=Europe/Luxembourg date +%H)" = "05" ]; then
+            echo "bauen=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "bauen=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  pruefen:
+    name: Tests und Typen
+    needs: tor
+    if: needs.tor.outputs.bauen == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: npm ci
+      - run: npm run check:shared
+      - run: npm run check:i18n
+      - run: npm run check:types
+      - run: npm run check:functions
+      - run: npm test
+
+  bauen:
+    name: Bauen
+    needs: [tor, pruefen]
+    if: needs.tor.outputs.bauen == 'true'
+    runs-on: ubuntu-latest
+    # Normal wenige Minuten. Nur der allererste Build mit echten Fotos rechnet alle
+    # AVIF/WebP-Größen (Stunden, README "Build-Zeit"); der Cache wird auch bei Abbruch gespeichert.
+    timeout-minutes: 340
+    env:
+      SITE_URL: ${{ vars.SITE_URL }}
+      BASE_PATH: ${{ vars.BASE_PATH }}
+      PUBLIC_DEMO: ${{ vars.PUBLIC_DEMO }}
+      PUBLIC_FEATURE_RESERVE: ${{ vars.PUBLIC_FEATURE_RESERVE }}
+      PUBLIC_FEATURE_PAY_COLLECT: ${{ vars.PUBLIC_FEATURE_PAY_COLLECT }}
+      PUBLIC_FEATURE_PAY_SHIP: ${{ vars.PUBLIC_FEATURE_PAY_SHIP }}
+      PUBLIC_FEATURE_HOFLIEFERANT: ${{ vars.PUBLIC_FEATURE_HOFLIEFERANT }}
+      PUBLIC_FUNCTIONS_URL: ${{ vars.PUBLIC_FUNCTIONS_URL }}
+      SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+      CATALOG_SOURCE: ${{ vars.CATALOG_SOURCE }}
+      BUILD_SECRET: ${{ secrets.BUILD_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # Bild-Cache von Astro und die Open-Graph-Bilder bleiben zwischen den Läufen erhalten
+      # (nach npm ci, das node_modules sonst leert)
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules/.astro
+            node_modules/.cache/lj-og
+          key: bilder-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: bilder-${{ runner.os }}-
+      - name: Build (Übersetzungen prüfen, Astro, Pagefind, SEO-Prüfung)
+        run: npm run build
+      # auch nach Abbruch speichern: der erste Build mit echten Fotos kommt so schrittweise voran
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: |
+            node_modules/.astro
+            node_modules/.cache/lj-og
+          key: bilder-${{ runner.os }}-${{ github.run_id }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  veroeffentlichen:
+    name: Veröffentlichen
+    needs: bauen
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

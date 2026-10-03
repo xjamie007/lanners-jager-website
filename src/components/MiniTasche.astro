@@ -1,0 +1,217 @@
+---
+/**
+ * Mini-Tasche auf der Produktseite: Nach "In die Tasche" fährt von rechts ein
+ * Panel herein (modaler <dialog>: Fokus bleibt drin, Escape schließt) mit dem
+ * gerade gelegten Artikel, Anzahl und Zwischensumme der Tasche, "Zur Tasche"
+ * und "Weiter einkaufen". Gefüllt von src/scripts/mini-tasche.ts.
+ * Ohne JavaScript gibt es keine Tasche (C5), also auch kein Panel.
+ */
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import Icon from "./Icon.astro";
+import Vertrauen from "./Vertrauen.astro";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<dialog class="mini-tasche" id="mini-tasche" aria-labelledby="mini-tasche-titel" data-mini-tasche>
+  <div class="mt-kopf">
+    <p class="mt-titel" id="mini-tasche-titel">
+      <span class="mt-haken"><Icon name="haken" size={16} /></span>
+      {t(lang, "tasche.miniTitel")}
+    </p>
+    <button type="button" class="mt-zu" data-mt-zu>
+      <Icon name="schliessen" />
+      <span class="sr-only">{t(lang, "nav.schliessen")}</span>
+    </button>
+  </div>
+  <div class="mt-artikel" data-mt-artikel></div>
+  <p class="mt-summe">
+    <span data-mt-anzahl></span>
+    <span class="t-preis" data-mt-summe></span>
+  </p>
+  <div class="mt-knoepfe">
+    <a class="btn btn-primaer btn-voll" href={link(lang, "tasche")} autofocus>
+      {t(lang, "tasche.zur")}
+      <Icon name="pfeil" size={18} />
+    </a>
+    <button type="button" class="btn btn-sekundaer btn-voll" data-mt-zu>{t(lang, "tasche.weiterEinkaufen")}</button>
+  </div>
+  <div class="mt-vertrauen">
+    <Vertrauen lang={lang} kompakt nur={["reserve", "collect", "ship", "zahlung"]} />
+  </div>
+</dialog>
+
+<style is:global>
+  .mini-tasche {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(440px, 100vw);
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--color-weiss);
+    color: var(--color-tusche);
+    box-shadow: -30px 0 60px -30px rgb(0 20 40 / 0.5);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transform: translateX(100%);
+    transition:
+      transform 360ms var(--ease-schaufenster),
+      display 360ms allow-discrete,
+      overlay 360ms allow-discrete;
+  }
+  .mini-tasche[open] {
+    display: flex;
+    flex-direction: column;
+    transform: translateX(0);
+  }
+  @starting-style {
+    .mini-tasche[open] {
+      transform: translateX(100%);
+    }
+  }
+  .mini-tasche::backdrop {
+    background: rgb(11 15 20 / 0);
+    transition:
+      background-color 360ms ease-out,
+      display 360ms allow-discrete,
+      overlay 360ms allow-discrete;
+  }
+  .mini-tasche[open]::backdrop {
+    background: rgb(11 15 20 / 0.45);
+  }
+  @starting-style {
+    .mini-tasche[open]::backdrop {
+      background: rgb(11 15 20 / 0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mini-tasche,
+    .mini-tasche::backdrop {
+      transition: none;
+    }
+  }
+  html:has(.mini-tasche[open]) {
+    overflow: hidden;
+  }
+  .mt-kopf {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px 14px 24px;
+    border-bottom: 1px solid rgb(0 46 82 / 0.08);
+  }
+  .mt-titel {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-weight: 700;
+  }
+  .mt-haken {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #1f9d55;
+    color: var(--color-weiss);
+  }
+  .mt-zu {
+    min-width: 44px;
+    min-height: 44px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+  }
+  .mt-artikel {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 16px;
+    padding: 24px;
+  }
+  .mt-bild {
+    aspect-ratio: 3 / 4;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--color-glas);
+  }
+  .mt-bild img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6%;
+    box-sizing: border-box;
+    mix-blend-mode: multiply;
+  }
+  .mt-bild[data-fit="cover"] img {
+    object-fit: cover;
+    padding: 0;
+  }
+  .mt-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .mt-name {
+    font-weight: 600;
+  }
+  .mt-haus {
+    margin-top: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    color: var(--color-schiefer);
+  }
+  .mt-preis {
+    margin-top: 6px;
+  }
+  .mt-knapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 4px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #9a5b00;
+  }
+  .mt-knapp::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #e08a00;
+  }
+  .mt-summe {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 24px;
+    padding: 14px 0;
+    border-block: 1px solid rgb(0 46 82 / 0.08);
+    font-weight: 600;
+  }
+  .mt-knoepfe {
+    display: grid;
+    gap: 10px;
+    padding: 20px 24px;
+  }
+  .mt-vertrauen {
+    margin-top: auto;
+    padding: 20px 24px calc(24px + env(safe-area-inset-bottom));
+    background: var(--color-creme);
+  }
+</style>

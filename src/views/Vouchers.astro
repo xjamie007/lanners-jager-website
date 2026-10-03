@@ -1,0 +1,36 @@
+---
+/** Gutscheine (D8, E4): Text, Button zu Letzshop (extern), Hinweis auf beide Häuser. */
+import Page from "../layouts/Page.astro";
+import Offen from "../components/Offen.astro";
+import { shop } from "../config/shop.ts";
+import { t, type Lang } from "../i18n/index.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<Page suchbar lang={lang} route="gutscheine" section="service" foto="service-gutschein" h1={t(lang, "gutschein.h1")} title={t(lang, "seo.gutscheine.title")} description={t(lang, "seo.gutscheine.desc")}>
+  <div class="prosa gutschein">
+    <p class="gutschein-text">{t(lang, "gutschein.text")}</p>
+    <p>
+      {t(lang, "gutschein.auchImLaden")} <Offen op="OP-07.3" lang={lang} />
+    </p>
+    <p>
+      <a class="btn btn-primaer" href={shop.gutscheine.letzshopUrl} rel="noopener">
+        {t(lang, "gutschein.btn")}
+        <span class="sr-only"> ({t(lang, "site.externerLink")})</span>
+      </a>
+      <Offen op="OP-07.2" lang={lang} />
+    </p>
+    <p class="nebentext">{t(lang, "gutschein.hinweis")}</p>
+  </div>
+</Page>
+
+<style>
+  .gutschein {
+    margin-top: 32px;
+  }
+  .gutschein-text {
+    font-size: 1.125rem;
+  }
+</style>

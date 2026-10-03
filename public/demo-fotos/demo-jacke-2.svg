@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto jacke, hinten</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M125 62C135 70 165 70 175 62L222 80C238 86 246 98 249 116L262 300L236 304L222 150L222 352L78 352L78 150L64 304L38 300L51 116C54 98 62 86 78 80Z" vector-effect="non-scaling-stroke"/>
+<path d="M125 62L118 48L150 57L182 48L175 62" vector-effect="non-scaling-stroke"/>
+<path d="M78 122C120 134 180 134 222 122" vector-effect="non-scaling-stroke"/>
+<path d="M78 338H222" vector-effect="non-scaling-stroke"/>
+<path d="M40 288L64 292M236 292L260 288" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

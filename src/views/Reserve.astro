@@ -1,0 +1,140 @@
+---
+/**
+ * Reservierung (F1). Ein Formular für alle Häuser, daraus wird je Haus eine
+ * Reservierung. Braucht JavaScript, weil die Positionen aus der Tasche im
+ * Browser kommen (C5); ohne JavaScript stehen hier die Telefonnummern.
+ * POST an die Edge Function `reserve`, 303 auf die Bestätigungsseite.
+ */
+import Page from "../layouts/Page.astro";
+import Field from "../components/form/Field.astro";
+import FormParts from "../components/form/FormParts.astro";
+import Consent from "../components/form/Consent.astro";
+import HoursTable from "../components/HoursTable.astro";
+import Telefone from "../components/Telefone.astro";
+import { FUNCTIONS_URL } from "../config/site.ts";
+import { houses } from "../config/houses.ts";
+import { shop } from "../config/shop.ts";
+import hours from "../content/oeffnungszeiten.json" with { type: "json" };
+import { t, type Lang } from "../i18n/index.ts";
+import { pathFor, staticRef } from "../i18n/routes.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const [ohneJsVor, ohneJsNach] = t(lang, "reservieren.ohneJs").split("{telefone}");
+const resConfig = {
+  maxTage: shop.reservierung.abholungMaxTage,
+  haltedauer: shop.reservierung.haltedauerTage,
+  hours: { lanners: hours.lanners, jager: hours.jager },
+  namen: Object.fromEntries(houses.map((h) => [h.id, h.name])),
+};
+---
+<Page lang={lang} route="reservieren" h1={t(lang, "reservieren.h1")} intro={t(lang, "reservieren.intro")} title={t(lang, "seo.reservieren.title")} description={t(lang, "seo.reservieren.desc")} noindex breit strings={["reservieren.", "form.", "tasche.", "groesse."]}>
+  <p class="ohne-js res-ohnejs">{ohneJsVor}<Telefone lang={lang} />{ohneJsNach}</p>
+
+  <div class="res nur-js" data-res-leer hidden>
+    <p>{t(lang, "reservieren.leer")}</p>
+  </div>
+
+  <form class="res nur-js formular-breit" method="post" action={`${FUNCTIONS_URL}/reserve`} data-formular="reservieren" hidden>
+    <FormParts lang={lang} ok={pathFor(staticRef("reservierenDanke"), lang)} back={pathFor(staticRef("reservieren"), lang)} />
+    <input type="hidden" name="positionen" value="" data-positionen />
+
+    <div class="res-raster">
+      <div class="res-links">
+        <h2 class="t-h2 res-h2">{t(lang, "reservieren.zusammenfassung")}</h2>
+        <div data-res-haeuser></div>
+
+        <h2 class="t-h2 res-h2">{t(lang, "reservieren.kontaktH2")}</h2>
+        <div class="formular">
+          <Field lang={lang} id="r-vorname" name="vorname" label={t(lang, "form.vorname")} required autocomplete="given-name" fehler="form.fehlerVorname" />
+          <Field lang={lang} id="r-name" name="name" label={t(lang, "form.name")} required autocomplete="family-name" fehler="form.fehlerName" />
+          <Field lang={lang} id="r-email" name="email" type="email" label={t(lang, "form.email")} required autocomplete="email" hint={t(lang, "form.emailHinweis")} fehler="form.fehlerEmail" />
+          <Field lang={lang} id="r-mobil" name="mobil" type="tel" label={t(lang, "form.mobil")} required autocomplete="tel" hint={t(lang, "form.mobilHinweis")} fehler="form.fehlerMobil" />
+          <Field lang={lang} id="r-bemerkung" name="bemerkung" as="textarea" label={t(lang, "form.bemerkung")} hint={t(lang, "form.bemerkungHinweis")} maxlength={500} />
+          <Consent lang={lang} art="reserve" haeuser={t(lang, "haus.beideNamen")} id="r-einwilligung" />
+          <div>
+            <button class="btn btn-primaer" type="submit">{t(lang, "reservieren.senden")}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  {
+    houses.map((h) => (
+      <template data-res-zeiten={h.id}>
+        <HoursTable lang={lang} haus={h.id} caption={false} />
+      </template>
+    ))
+  }
+  <script type="application/json" id="lj-res" set:html={JSON.stringify(resConfig)} />
+  <script>
+    import "../scripts/reservieren.ts";
+  </script>
+</Page>
+
+<style>
+  .res,
+  .res-ohnejs {
+    margin-top: 32px;
+  }
+  .res-h2 {
+    margin: 52px 0 20px;
+  }
+  .res-h2:first-child {
+    margin-top: 0;
+  }
+  .res-links {
+    max-width: 720px;
+  }
+  .res :global(.res-haus) {
+    padding: 24px;
+    background: var(--color-glas);
+  }
+  .res :global(.res-haus + .res-haus) {
+    margin-top: 16px;
+  }
+  .res :global(.res-haus h3) {
+    margin-bottom: 12px;
+  }
+  .res :global(.res-pos) {
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .res :global(.res-pos li) {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  .res :global(.res-pos img) {
+    width: 60px;
+    height: 80px;
+    object-fit: contain;
+    background: var(--color-weiss);
+    padding: 4px;
+    box-sizing: border-box;
+  }
+  .res :global(.res-pos .pos-meldung) {
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  .res :global(.res-datum) {
+    max-width: 280px;
+  }
+  .res :global(.res-zeiten) {
+    margin-top: 12px;
+  }
+  .res :global(.res-zeiten summary) {
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+</style>

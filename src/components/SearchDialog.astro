@@ -1,0 +1,90 @@
+---
+/**
+ * Suchdialog (D8): Pagefind wird erst beim Öffnen geladen. Ohne JavaScript
+ * führt der Such-Link im Kopf auf die Suchseite.
+ */
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import Icon from "./Icon.astro";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<dialog class="suche-dialog" id="suche-dialog" aria-labelledby="suche-dialog-titel">
+  <div class="container-lj suche-inhalt">
+    <div class="suche-kopf">
+      <h2 class="t-h2" id="suche-dialog-titel">{t(lang, "suche.h1")}</h2>
+      <button type="button" class="suche-zu" data-suche-schliessen>
+        <Icon name="schliessen" />
+        <span class="sr-only">{t(lang, "nav.schliessen")}</span>
+      </button>
+    </div>
+    <form role="search" action={link(lang, "suche")} method="get" data-suche-form>
+      <label class="feld-label" for="suche-dialog-q">{t(lang, "suche.label")}</label>
+      <div class="suche-zeile">
+        <input class="feld" id="suche-dialog-q" name="q" type="search" autocomplete="off" aria-describedby="suche-dialog-hinweis" />
+        <button class="btn btn-primaer" type="submit">{t(lang, "suche.btn")}</button>
+      </div>
+      <p class="feld-hinweis" id="suche-dialog-hinweis">{t(lang, "suche.beispiel")}</p>
+    </form>
+    <div class="suche-ergebnisse" data-suche-ergebnisse aria-live="polite"></div>
+  </div>
+</dialog>
+
+<style is:global>
+  .suche-dialog {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--color-weiss);
+    opacity: 0;
+    transition: opacity 200ms ease-out, display 200ms allow-discrete, overlay 200ms allow-discrete;
+  }
+  .suche-dialog[open] {
+    opacity: 1;
+  }
+  @starting-style {
+    .suche-dialog[open] {
+      opacity: 0;
+    }
+  }
+  .suche-dialog::backdrop {
+    background: transparent;
+  }
+  .suche-inhalt {
+    max-width: 960px;
+    padding-bottom: 52px;
+  }
+  .suche-kopf {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: var(--header-h);
+    margin-bottom: 20px;
+  }
+  .suche-zu {
+    min-width: 44px;
+    min-height: 44px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .suche-zeile {
+    display: flex;
+    gap: 8px;
+  }
+  .suche-zeile .feld {
+    flex: 1;
+  }
+  .suche-ergebnisse {
+    margin-top: 32px;
+  }
+</style>

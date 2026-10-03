@@ -1,0 +1,422 @@
+---
+/**
+ * Startseite (D2): Hero mit den zwei Häusern, Markenband, zwei Shops,
+ * Neu eingetroffen, Sortiment mit Fotos, So funktioniert's, Geschichte,
+ * Häufige Fragen. Steht für beide Häuser: Der Hausschalter führt von hier
+ * in den Shop des gewählten Hauses.
+ */
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import ProductRow from "../components/ProductRow.astro";
+import Steps from "../components/Steps.astro";
+import Faq from "../components/Faq.astro";
+import BrandTicker from "../components/BrandTicker.astro";
+import ShopKarte from "../components/ShopKarte.astro";
+import Foto from "../components/Foto.astro";
+import Icon from "../components/Icon.astro";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import { faqJsonLd } from "../lib/seo.ts";
+import { features } from "../config/site.ts";
+import { shop } from "../config/shop.ts";
+import { getCatalog, sortRecommended } from "../lib/catalog/index.ts";
+import { alleMarken } from "../lib/marken.ts";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const cat = await getCatalog();
+const neu = sortRecommended(cat.online.filter((a) => a.inThePicture)).slice(0, 8);
+const marken = alleMarken(cat);
+const sortiment = [
+  { href: link(lang, { kind: "abteilung", id: "damen" }), label: t(lang, "nav.damen"), haeuser: "lanners", foto: "kategorie-damen", text: t(lang, "home.katDamen") },
+  { href: link(lang, { kind: "abteilung", id: "herren" }), label: t(lang, "nav.herren"), haeuser: "lanners jager", foto: "kategorie-herren", text: t(lang, "home.katHerren") },
+  { href: link(lang, { kind: "accessoires" }), label: t(lang, "nav.accessoires"), haeuser: "lanners jager", foto: "kategorie-accessoires", text: t(lang, "home.katAccessoires") },
+  { href: link(lang, "sale"), label: t(lang, "nav.sale"), haeuser: "lanners jager", foto: "kategorie-sale", text: t(lang, "home.katSale") },
+];
+const n = shop.reservierung.haltedauerTage;
+const faqIds = [1, 2, 3, 4, 5, 6, 7, 9, 10];
+const faqData = faqIds
+  .filter((i) => ![4, 9, 10].includes(i)) // offene Antworten nicht in die strukturierten Daten
+  .filter((i) => (i === 5 ? features.payShip : true))
+  .map((i) => ({ q: t(lang, `faq.q${i}`), a: t(lang, `faq.a${i}`, { n }) }));
+---
+<Base lang={lang} ref={{ kind: "static", route: "home" }} title={t(lang, "seo.start.title")} description={t(lang, "seo.start.desc")} heroAnimation jsonLd={[faqJsonLd(faqData)]} seitenHaus="beide">
+  <Hero lang={lang} />
+
+  <BrandTicker lang={lang} marken={marken} id="marken-start" titel={t(lang, "home.markenH2")} vorzeile={t(lang, "home.markenVorzeile")} alleLink variante="hell" />
+
+  <section class="sektion container-lj" aria-labelledby="shops-titel">
+    <div class="abschnitt-kopf">
+      <p class="vorzeile">{t(lang, "home.shopsVorzeile")}</p>
+      <h2 class="t-h2" id="shops-titel">{t(lang, "home.shopsH2")}</h2>
+      <p class="abschnitt-text">{t(lang, "home.shopsText")}</p>
+    </div>
+    <div class="shops-raster">
+      <ShopKarte lang={lang} haus="lanners" />
+      <ShopKarte lang={lang} haus="jager" />
+    </div>
+  </section>
+
+  <section class="sektion container-lj" aria-labelledby="neu-titel">
+    <div class="kopfzeile">
+      <div>
+        <p class="vorzeile">{t(lang, "home.neuVorzeile")}</p>
+        <h2 class="t-h2" id="neu-titel">{t(lang, "home.neuH2")}</h2>
+      </div>
+      <a href={link(lang, "neu")} class="pfeillink">
+        <span aria-hidden="true">{t(lang, "home.neuAlle")}</span>
+        <span class="sr-only">{t(lang, "home.neuAlleSr")}</span>
+        <Icon name="pfeil" size={18} />
+      </a>
+    </div>
+    {
+      neu.length > 0 ? (
+        <ProductRow lang={lang} articles={neu} label={t(lang, "home.neuRegion")} id="neu-reihe" />
+      ) : (
+        <p>
+          {t(lang, "home.neuLeer")} <a href={link(lang, "sortiment")}>{t(lang, "home.neuLeerLink")}</a>
+        </p>
+      )
+    }
+  </section>
+
+  <section class="sektion container-lj" aria-labelledby="sortiment-titel">
+    <div class="abschnitt-kopf">
+      <p class="vorzeile">{t(lang, "home.sortimentVorzeile")}</p>
+      <h2 class="t-h2" id="sortiment-titel">{t(lang, "home.sortimentH2")}</h2>
+    </div>
+    <ul class="kacheln" data-hausfilter>
+      {
+        sortiment.map((s, i) => (
+          <li data-haeuser={s.haeuser} class={`kachel kachel-${i}`} data-vt-karte>
+            <a href={s.href} class="kachel-link">
+              <span class="kachel-bild" aria-hidden="true">
+                <Foto name={s.foto} alt="" sizes="(min-width: 1024px) 25vw, 50vw" />
+              </span>
+              <span class="kachel-text">
+                <span class="kachel-titel" data-vt-quelle="kacheltitel">{s.label}</span>
+                <span class="kachel-unter">{s.text}</span>
+              </span>
+              <span class="kachel-pfeil" aria-hidden="true">
+                <Icon name="pfeil" size={20} />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="sektion flaeche-creme howto-band" aria-labelledby="howto-titel">
+    <div class="container-lj howto-raster">
+      <div class="howto-bild">
+        <Foto name="service-beratung" alt="" sizes="(min-width: 1024px) 40vw, 100vw" />
+      </div>
+      <div class="howto-text">
+        <p class="vorzeile">{t(lang, "home.howtoVorzeile")}</p>
+        <h2 class="t-h2" id="howto-titel">{t(lang, "home.howtoH2")}</h2>
+        <div class="abstand">
+          <Steps lang={lang} />
+        </div>
+        <p class="abstand">
+          <a class="btn btn-primaer" href={link(lang, "howto")}>
+            {t(lang, "home.howtoLink")}
+            <Icon name="pfeil" size={18} />
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="geschichte-band auf-dunkel" aria-labelledby="geschichte-titel">
+    <div class="geschichte-bild" aria-hidden="true">
+      <Foto name="geschichte-alt" alt="" sizes="100vw" />
+    </div>
+    <div class="container-lj geschichte-inhalt">
+      <p class="geschichte-jahr" aria-hidden="true">1891</p>
+      <div class="geschichte-text">
+        <p class="vorzeile">{t(lang, "home.geschichteVorzeile")}</p>
+        <h2 class="t-h2" id="geschichte-titel">{t(lang, "home.geschichteH2")}</h2>
+        <p>{t(lang, "home.geschichteText")}</p>
+        <a class="btn btn-hell" href={link(lang, "geschichte")}>
+          {t(lang, "home.geschichteLink")}
+          <Icon name="pfeil" size={18} />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sektion container-lj" aria-labelledby="faq-titel">
+    <div class="abschnitt-kopf">
+      <p class="vorzeile">{t(lang, "home.faqVorzeile")}</p>
+      <h2 class="t-h2" id="faq-titel">{t(lang, "home.faqH2")}</h2>
+    </div>
+    <div class="abstand faq-breite">
+      <Faq lang={lang} ids={faqIds} headingId="faq-titel" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .abschnitt-kopf {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .abschnitt-text {
+    max-width: 60ch;
+    color: var(--color-schiefer);
+    font-size: 1.0625rem;
+  }
+  .kopfzeile {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .kopfzeile > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .pfeillink {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: gap 200ms ease-out;
+  }
+  .pfeillink:hover {
+    gap: 12px;
+    text-decoration: underline;
+  }
+  .abstand {
+    margin-top: 32px;
+  }
+  .shops-raster {
+    display: grid;
+    gap: 20px;
+  }
+  @media (min-width: 900px) {
+    .shops-raster {
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+  }
+
+  /* Sortiment-Kacheln mit Foto */
+  .kacheln {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  @media (min-width: 1024px) {
+    .kacheln {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+  }
+  .kachel {
+    transition: opacity 280ms ease-out;
+  }
+  .kachel[data-ausgeblendet] {
+    opacity: 0;
+  }
+  .kachel[hidden] {
+    display: none;
+  }
+  .kachel-link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-bild);
+    overflow: hidden;
+    color: var(--color-weiss);
+    text-decoration: none;
+    isolation: isolate;
+  }
+  .kachel-bild {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .kachel-bild :global(.foto) {
+    transition: transform 700ms var(--ease-schaufenster);
+  }
+  .kachel-link:hover .kachel-bild :global(.foto) {
+    transform: scale(1.06);
+  }
+  .kachel-bild::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 35%, rgb(0 22 42 / 0.88));
+    transition: opacity 300ms ease-out;
+  }
+  .kachel-1 .kachel-bild::after {
+    background: linear-gradient(180deg, transparent 35%, rgb(16 14 15 / 0.88));
+  }
+  .kachel-2 .kachel-bild::after {
+    background: linear-gradient(180deg, transparent 35%, rgb(70 52 25 / 0.88));
+  }
+  .kachel-3 .kachel-bild::after {
+    background: linear-gradient(180deg, rgb(179 38 30 / 0.05) 30%, rgb(120 20 15 / 0.9));
+  }
+  .kachel-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: clamp(14px, 2vw, 24px);
+    padding-right: 64px;
+  }
+  .kachel-titel {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .kachel-unter {
+    font-size: 0.875rem;
+    opacity: 0.88;
+  }
+  .kachel-pfeil {
+    position: absolute;
+    right: clamp(14px, 2vw, 22px);
+    bottom: clamp(14px, 2vw, 24px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.18);
+    backdrop-filter: blur(6px);
+    transition: background-color 200ms ease-out, color 200ms ease-out, transform 200ms ease-out;
+  }
+  .kachel-link:hover .kachel-pfeil {
+    background: var(--color-weiss);
+    color: var(--color-tusche);
+    transform: translateX(3px);
+  }
+  @media (max-width: 599px) {
+    .kachel-unter {
+      display: none;
+    }
+    .kachel-pfeil {
+      width: 34px;
+      height: 34px;
+    }
+    .kachel-text {
+      padding-right: 48px;
+    }
+  }
+
+  /* So funktioniert's */
+  .howto-band {
+    padding-block: var(--section);
+  }
+  .howto-raster {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .howto-raster {
+      grid-template-columns: 5fr 7fr;
+      gap: 64px;
+    }
+  }
+  .howto-bild {
+    aspect-ratio: 4 / 5;
+    border-radius: calc(var(--radius-bild) + 6px);
+    overflow: hidden;
+    box-shadow: 0 40px 70px -45px rgb(0 20 40 / 0.7);
+    max-height: 640px;
+  }
+  @media (max-width: 1023px) {
+    .howto-bild {
+      aspect-ratio: 16 / 10;
+    }
+  }
+  .howto-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .howto-text :global(.schritte) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .howto-text :global(.schritte li) {
+    max-width: 60ch;
+  }
+
+  /* Geschichte */
+  .geschichte-band {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: var(--color-weiss);
+    padding-block: clamp(64px, 9vw, 120px);
+  }
+  .geschichte-bild {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .geschichte-bild :global(.foto) {
+    filter: sepia(0.4) saturate(0.8);
+  }
+  .geschichte-bild::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, rgb(16 14 15 / 0.92) 0%, rgb(74 62 46 / 0.8) 45%, rgb(0 46 82 / 0.75) 100%);
+  }
+  .geschichte-inhalt {
+    display: grid;
+    gap: 16px;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .geschichte-inhalt {
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+  }
+  .geschichte-jahr {
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 3rem + 14vw, 15rem);
+    line-height: 0.85;
+    background: var(--verlauf-messing);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .geschichte-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    max-width: 52ch;
+  }
+  .geschichte-text p:not(.vorzeile) {
+    opacity: 0.92;
+    font-size: 1.0625rem;
+  }
+  .faq-breite {
+    max-width: 920px;
+  }
+</style>

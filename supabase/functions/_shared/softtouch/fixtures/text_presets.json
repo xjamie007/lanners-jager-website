@@ -1,0 +1,82 @@
+[
+ {
+  "id": "S1",
+  "description": "Composition dutch"
+ },
+ {
+  "id": "S2",
+  "description": "Composition french"
+ },
+ {
+  "id": "S3",
+  "description": "Composition english"
+ },
+ {
+  "id": "SA",
+  "description": "SEO dutch"
+ },
+ {
+  "id": "SB",
+  "description": "SEO french"
+ },
+ {
+  "id": "SC",
+  "description": "SEO english"
+ },
+ {
+  "id": "S5",
+  "description": "Wash Instructions"
+ },
+ {
+  "id": "S6",
+  "description": "Bleach Instructions"
+ },
+ {
+  "id": "S7",
+  "description": "Dry Instructions"
+ },
+ {
+  "id": "S8",
+  "description": "Iron Instructions"
+ },
+ {
+  "id": "S9",
+  "description": "DryClean Instructions"
+ },
+ {
+  "id": "SJ",
+  "description": "Long Description dutch"
+ },
+ {
+  "id": "SK",
+  "description": "Long Description french"
+ },
+ {
+  "id": "SL",
+  "description": "Long Description english"
+ },
+ {
+  "id": "SM",
+  "description": "Short Description dutch"
+ },
+ {
+  "id": "SN",
+  "description": "Short Description french"
+ },
+ {
+  "id": "SO",
+  "description": "Short Description english"
+ },
+ {
+  "id": "D1",
+  "description": "Lange Beschreibung deutsch"
+ },
+ {
+  "id": "D2",
+  "description": "Kurze Beschreibung deutsch"
+ },
+ {
+  "id": "D3",
+  "description": "Zusammensetzung deutsch"
+ }
+]

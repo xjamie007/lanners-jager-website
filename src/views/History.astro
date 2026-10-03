@@ -1,0 +1,384 @@
+---
+/**
+ * Geschichte: zwei Häuser in der Grand-Rue. Nur belegte Angaben (Jager seit
+ * 1891, angefangen als Hutgeschäft, dann Hemden, heute Herrenausstatter;
+ * Lanners 520 m² Damen- und Herrenmode). Das Gründungsjahr von Lanners fehlt
+ * (OP-01.6) und steht sichtbar als offener Punkt da.
+ */
+import Base from "../layouts/Base.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import Foto from "../components/Foto.astro";
+import Offen from "../components/Offen.astro";
+import Icon from "../components/Icon.astro";
+import HouseLogo from "../components/HouseLogo.astro";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import { breadcrumbJsonLd } from "../lib/seo.ts";
+import { getHouse } from "../config/houses.ts";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const crumbs = [
+  { name: t(lang, "nav.start"), href: link(lang, "home") },
+  { name: t(lang, "geschichte.h1"), href: link(lang, "geschichte") },
+];
+const jager = getHouse("jager");
+const lanners = getHouse("lanners");
+const stationen = [
+  { jahr: "1891", haus: "jager", titel: t(lang, "geschichte.s1Titel"), text: t(lang, "geschichte.s1Text") },
+  { jahr: t(lang, "geschichte.danach"), haus: "jager", titel: t(lang, "geschichte.s2Titel"), text: t(lang, "geschichte.s2Text") },
+  { jahr: null, haus: "lanners", titel: t(lang, "geschichte.s3Titel"), text: t(lang, "geschichte.s3Text") },
+  { jahr: t(lang, "geschichte.heute"), haus: "beide", titel: t(lang, "geschichte.s4Titel"), text: t(lang, "geschichte.s4Text") },
+  { jahr: t(lang, "geschichte.online"), haus: "beide", titel: t(lang, "geschichte.s5Titel"), text: t(lang, "geschichte.s5Text") },
+] as const;
+---
+<Base lang={lang} ref={{ kind: "static", route: "geschichte" }} title={t(lang, "seo.geschichte.title")} description={t(lang, "seo.geschichte.desc")} jsonLd={[breadcrumbJsonLd(crumbs)]} section="geschichte">
+  <section class="g-hero auf-dunkel" aria-labelledby="g-titel">
+    <div class="g-hero-bild">
+      <Foto name="geschichte-alt" alt="" sizes="100vw" eager />
+    </div>
+    <div class="container-lj g-hero-inhalt">
+      <Breadcrumb lang={lang} items={crumbs} />
+      <p class="vorzeile">{t(lang, "geschichte.vorzeile")}</p>
+      <h1 class="t-h1-start" id="g-titel">{t(lang, "geschichte.h1")}</h1>
+      <p class="g-hero-text">{t(lang, "geschichte.intro")}</p>
+    </div>
+  </section>
+
+  <section class="sektion container-lj" aria-labelledby="g-zeit-titel">
+    <div class="g-kopf">
+      <p class="vorzeile">{t(lang, "geschichte.zeitVorzeile")}</p>
+      <h2 class="t-h2" id="g-zeit-titel">{t(lang, "geschichte.zeitH2")}</h2>
+    </div>
+    <ol class="zeitstrahl">
+      {
+        stationen.map((s, i) => (
+          <li class={`station station-${s.haus}`}>
+            <div class="station-marke" aria-hidden="true">
+              <span />
+            </div>
+            <div class="station-karte">
+              <p class="station-jahr">{s.jahr ?? <Offen op="OP-01.6" lang={lang} />}</p>
+              <h3 class="station-titel">{s.titel}</h3>
+              <p class="station-text">{s.text}</p>
+              <p class="station-haus t-klein">
+                {s.haus === "beide" ? t(lang, "haus.beideNamen") : s.haus === "jager" ? jager.name : lanners.name}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="sektion container-lj g-haeuser" aria-label={t(lang, "haeuser.h1")}>
+    {
+      [jager, lanners].map((h) => (
+        <article class={`g-haus g-haus-${h.id}`}>
+          <div class="g-haus-bild">
+            <Foto name={h.id === "jager" ? "jager-hut" : "geschichte-schneider"} alt="" sizes="(min-width: 768px) 45vw, 100vw" />
+            <div class="g-haus-logo">
+              <HouseLogo haus={h.id} hell />
+            </div>
+          </div>
+          <div class="g-haus-text">
+            <h2 class="t-hausname">{h.name}</h2>
+            <p class="g-haus-jahr">
+              {h.id === "jager" ? (
+                t(lang, "haeuser.jagerSeit")
+              ) : (
+                <>
+                  {t(lang, "haeuser.gegruendet")}: <Offen op="OP-01.6" lang={lang} />
+                </>
+              )}
+            </p>
+            <p>{t(lang, `haeuser.${h.id}Text`)}</p>
+            <a class="btn btn-primaer g-haus-btn" href={link(lang, { kind: "haus", id: h.id })}>
+              {t(lang, "shop.zumShopVon", { haus: h.short })}
+              <Icon name="pfeil" size={18} />
+            </a>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <section class="sektion g-band auf-dunkel" aria-labelledby="g-besuch">
+    <div class="container-lj g-band-inhalt">
+      <div>
+        <p class="vorzeile">{t(lang, "geschichte.besuchVorzeile")}</p>
+        <h2 class="t-h2" id="g-besuch">{t(lang, "geschichte.besuchH2")}</h2>
+        <p class="g-band-text">{t(lang, "haeuser.intro")}</p>
+      </div>
+      <div class="g-band-knoepfe">
+        <a class="btn btn-hell" href={link(lang, "haeuser")}>{t(lang, "nav.haeuser")}</a>
+        <a class="btn btn-rand-hell" href={link(lang, "sortiment")}>{t(lang, "hero.btnSortiment")}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .g-hero {
+    position: relative;
+    isolation: isolate;
+    color: var(--color-weiss);
+    min-height: clamp(420px, 62vh, 640px);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .g-hero-bild {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .g-hero-bild::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgb(0 20 40 / 0.35) 0%, rgb(0 20 40 / 0.55) 45%, rgb(20 10 5 / 0.92) 100%), linear-gradient(90deg, rgb(0 46 82 / 0.55), rgb(74 62 46 / 0.35));
+  }
+  .g-hero-bild :global(.foto) {
+    filter: sepia(0.35) saturate(0.8);
+  }
+  .g-hero-inhalt {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-block: 32px 56px;
+  }
+  .g-hero-inhalt :global(.pfad),
+  .g-hero-inhalt :global(.pfad a) {
+    color: rgb(255 255 255 / 0.85);
+  }
+  .g-hero-text {
+    max-width: 60ch;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    opacity: 0.92;
+  }
+  .g-kopf {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+
+  /* Zeitstrahl: Linie im Markenverlauf, Karten abwechselnd links und rechts */
+  .zeitstrahl {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 28px;
+  }
+  .zeitstrahl::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 11px;
+    width: 3px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, var(--color-jager-hell), var(--color-messing) 45%, var(--color-marine));
+  }
+  .station {
+    position: relative;
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 20px;
+  }
+  .station-marke {
+    display: flex;
+    justify-content: center;
+    padding-top: 22px;
+  }
+  .station-marke span {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 3px solid var(--color-weiss);
+    box-shadow: 0 0 0 2px currentColor;
+  }
+  .station-jager {
+    color: var(--color-jager-hell);
+  }
+  .station-lanners {
+    color: var(--color-marine);
+  }
+  .station-beide {
+    color: var(--color-messing);
+  }
+  .station-marke span {
+    background: currentColor;
+  }
+  .station-karte {
+    color: var(--color-tusche);
+    padding: 22px 24px;
+    border-radius: var(--radius-bild);
+    background: var(--color-creme);
+    border-top: 4px solid currentColor;
+    border-top-color: inherit;
+  }
+  .station-jager .station-karte {
+    border-top-color: var(--color-jager-hell);
+  }
+  .station-lanners .station-karte {
+    border-top-color: var(--color-marine);
+  }
+  .station-beide .station-karte {
+    border-top-color: var(--color-messing);
+  }
+  .station-jahr {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .station-jager .station-jahr {
+    color: var(--color-jager);
+  }
+  .station-lanners .station-jahr {
+    color: var(--color-marine);
+  }
+  .station-beide .station-jahr {
+    color: #8b6431;
+  }
+  .station-titel {
+    margin-top: 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .station-text {
+    margin-top: 6px;
+    max-width: 60ch;
+  }
+  .station-haus {
+    margin-top: 12px;
+    font-weight: 600;
+    color: var(--color-schiefer);
+  }
+  @media (min-width: 900px) {
+    .zeitstrahl::before {
+      left: 50%;
+      margin-left: -1.5px;
+    }
+    .station {
+      grid-template-columns: minmax(0, 1fr) 26px minmax(0, 1fr);
+      gap: 32px;
+    }
+    .station-marke {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .station:nth-child(odd) .station-karte {
+      grid-column: 1;
+      grid-row: 1;
+      text-align: right;
+    }
+    .station:nth-child(odd) .station-text {
+      margin-left: auto;
+    }
+    .station:nth-child(even) .station-karte {
+      grid-column: 3;
+      grid-row: 1;
+    }
+  }
+
+  /* Zwei Häuser */
+  .g-haeuser {
+    display: grid;
+    gap: 40px;
+  }
+  @media (min-width: 900px) {
+    .g-haeuser {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+  }
+  .g-haus {
+    display: flex;
+    flex-direction: column;
+    border-radius: calc(var(--radius-bild) + 4px);
+    overflow: hidden;
+    background: var(--color-weiss);
+    box-shadow: 0 30px 60px -40px rgb(0 30 60 / 0.55), 0 0 0 1px rgb(0 46 82 / 0.06);
+  }
+  .g-haus-bild {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .g-haus-bild::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .g-haus-jager .g-haus-bild::after {
+    background: linear-gradient(180deg, transparent 30%, rgb(22 20 21 / 0.85));
+  }
+  .g-haus-lanners .g-haus-bild::after {
+    background: linear-gradient(180deg, transparent 30%, rgb(0 29 54 / 0.85));
+  }
+  .g-haus-logo {
+    position: absolute;
+    left: 24px;
+    bottom: 20px;
+    z-index: 1;
+    font-size: 13px;
+    color: var(--color-weiss);
+  }
+  .g-haus-text {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 28px;
+  }
+  .g-haus-jager .t-hausname {
+    color: var(--color-jager);
+  }
+  .g-haus-lanners .t-hausname {
+    color: var(--color-marine);
+  }
+  .g-haus-jahr {
+    font-weight: 700;
+    color: var(--color-messing);
+  }
+  .g-haus-btn {
+    align-self: flex-start;
+    margin-top: 8px;
+  }
+  .g-haus-jager .g-haus-btn {
+    background: var(--verlauf-jager);
+  }
+  .g-haus-lanners .g-haus-btn {
+    background: var(--verlauf-lanners);
+  }
+
+  .g-band {
+    background: var(--verlauf-marke);
+    color: var(--color-weiss);
+    padding-block: 56px;
+  }
+  .g-band-inhalt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+  }
+  .g-band-text {
+    margin-top: 10px;
+    opacity: 0.9;
+  }
+  .g-band-knoepfe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+</style>

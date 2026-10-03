@@ -1,0 +1,74 @@
+---
+/**
+ * Zentraler Router: erzeugt alle Seiten in vier Sprachen mit übersetzten Slugs
+ * (Briefing D1). Jede Seite bekommt ihre Routen-Referenz, damit hreflang,
+ * Canonical und der Sprachumschalter dieselbe Seite in der anderen Sprache finden.
+ */
+import { LANGS, type Lang } from "../../i18n/index.ts";
+import { segmentsFor, PAGE_SEGMENT, STATIC_ROUTES, type PageRef, type StaticRoute } from "../../i18n/routes.ts";
+import { features, buyEnabled } from "../../config/site.ts";
+import { getCatalog } from "../../lib/catalog/index.ts";
+import { listDefinitions, pageCount, type ListDef } from "../../lib/lists.ts";
+import Home from "../../views/Home.astro";
+import ListPage from "../../views/ListPage.astro";
+import Product from "../../views/Product.astro";
+import StaticView from "../../views/StaticView.astro";
+import Brands from "../../views/Brands.astro";
+import Houses from "../../views/Houses.astro";
+import House from "../../views/House.astro";
+
+type Props =
+  | { view: "home"; lang: Lang }
+  | { view: "liste"; lang: Lang; list: ListDef; page: number }
+  | { view: "produkt"; lang: Lang; uid8: string }
+  | { view: "static"; lang: Lang; route: StaticRoute }
+  | { view: "marken"; lang: Lang }
+  | { view: "haeuser"; lang: Lang }
+  | { view: "haus"; lang: Lang; haus: "lanners" | "jager" };
+
+export async function getStaticPaths() {
+  const cat = await getCatalog();
+  const paths: { params: { lang: string; path: string | undefined }; props: Props }[] = [];
+  const add = (lang: Lang, ref: PageRef, props: Props, page = 1) => {
+    const segs = segmentsFor(ref, lang);
+    if (page > 1) segs.push(PAGE_SEGMENT[lang], String(page));
+    paths.push({ params: { lang, path: segs.length ? segs.join("/") : undefined }, props });
+  };
+
+  // Seiten, die es nur mit bestimmten Flags gibt
+  const nurMitKauf: StaticRoute[] = ["kasse", "kasseDanke", "agb", "widerruf", "versand"];
+  const nurDemo: StaticRoute[] = ["demopost"];
+  const eigene: StaticRoute[] = ["home", "sortiment", "neu", "sale", "marken", "haeuser"];
+
+  for (const lang of LANGS) {
+    add(lang, { kind: "static", route: "home" }, { view: "home", lang });
+    for (const route of Object.keys(STATIC_ROUTES) as StaticRoute[]) {
+      if (eigene.includes(route)) continue;
+      if (nurMitKauf.includes(route) && !buyEnabled) continue;
+      if (route === "kasseDemo" && !(buyEnabled && features.demo)) continue;
+      if (nurDemo.includes(route) && !features.demo) continue;
+      if ((route === "reservieren" || route === "reservierenDanke") && !features.reserve) continue;
+      add(lang, { kind: "static", route }, { view: "static", lang, route });
+    }
+    add(lang, { kind: "static", route: "marken" }, { view: "marken", lang });
+    add(lang, { kind: "static", route: "haeuser" }, { view: "haeuser", lang });
+    for (const haus of ["lanners", "jager"] as const) add(lang, { kind: "haus", id: haus }, { view: "haus", lang, haus });
+
+    for (const list of listDefinitions(cat)) {
+      const pages = pageCount(list);
+      for (let page = 1; page <= pages; page++) add(lang, list.ref, { view: "liste", lang, list, page }, page);
+    }
+    for (const a of cat.articles) add(lang, { kind: "produkt", slug: a.slug, uid8: a.uid8 }, { view: "produkt", lang, uid8: a.uid8 });
+  }
+  return paths;
+}
+
+const props = Astro.props as Props;
+---
+{props.view === "home" && <Home lang={props.lang} />}
+{props.view === "liste" && <ListPage lang={props.lang} list={props.list} page={props.page} />}
+{props.view === "produkt" && <Product lang={props.lang} uid8={props.uid8} />}
+{props.view === "static" && <StaticView lang={props.lang} route={props.route} />}
+{props.view === "marken" && <Brands lang={props.lang} />}
+{props.view === "haeuser" && <Houses lang={props.lang} />}
+{props.view === "haus" && <House lang={props.lang} haus={props.haus} />}

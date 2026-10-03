@@ -1,0 +1,119 @@
+---
+/**
+ * Reihe von Produktkarten: mobil und Tablet eine wischbare Reihe (scroll-snap),
+ * Pfeile ab 768 px; ab 1200 px ein Raster mit 4 Spalten. Kein Auto-Karussell.
+ * Karten, die zum gewählten Haus nicht passen, blenden aus (src/scripts/liste-haus.ts).
+ */
+import { t, type Lang } from "../i18n/index.ts";
+import type { Article } from "../lib/catalog/types.ts";
+import ProductCard from "./ProductCard.astro";
+import Icon from "./Icon.astro";
+interface Props {
+  lang: Lang;
+  articles: Article[];
+  label: string;
+  id: string;
+  headingLevel?: 2 | 3;
+}
+const { lang, articles, label, id, headingLevel = 3 } = Astro.props;
+---
+<div class="reihe" data-reihe data-hausfilter>
+  <div class="reihe-pfeile nur-js" aria-hidden="false">
+    <button type="button" class="reihe-pfeil" data-reihe-zurueck aria-controls={id}>
+      <Icon name="links" />
+      <span class="sr-only">{t(lang, "home.zurueck")}</span>
+    </button>
+    <button type="button" class="reihe-pfeil" data-reihe-weiter aria-controls={id}>
+      <Icon name="rechts" />
+      <span class="sr-only">{t(lang, "home.weiter")}</span>
+    </button>
+  </div>
+  <ul class="reihe-liste" id={id} role="list" aria-label={label}>
+    {
+      articles.map((a, i) => (
+        <li class="reihe-eintrag" data-reihe-eintrag data-haeuser={a.houses.join(" ")}>
+          <ProductCard article={a} lang={lang} headingLevel={headingLevel} eager={false} />
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script>
+  for (const reihe of document.querySelectorAll<HTMLElement>("[data-reihe]")) {
+    const liste = reihe.querySelector<HTMLElement>(".reihe-liste")!;
+    const schritt = () => Math.max(200, liste.clientWidth * 0.8);
+    reihe.querySelector("[data-reihe-zurueck]")?.addEventListener("click", () => liste.scrollBy({ left: -schritt(), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }));
+    reihe.querySelector("[data-reihe-weiter]")?.addEventListener("click", () => liste.scrollBy({ left: schritt(), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }));
+  }
+</script>
+
+<style is:global>
+  .reihe {
+    position: relative;
+  }
+  .reihe-liste {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 8px) / 2.2);
+    gap: 8px;
+    list-style: none;
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 0 var(--gutter) 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .reihe-liste::-webkit-scrollbar {
+    display: none;
+  }
+  .reihe-eintrag {
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+  .reihe-eintrag[hidden] {
+    display: none;
+  }
+  .reihe-pfeile {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .reihe-liste {
+      grid-auto-columns: calc((100% - 32px) / 3.2);
+      gap: 16px;
+    }
+    .reihe-pfeile {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+    .reihe-pfeil {
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: 0;
+      box-shadow: inset 0 0 0 var(--stroke) var(--color-tusche);
+      cursor: pointer;
+    }
+  }
+  @media (min-width: 1200px) {
+    .reihe-pfeile {
+      display: none;
+    }
+    .reihe-liste {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-auto-columns: auto;
+      gap: 40px 16px;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+    }
+  }
+</style>

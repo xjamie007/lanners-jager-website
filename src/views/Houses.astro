@@ -1,0 +1,102 @@
+---
+/**
+ * Die Häuser: Kopf im Markenverlauf, beide Shops als große Karten, dann je
+ * Haus ein eigenes Markenband und Öffnungszeiten mit Adresse. Steht für beide
+ * Häuser: Der Hausschalter führt von hier in den Shop des gewählten Hauses.
+ */
+import Base from "../layouts/Base.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import HouseSummary from "../components/HouseSummary.astro";
+import ShopKarte from "../components/ShopKarte.astro";
+import BrandTicker from "../components/BrandTicker.astro";
+import { houses } from "../config/houses.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import { breadcrumbJsonLd } from "../lib/seo.ts";
+import { getCatalog } from "../lib/catalog/index.ts";
+import { alleMarken } from "../lib/marken.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const cat = await getCatalog();
+const crumbs = [
+  { name: t(lang, "nav.start"), href: link(lang, "home") },
+  { name: t(lang, "haeuser.h1"), href: link(lang, "haeuser") },
+];
+const order = [...houses].sort((a, b) => Number(a.nr) - Number(b.nr));
+---
+<Base lang={lang} ref={{ kind: "static", route: "haeuser" }} title={t(lang, "seo.haeuser.title")} description={t(lang, "seo.haeuser.desc")} jsonLd={[breadcrumbJsonLd(crumbs)]} section="haeuser" seitenHaus="beide">
+  <section class="haeuser-kopf auf-dunkel" aria-labelledby="haeuser-titel">
+    <div class="container-lj haeuser-kopf-inhalt">
+      <Breadcrumb lang={lang} items={crumbs} />
+      <p class="vorzeile">{t(lang, "hero.vorzeile")}</p>
+      <h1 class="t-h1" id="haeuser-titel">{t(lang, "haeuser.h1")}</h1>
+      <p class="prosa haeuser-intro">{t(lang, "haeuser.intro")} {t(lang, "home.shopsText")}</p>
+    </div>
+  </section>
+
+  <div class="container-lj haeuser-karten">
+    {order.map((h) => <ShopKarte lang={lang} haus={h.id} level={2} />)}
+  </div>
+
+  {
+    order.map((h) => (
+      <section class="sektion haus-abschnitt" aria-labelledby={`haus-${h.id}-3`}>
+        <BrandTicker lang={lang} marken={alleMarken(cat, h.id)} id={`marken-${h.id}`} titel={t(lang, "shop.markenH2", { haus: h.short })} vorzeile={t(lang, "shop.markenVorzeile")} variante={h.id} haus={h.id} />
+        <div class="container-lj haus-zusammenfassung">
+          <HouseSummary lang={lang} haus={h.id} level={3} kurz={false} ausblick />
+        </div>
+      </section>
+    ))
+  }
+</Base>
+
+<style>
+  .haeuser-kopf {
+    position: relative;
+    background: var(--verlauf-marke);
+    color: var(--color-weiss);
+    padding-bottom: 120px;
+    overflow: hidden;
+  }
+  .haeuser-kopf::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(70% 120% at 85% 0%, rgb(217 182 122 / 0.22), transparent 60%);
+    pointer-events: none;
+  }
+  .haeuser-kopf-inhalt {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .haeuser-kopf-inhalt :global(.pfad),
+  .haeuser-kopf-inhalt :global(.pfad a),
+  .haeuser-kopf-inhalt :global(.pfad [aria-current]),
+  .haeuser-kopf-inhalt :global(.pfad li + li::before) {
+    color: rgb(255 255 255 / 0.8);
+  }
+  .haeuser-intro {
+    opacity: 0.9;
+    font-size: 1.0625rem;
+  }
+  .haeuser-karten {
+    position: relative;
+    margin-top: -88px;
+    display: grid;
+    gap: 20px;
+  }
+  @media (min-width: 900px) {
+    .haeuser-karten {
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+  }
+  .haus-zusammenfassung {
+    margin-top: 40px;
+    max-width: 900px;
+  }
+</style>

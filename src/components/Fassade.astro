@@ -1,0 +1,69 @@
+---
+/**
+ * PLATZHALTER – wird ersetzt (OP-08.2, OP-08.3).
+ * Einfache Strichzeichnungen der zwei Fassaden in der Grand-Rue, nur zur Demo:
+ *  - Jager, Grand-Rue 32: Eckhaus mit gerundetem Erker, Mansarddach, graues Band "JAGER"
+ *  - Lanners, Grand-Rue 18: neutrale Stadthausfassade mit Band "LANNERS"
+ * Die echte Jager-Zeichnung (Logo, als Vektor mit Strichen) und eine Zeichnung der
+ * Lanners-Fassade im selben Stil fehlen noch.
+ *
+ * Alle Linien sind Striche (stroke, vector-effect: non-scaling-stroke, 1,5 px) mit
+ * pathLength="1", damit sie sich beim ersten Besuch selbst zeichnen können (C4).
+ * Glasflächen in `glas`, Jager-Band in #808080. Beide Fassaden sind gleich hoch.
+ * aria-hidden: Der Linktext (Hausname und Adresse) reicht als Name.
+ */
+import { fassadeGeometrie } from "../lib/fassaden.ts";
+
+interface Props {
+  haus: "lanners" | "jager";
+  class?: string;
+}
+const { haus, class: cls = "" } = Astro.props;
+const { strokes, glass, band, letters } = fassadeGeometrie(haus);
+---
+<svg
+  class={`fassade fassade-${haus} ${cls}`}
+  viewBox="0 0 260 360"
+  width="260"
+  height="360"
+  aria-hidden="true"
+  focusable="false"
+  data-platzhalter="Zeichnung folgt, OP-08"
+>
+  <g class="fl">
+    {glass.map((g) => (g.r ? <circle class="glas" cx={g.x + g.r} cy={g.y + g.r} r={g.r} fill="#F1F2F4" /> : <rect class="glas" x={g.x} y={g.y} width={g.w} height={g.h} fill="#F1F2F4" />))}
+    <rect class="band" x={band.x} y={band.y} width={band.w} height={band.h} fill={band.fill} />
+  </g>
+  <g class="striche" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    {
+      strokes.map((s) =>
+        s.tag === "path" ? (
+          <path class="s" d={s.d} pathLength="1" vector-effect="non-scaling-stroke" />
+        ) : s.tag === "rect" ? (
+          <rect class="s" x={s.x} y={s.y} width={s.w} height={s.h} pathLength="1" vector-effect="non-scaling-stroke" />
+        ) : (
+          <circle class="s" cx={s.cx} cy={s.cy} r={s.r} pathLength="1" vector-effect="non-scaling-stroke" />
+        ),
+      )
+    }
+  </g>
+  <g class="fl" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    {letters.map((l) => <path d={l.d} transform={`translate(${l.x} ${l.y})`} vector-effect="non-scaling-stroke" />)}
+  </g>
+</svg>
+
+<style>
+  .fassade {
+    width: 100%;
+    height: auto;
+    color: var(--color-tusche);
+    overflow: visible;
+  }
+  .fassade .s {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  .fassade .glas {
+    transition: fill 400ms ease-out;
+  }
+</style>

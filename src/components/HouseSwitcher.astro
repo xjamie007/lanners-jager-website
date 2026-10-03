@@ -1,0 +1,163 @@
+---
+/**
+ * Hausschalter (C3): Segmentschalter "Beide Häuser | Lanners | Jager".
+ * Die Wahl liegt in localStorage (lj-haus) und auf Listenseiten zusätzlich in
+ * ?haus=. Ohne JavaScript ausgeblendet, denn eine statische Seite kann nicht filtern.
+ * Logik: src/scripts/haus.ts
+ */
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+interface Props {
+  lang: Lang;
+  id: string;
+  class?: string;
+  /** Seite steht selbst für ein Haus: dann drei Links statt Filter (Start, Lanners, Jager) */
+  seitenHaus?: "beide" | "lanners" | "jager";
+}
+const { lang, id, class: cls = "", seitenHaus } = Astro.props;
+const ziele = { beide: link(lang, "home"), lanners: link(lang, { kind: "haus", id: "lanners" }), jager: link(lang, { kind: "haus", id: "jager" }) };
+const options = [
+  { value: "beide", label: t(lang, "haus.beide") },
+  { value: "lanners", label: t(lang, "haus.lanners") },
+  { value: "jager", label: t(lang, "haus.jager") },
+];
+---
+{
+  seitenHaus ? (
+    <nav class={`hausschalter ${cls}`} aria-label={t(lang, "haus.legend")}>
+      <div class="segmente">
+        {options.map((o) => (
+          <a class={`segment segment-${o.value}`} href={ziele[o.value as keyof typeof ziele]} aria-current={o.value === seitenHaus ? "page" : undefined}>
+            <span>
+              <i class={`segment-punkt punkt-${o.value}`} aria-hidden="true" />
+              {o.label}
+            </span>
+          </a>
+        ))}
+      </div>
+    </nav>
+  ) : (
+<fieldset class={`hausschalter nur-js ${cls}`} data-hausschalter>
+  <legend class="sr-only">{t(lang, "haus.legend")}</legend>
+  <div class="segmente">
+    {
+      options.map((o) => (
+        <label class={`segment segment-${o.value}`}>
+          <input type="radio" name={`haus-${id}`} value={o.value} checked={o.value === "beide"} />
+          <span>
+            <i class={`segment-punkt punkt-${o.value}`} aria-hidden="true" />
+            {o.label}
+          </span>
+        </label>
+      ))
+    }
+  </div>
+</fieldset>
+  )
+}
+
+<style is:global>
+  .hausschalter {
+    min-width: 0;
+  }
+  .segmente {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 999px;
+    background: var(--color-glas);
+  }
+  .segment {
+    position: relative;
+    flex: 1 1 0;
+    display: flex;
+  }
+  .segment input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .segment span {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.1;
+    text-align: center;
+    white-space: nowrap;
+    transition: background 250ms ease-out, color 250ms ease-out, box-shadow 250ms ease-out;
+  }
+  .segment-punkt {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex: none;
+  }
+  .punkt-beide {
+    background: linear-gradient(90deg, var(--color-marine) 50%, var(--color-jager) 50%);
+  }
+  a.segment {
+    text-decoration: none;
+  }
+  a.segment[aria-current="page"] span,
+  .segment input:checked + span {
+    color: var(--color-weiss);
+    box-shadow: 0 6px 16px -8px rgb(0 30 60 / 0.6);
+  }
+  a.segment[aria-current="page"] .segment-punkt,
+  .segment input:checked + span .segment-punkt {
+    background: var(--color-weiss);
+  }
+  a.segment-beide[aria-current="page"] span,
+  .segment-beide input:checked + span {
+    background: var(--verlauf-marke);
+  }
+  a.segment-lanners[aria-current="page"] span,
+  .segment-lanners input:checked + span {
+    background: var(--verlauf-lanners);
+  }
+  a.segment-jager[aria-current="page"] span,
+  .segment-jager input:checked + span {
+    background: var(--verlauf-jager);
+  }
+  a.segment:focus-visible {
+    outline: none;
+  }
+  a.segment:focus-visible span {
+    outline: 3px solid var(--color-tusche);
+    outline-offset: 2px;
+  }
+  a.segment:hover:not([aria-current]) span {
+    background: var(--color-weiss);
+  }
+  .segment input:focus-visible + span {
+    outline: 3px solid var(--color-tusche);
+    outline-offset: 2px;
+    position: relative;
+    z-index: 1;
+  }
+  .segment:hover input:not(:checked) + span {
+    background: var(--color-weiss);
+  }
+  /* Sehr kleine Handys: enger, damit auch "Les deux maisons | Lanners | Jager" in eine Zeile passt */
+  @media (max-width: 359.98px) {
+    .segmente {
+      gap: 2px;
+    }
+    .segment span {
+      gap: 5px;
+      padding: 0 6px;
+      font-size: 0.8125rem;
+    }
+  }
+</style>

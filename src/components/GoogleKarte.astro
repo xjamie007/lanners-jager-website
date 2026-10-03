@@ -1,0 +1,245 @@
+---
+/**
+ * Karte eines Hauses als 2-Klick-Lösung: Zuerst steht ein gezeichneter Lageplan
+ * (schematisch, keine echte Karte) mit beiden Häusern in der Grand-Rue, dazu
+ * Adresse und "Karte laden". Erst der Klick setzt das iframe von Google Maps
+ * (src/scripts/karte.ts); vorher wird nichts an Google übertragen, deshalb
+ * braucht die Seite kein Einwilligungs-Banner (Datenschutz: recht.datenschutz.maps).
+ * Ohne JavaScript führt ein Link zu Google Maps.
+ */
+import { getHouse, houses } from "../config/houses.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import { mapsEinbettung, mapsOrt } from "../lib/karte.ts";
+import Icon from "./Icon.astro";
+interface Props {
+  lang: Lang;
+  haus: "lanners" | "jager";
+}
+const { lang, haus } = Astro.props;
+const h = getHouse(haus);
+
+// Lageplan: Straßen und Blöcke in einem um -20° gedrehten Raster, die Grand-Rue waagrecht.
+// Jager (Nr. 32) liegt nordöstlich von Lanners (Nr. 18), also rechts davon auf der Straße.
+const DREH = -20;
+const MX = 320;
+const MY = 210;
+const quer = [60, 250, 520, 720];
+const laengs: [number, number][] = [
+  [40, 58],
+  [200, 236],
+  [380, 398],
+];
+const spalten: [number, number][] = [[-220, quer[0]], ...quer.slice(0, -1).map((x, i) => [x + 20, quer[i + 1]] as [number, number]), [quer.at(-1)! + 20, 860]];
+const zeilen: [number, number][] = [[-220, laengs[0][0]], [laengs[0][1], laengs[1][0]], [laengs[1][1], laengs[2][0]], [laengs[2][1], 640]];
+const bloecke = spalten.flatMap(([x1, x2], si) => zeilen.map(([y1, y2], zi) => ({ x: x1 + 8, y: y1 + 8, w: x2 - x1 - 16, h: y2 - y1 - 16, gruen: si === 3 && zi === 0 })));
+const STRASSE_Y = (laengs[1][0] + laengs[1][1]) / 2;
+const rad = (DREH * Math.PI) / 180;
+const drehen = (x: number, y: number) => ({
+  x: Math.round((MX + (x - MX) * Math.cos(rad) - (y - MY) * Math.sin(rad)) * 10) / 10,
+  y: Math.round((MY + (x - MX) * Math.sin(rad) + (y - MY) * Math.cos(rad)) * 10) / 10,
+});
+// Pins rechts der Mitte, damit das Adressfeld (unten links) sie nicht verdeckt
+const pins = houses.map((x) => {
+  const text = `${x.short} · ${x.nr}`;
+  return { ...drehen(x.id === "lanners" ? 380 : 540, STRASSE_Y), id: x.id, text, breite: Math.round(20 + text.length * 7.4), aktiv: x.id === haus };
+});
+const PIN = "M0 0C-5-9-17-19-17-31a17 17 0 1 1 34 0c0 12-12 22-17 31Z";
+---
+<div class={`gkarte gkarte-${haus}`} data-gkarte>
+  <div class="gkarte-flaeche" data-gkarte-flaeche>
+    <svg class="gkarte-plan" viewBox="0 0 640 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+      <rect class="gk-grund" width="640" height="420" />
+      <g transform={`rotate(${DREH} ${MX} ${MY})`}>
+        {bloecke.map((b) => <rect class={b.gruen ? "gk-gruen" : "gk-block"} x={b.x} y={b.y} width={b.w} height={b.h} rx="6" />)}
+        {quer.map((x) => <rect class="gk-gasse" x={x} y="-220" width="20" height="860" />)}
+        <rect class="gk-gasse" x="-220" y={laengs[0][0]} width="1080" height={laengs[0][1] - laengs[0][0]} />
+        <rect class="gk-gasse" x="-220" y={laengs[2][0]} width="1080" height={laengs[2][1] - laengs[2][0]} />
+        <rect class="gk-strasse" x="-220" y={laengs[1][0]} width="1080" height={laengs[1][1] - laengs[1][0]} />
+        <text class="gk-name" x="414" y={STRASSE_Y + 4.5}>GRAND-RUE</text>
+      </g>
+      {
+        pins
+          .sort((a, b) => Number(a.aktiv) - Number(b.aktiv))
+          .map((p) => (
+            <g class={p.aktiv ? "gk-pin gk-pin-aktiv" : "gk-pin"} transform={`translate(${p.x} ${p.y})`}>
+              <ellipse class="gk-schatten" cx="0" cy="1" rx={p.aktiv ? 11 : 8} ry="3.5" />
+              <g transform={p.aktiv ? "scale(1.2)" : "scale(0.8)"}>
+                <path d={PIN} />
+                <circle cx="0" cy="-31" r="6.5" />
+              </g>
+              <g transform={`translate(${-p.breite / 2} ${p.aktiv ? -82 : -62})`}>
+                <rect class="gk-schild" width={p.breite} height="26" rx="13" />
+                <text class="gk-schildtext" x={p.breite / 2} y="17.5" text-anchor="middle">
+                  {p.text}
+                </text>
+              </g>
+            </g>
+          ))
+      }
+    </svg>
+    <div class="gkarte-panel">
+      <p class="gkarte-adresse">
+        <strong>{h.name}</strong>
+        <span>{h.streetAddress}, {h.postalCode} {h.locality}</span>
+      </p>
+      <button type="button" class="btn btn-primaer nur-js" data-gkarte-laden data-src={mapsEinbettung(h, lang)} data-titel={t(lang, "maps.titel", { haus: h.name })}>
+        <Icon name="karte" size={18} />
+        {t(lang, "maps.laden")}
+      </button>
+      <p class="gkarte-hinweis nur-js">
+        {t(lang, "maps.hinweis")}
+        <a href={`${link(lang, "datenschutz")}#maps`}>{t(lang, "maps.datenschutz")}</a>
+      </p>
+      <a class="btn btn-primaer ohne-js" href={mapsOrt(h)} rel="noopener">
+        {t(lang, "maps.oeffnen")}
+        <span class="sr-only"> ({t(lang, "site.externerLink")})</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  import "../scripts/karte.ts";
+</script>
+
+<style>
+  .gkarte {
+    --gk-pin: var(--color-marine);
+    width: 100%;
+    border-radius: calc(var(--radius-bild) + 4px);
+    overflow: hidden;
+    background: var(--color-weiss);
+    box-shadow: 0 30px 60px -45px rgb(0 30 60 / 0.5), 0 0 0 1px rgb(0 46 82 / 0.07);
+  }
+  .gkarte-jager {
+    --gk-pin: var(--color-jager-hell);
+  }
+  .gkarte-flaeche {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .gkarte-plan {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    height: auto;
+  }
+  .gkarte-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 20px;
+  }
+  @media (min-width: 768px) {
+    .gkarte-flaeche {
+      min-height: 440px;
+    }
+    .gkarte-plan {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      aspect-ratio: auto;
+    }
+    .gkarte-panel {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      max-width: 340px;
+      border-radius: var(--radius-bild);
+      background: rgb(255 255 255 / 0.92);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 20px 40px -24px rgb(0 30 60 / 0.45), 0 0 0 1px rgb(0 46 82 / 0.06);
+    }
+  }
+  .gkarte-adresse {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    line-height: 1.4;
+  }
+  .gkarte-hinweis {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--color-schiefer);
+  }
+  .gkarte-hinweis a {
+    color: inherit;
+  }
+
+  /* Geladen: das iframe füllt die Fläche (gesetzt von src/scripts/karte.ts) */
+  .gkarte-flaeche[data-geladen] {
+    min-height: 0;
+    height: 380px;
+  }
+  @media (min-width: 768px) {
+    .gkarte-flaeche[data-geladen] {
+      height: 440px;
+    }
+  }
+  .gkarte-flaeche :global(.gkarte-frame) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* Lageplan */
+  .gk-grund {
+    fill: #f3ede3;
+  }
+  .gk-block {
+    fill: #e9e0d0;
+  }
+  .gk-gruen {
+    fill: #dde5d0;
+  }
+  .gk-gasse {
+    fill: #fbf8f3;
+  }
+  .gk-strasse {
+    fill: var(--color-weiss);
+    stroke: #d9cdb9;
+    stroke-width: 1;
+  }
+  .gk-name {
+    fill: #9a8d78;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+  }
+  .gk-pin path {
+    fill: #a89e8e;
+  }
+  .gk-pin circle {
+    fill: var(--color-weiss);
+  }
+  .gk-pin-aktiv path {
+    fill: var(--gk-pin);
+  }
+  .gk-schatten {
+    fill: rgb(0 0 0 / 0.18);
+  }
+  .gk-schild {
+    fill: var(--color-weiss);
+    stroke: rgb(0 0 0 / 0.08);
+  }
+  .gk-pin-aktiv .gk-schild {
+    fill: var(--gk-pin);
+    stroke: none;
+  }
+  .gk-schildtext {
+    fill: var(--color-schiefer);
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    font-weight: 700;
+  }
+  .gk-pin-aktiv .gk-schildtext {
+    fill: var(--color-weiss);
+  }
+</style>

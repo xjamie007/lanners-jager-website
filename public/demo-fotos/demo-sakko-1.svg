@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto sakko, vorne</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M128 64C138 70 162 70 172 64L218 82C232 87 240 98 242 114L254 296L230 300L218 154L220 346L156 352L150 300L144 352L80 346L82 154L70 300L46 296L58 114C60 98 68 87 82 82Z" vector-effect="non-scaling-stroke"/>
+<path d="M128 64L112 92L136 104L150 210M172 64L188 92L164 104L150 210" vector-effect="non-scaling-stroke"/>
+<path d="M147 224a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" vector-effect="non-scaling-stroke"/>
+<path d="M147 254a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" vector-effect="non-scaling-stroke"/>
+<path d="M176 134H200M92 264H124M176 264H208" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

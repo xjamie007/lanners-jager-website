@@ -1,0 +1,68 @@
+---
+/** Aufklappbarer Abschnitt (<details>), Plus und Minus als eigene Inline-Icons. */
+import Icon from "./Icon.astro";
+interface Props {
+  titel: string;
+  open?: boolean;
+}
+const { titel, open = false } = Astro.props;
+---
+<details class="aufklapp-block" open={open}>
+  <summary>
+    <span>{titel}</span>
+    <Icon name="plus" class="a-plus" size={20} />
+    <Icon name="minus" class="a-minus" size={20} />
+  </summary>
+  <div class="aufklapp-inhalt">
+    <div class="aufklapp-innen"><slot /></div>
+  </div>
+</details>
+
+<style is:global>
+  .aufklapp-block > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 52px;
+    cursor: pointer;
+    font-weight: 600;
+    list-style: none;
+  }
+  .aufklapp-block > summary::-webkit-details-marker {
+    display: none;
+  }
+  .aufklapp-block > summary:hover span {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .aufklapp-block .a-minus,
+  .aufklapp-block[open] .a-plus {
+    display: none;
+  }
+  .aufklapp-block[open] .a-minus {
+    display: block;
+  }
+  .aufklapp-inhalt {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 200ms ease-out;
+  }
+  @starting-style {
+    .aufklapp-block[open] .aufklapp-inhalt {
+      grid-template-rows: 0fr;
+    }
+  }
+  .aufklapp-innen {
+    overflow: hidden;
+    padding-bottom: 20px;
+  }
+  .aufklapp-innen > * + * {
+    margin-top: 0.75em;
+  }
+  .aufklapp-innen ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+</style>

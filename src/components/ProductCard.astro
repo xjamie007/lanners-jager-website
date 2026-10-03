@@ -1,0 +1,117 @@
+---
+/**
+ * Produktkarte (D3): keine Karte im SaaS-Sinn. Foto im Glasrahmen (3:4),
+ * darunter Marke, Name, Preis und wo der Artikel da ist. Die ganze Karte ist
+ * ein Link (Name als Link, ::after über die Karte gespannt), ohne Button.
+ * Zweites Foto beim Hovern (nur Geräte mit Hover).
+ */
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import type { Article } from "../lib/catalog/types.ts";
+import Price from "./Price.astro";
+import ProductImage from "./ProductImage.astro";
+
+interface Props {
+  article: Article;
+  lang: Lang;
+  headingLevel?: 2 | 3;
+  eager?: boolean;
+}
+const { article: a, lang, headingLevel = 3, eager = false } = Astro.props;
+const url = link(lang, { kind: "produkt", slug: a.slug, uid8: a.uid8 });
+const available = (["lanners", "jager"] as const).filter((h) => a.stockByHouse[h] > 0);
+const verfuegbar =
+  available.length === 2 ? t(lang, "karte.beide") : available.length === 1 ? t(lang, "karte.nurBei", { haus: t(lang, `haus.${available[0]}`) }) : t(lang, "karte.nicht");
+const H = `h${headingLevel}` as "h2" | "h3";
+const [p1, p2] = a.photos;
+---
+<article class="karte" data-karte data-uid8={a.uid8} data-haeuser={a.houses.join(" ")} data-verfuegbar={available.join(" ")}>
+  <div class="karte-bild">
+    {p1 && <ProductImage photo={p1} lang={lang} alt="" sizes="(min-width: 1200px) 25vw, (min-width: 768px) 33vw, 50vw" eager={eager} vt />}
+    {p2 && <ProductImage photo={p2} lang={lang} alt="" sizes="(min-width: 1200px) 25vw, (min-width: 768px) 33vw, 50vw" class="karte-bild-2" demoLabel={false} />}
+  </div>
+  <div class="karte-text">
+    <p class="t-marke">{a.brand.name}</p>
+    <H class="karte-name"><a class="karte-link" href={url}>{a.name}<span class="sr-only">, {a.colorName}</span></a></H>
+    <Price lang={lang} price={a.priceCents} netto={a.nettoCents} nettoMax={a.nettoMaxCents} discount={a.discount} />
+    <p class="karte-verfuegbar t-klein nebentext">{verfuegbar}</p>
+    {a.isDemo && <p class="karte-demo t-klein nebentext">{t(lang, "demo.artikel")}</p>}
+  </div>
+</article>
+
+<!-- global: src/scripts/filter.ts baut dieselben Karten im Browser -->
+<style is:global>
+  .karte {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: opacity 280ms ease-out;
+  }
+  .karte[data-ausgeblendet] {
+    opacity: 0;
+  }
+  .karte[hidden] {
+    display: none;
+  }
+  .karte-bild {
+    position: relative;
+    border-radius: var(--radius-bild);
+    overflow: hidden;
+  }
+  .karte-bild .produktbild img {
+    transition: transform 600ms var(--ease-schaufenster);
+  }
+  @media (hover: hover) {
+    .karte:hover .karte-bild .produktbild:not(.karte-bild-2) img {
+      transform: scale(1.04);
+    }
+  }
+  .karte-bild .karte-bild-2 {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 300ms ease-out;
+  }
+  @media (hover: hover) {
+    .karte:hover .karte-bild .karte-bild-2,
+    .karte:focus-within .karte-bild .karte-bild-2 {
+      opacity: 1;
+    }
+  }
+  .karte-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .karte-name {
+    font-size: 0.9375rem;
+    line-height: 1.35;
+    font-weight: 400;
+    margin: 0 0 4px;
+  }
+  .karte-link {
+    text-decoration: none;
+  }
+  .karte-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .karte-link:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .karte-link:focus-visible {
+    outline: none;
+  }
+  .karte-link:focus-visible::after {
+    outline: 3px solid var(--color-tusche);
+    outline-offset: 2px;
+  }
+  .karte-verfuegbar {
+    margin-top: 4px;
+  }
+</style>

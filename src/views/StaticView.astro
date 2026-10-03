@@ -1,0 +1,43 @@
+---
+/** Verteilt die festen Seiten auf ihre Views. */
+import type { Lang } from "../i18n/index.ts";
+import type { StaticRoute } from "../i18n/routes.ts";
+import HowTo from "./HowTo.astro";
+import Vouchers from "./Vouchers.astro";
+import Contact from "./Contact.astro";
+import RequestThanks from "./RequestThanks.astro";
+import Search from "./Search.astro";
+import Impressum from "./Impressum.astro";
+import Privacy from "./Privacy.astro";
+import Legal from "./Legal.astro";
+import Shipping from "./Shipping.astro";
+import DemoMail from "./DemoMail.astro";
+import Bag from "./Bag.astro";
+import Reserve from "./Reserve.astro";
+import Thanks from "./Thanks.astro";
+import Checkout from "./Checkout.astro";
+import DemoPayment from "./DemoPayment.astro";
+import History from "./History.astro";
+
+interface Props {
+  lang: Lang;
+  route: StaticRoute;
+}
+const { lang, route } = Astro.props;
+---
+{route === "howto" && <HowTo lang={lang} />}
+{route === "geschichte" && <History lang={lang} />}
+{route === "gutscheine" && <Vouchers lang={lang} />}
+{route === "kontakt" && <Contact lang={lang} />}
+{route === "kontaktDanke" && <RequestThanks lang={lang} route={route} />}
+{route === "suche" && <Search lang={lang} />}
+{route === "impressum" && <Impressum lang={lang} />}
+{route === "datenschutz" && <Privacy lang={lang} />}
+{(route === "agb" || route === "widerruf") && <Legal lang={lang} route={route} />}
+{route === "versand" && <Shipping lang={lang} />}
+{route === "demopost" && <DemoMail lang={lang} />}
+{route === "tasche" && <Bag lang={lang} />}
+{route === "reservieren" && <Reserve lang={lang} />}
+{(route === "reservierenDanke" || route === "kasseDanke") && <Thanks lang={lang} route={route} />}
+{route === "kasse" && <Checkout lang={lang} />}
+{route === "kasseDemo" && <DemoPayment lang={lang} />}

@@ -1,0 +1,127 @@
+---
+/** Einfache Inhaltsseite: Brotkrumen, h1, optional Einleitung, Inhalt. */
+import Base from "./Base.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import { breadcrumbJsonLd } from "../lib/seo.ts";
+import type { StaticRoute } from "../i18n/routes.ts";
+import type { Section } from "../components/Header.astro";
+import Foto from "../components/Foto.astro";
+
+interface Props {
+  lang: Lang;
+  route: StaticRoute;
+  h1: string;
+  intro?: string;
+  title: string;
+  description: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+  section?: Section;
+  strings?: string[];
+  breit?: boolean;
+  /** Stimmungsfoto als Kopf (src/assets/fotos/), mit Verlauf und weißer Überschrift */
+  foto?: string;
+  fotoPosition?: string;
+  /** In die Volltextsuche (Pagefind) aufnehmen: Infoseiten wie "So funktioniert's" */
+  suchbar?: boolean;
+}
+const { lang, route, h1, intro, title, description, noindex = false, jsonLd = [], section = null, strings = [], breit = false, foto, fotoPosition, suchbar = false } = Astro.props;
+// Pagefind indexiert nur Bereiche mit data-pagefind-body (sonst nur Produktseiten)
+const body = suchbar ? "" : undefined;
+// Feste Werte (typ:seite) stehen bei Pagefind am Ende, sonst gehört der Rest zum Wert
+const titelMeta = suchbar ? "title, typ:seite" : undefined;
+const crumbs = [
+  { name: t(lang, "nav.start"), href: link(lang, "home") },
+  { name: h1, href: link(lang, route) },
+];
+---
+<Base lang={lang} ref={{ kind: "static", route }} title={title} description={description} noindex={noindex} jsonLd={[breadcrumbJsonLd(crumbs), ...jsonLd]} section={section} strings={strings}>
+  {
+    foto ? (
+      <>
+        <section class="seiten-kopf auf-dunkel" data-vt-statisch="seitenkopf">
+          <div class="seiten-kopf-bild" aria-hidden="true">
+            <Foto name={foto} alt="" sizes="100vw" eager position={fotoPosition} />
+          </div>
+          <div class="container-lj seiten-kopf-inhalt" data-pagefind-body={body}>
+            <Breadcrumb lang={lang} items={crumbs} />
+            <h1 class="t-h1" data-pagefind-meta={titelMeta} data-vt-statisch="seitentitel">{h1}</h1>
+            {intro && <p class="seite-intro prosa">{intro}</p>}
+          </div>
+        </section>
+        <div class="container-lj">
+          <div class={breit ? "seite seite-breit" : "seite"} data-pagefind-body={body}>
+            <slot />
+          </div>
+        </div>
+      </>
+    ) : (
+      <div class="container-lj">
+        <Breadcrumb lang={lang} items={crumbs} />
+        <div class={breit ? "seite seite-breit" : "seite"} data-pagefind-body={body}>
+          <h1 class="t-h1" data-pagefind-meta={titelMeta} data-vt-statisch="seitentitel">{h1}</h1>
+          {intro && <p class="seite-intro prosa">{intro}</p>}
+          <slot />
+        </div>
+      </div>
+    )
+  }
+</Base>
+
+<style>
+  .seiten-kopf {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: var(--color-weiss);
+    min-height: clamp(300px, 42vh, 460px);
+    display: flex;
+    align-items: flex-end;
+  }
+  .seiten-kopf-bild {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .seiten-kopf-bild::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgb(0 22 42 / 0.3) 0%, rgb(0 22 42 / 0.55) 45%, rgb(0 22 42 / 0.92) 100%), linear-gradient(90deg, rgb(0 46 82 / 0.6), rgb(35 31 32 / 0.35));
+  }
+  .seiten-kopf-inhalt {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 44px;
+  }
+  .seiten-kopf-inhalt .seite-intro {
+    margin-top: 0;
+    opacity: 0.92;
+  }
+  .seiten-kopf + .container-lj .seite {
+    margin-top: 40px;
+  }
+  .seite {
+    margin-top: 20px;
+    max-width: 860px;
+  }
+  .seite-breit {
+    max-width: none;
+  }
+  .seite-intro {
+    margin-top: 16px;
+    font-size: 1.125rem;
+    line-height: 1.55;
+  }
+  .seite :global(h2.t-h2) {
+    margin-top: 52px;
+    margin-bottom: 16px;
+  }
+  .seite :global(h3.t-h3) {
+    margin-top: 32px;
+    margin-bottom: 8px;
+  }
+</style>

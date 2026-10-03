@@ -1,0 +1,66 @@
+---
+/**
+ * Demo-Zahlung (D10.6, MockPaymentProvider): ersetzt in der Demo die Seite des
+ * Zahlungsanbieters. Drei Ausgänge lösen den Webhook aus wie beim echten Anbieter.
+ * Nur mit PUBLIC_DEMO=true und aktivem Kauf-Weg.
+ */
+import Page from "../layouts/Page.astro";
+import { FUNCTIONS_URL } from "../config/site.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { pathFor, staticRef } from "../i18n/routes.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<Page lang={lang} route="kasseDemo" h1={t(lang, "demozahlung.h1")} intro={t(lang, "demozahlung.text")} title={t(lang, "demozahlung.h1") + t(lang, "seo.suffix")} description={t(lang, "demozahlung.text")} noindex strings={["demozahlung."]}>
+  <form class="demozahlung" method="post" action={`${FUNCTIONS_URL}/demo-payment`} data-demozahlung>
+    <input type="hidden" name="lang" value={lang} />
+    <input type="hidden" name="_ok" value={pathFor(staticRef("kasseDanke"), lang)} />
+    <input type="hidden" name="p" value="" data-feld="p" />
+    <input type="hidden" name="g" value="" data-feld="g" />
+    <input type="hidden" name="t" value="" data-feld="t" />
+    <p class="demozahlung-betrag t-h3" data-betrag></p>
+    <div class="demozahlung-buttons">
+      <button class="btn btn-primaer" type="submit" name="aktion" value="erfolg">{t(lang, "demozahlung.erfolg")}</button>
+      <button class="btn btn-sekundaer" type="submit" name="aktion" value="verkauft">{t(lang, "demozahlung.verkauft")}</button>
+      <button class="btn btn-sekundaer" type="submit" name="aktion" value="fehler">{t(lang, "demozahlung.fehler")}</button>
+      <button class="btn btn-sekundaer" type="submit" name="aktion" value="abbrechen">{t(lang, "demozahlung.abbrechen")}</button>
+    </div>
+  </form>
+  <script>
+    import { config, tr, price, house } from "../scripts/config.ts";
+    import type { OrderStatusResponse } from "../../supabase/functions/_shared/contract.ts";
+    const form = document.querySelector<HTMLFormElement>("[data-demozahlung]");
+    const p = new URLSearchParams(location.search);
+    if (form) {
+      for (const k of ["p", "g", "t"]) form.querySelector<HTMLInputElement>(`[data-feld="${k}"]`)!.value = p.get(k) ?? "";
+      const g = p.get("g");
+      const t = p.get("t");
+      if (g && t) {
+        fetch(`${config().functionsUrl}/order-status?g=${encodeURIComponent(g)}&t=${encodeURIComponent(t)}`)
+          .then((r) => (r.ok ? r.json() : null))
+          .then((d: OrderStatusResponse | null) => {
+            const o = d?.orders[0];
+            if (!o?.totals) return;
+            form.querySelector<HTMLElement>("[data-betrag]")!.textContent = tr("demozahlung.betrag", { betrag: price(o.totals.gesamt), firma: house(o.house).name });
+          })
+          .catch(() => undefined);
+      }
+    }
+  </script>
+</Page>
+
+<style>
+  .demozahlung {
+    margin-top: 32px;
+    padding: 24px;
+    background: var(--color-glas);
+    max-width: 640px;
+  }
+  .demozahlung-buttons {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+  }
+</style>

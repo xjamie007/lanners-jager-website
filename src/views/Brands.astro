@@ -1,0 +1,251 @@
+---
+/**
+ * Marken-Übersicht (D7): Kopf im Markenverlauf mit laufendem Logoband, darunter
+ * je Marke eine Kachel mit Logo, Haus und Anzahl der Artikel, alphabetisch.
+ * Der Hausschalter blendet Marken des anderen Hauses aus. Logos sind
+ * Warenzeichen der Marken (Freigabe offen, OP-10).
+ */
+import Base from "../layouts/Base.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import BrandTicker from "../components/BrandTicker.astro";
+import Icon from "../components/Icon.astro";
+import { t, tp, type Lang } from "../i18n/index.ts";
+import { link, asset } from "../lib/page.ts";
+import { breadcrumbJsonLd } from "../lib/seo.ts";
+import { getCatalog } from "../lib/catalog/index.ts";
+import { alleMarken } from "../lib/marken.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const cat = await getCatalog();
+const marken = alleMarken(cat);
+const crumbs = [
+  { name: t(lang, "nav.start"), href: link(lang, "home") },
+  { name: t(lang, "marken.h1"), href: link(lang, "marken") },
+];
+const hausText = (houses: string[]) => (houses.length > 1 ? t(lang, "marken.beide") : t(lang, `haus.${houses[0]}`));
+---
+<Base lang={lang} ref={{ kind: "static", route: "marken" }} title={t(lang, "seo.marken.title")} description={t(lang, "seo.marken.desc")} jsonLd={[breadcrumbJsonLd(crumbs)]} section="marken">
+  <section class="marken-kopf auf-dunkel" aria-labelledby="marken-titel">
+    <div class="container-lj marken-kopf-inhalt">
+      <Breadcrumb lang={lang} items={crumbs} />
+      <p class="vorzeile">{t(lang, "home.markenVorzeile")}</p>
+      <h1 class="t-h1" id="marken-titel">{t(lang, "marken.h1")}</h1>
+      <p class="prosa marken-intro">{t(lang, "marken.intro")}</p>
+    </div>
+    <BrandTicker lang={lang} marken={marken} id="marken-band" variante="marke" />
+  </section>
+
+  <section class="sektion container-lj" aria-labelledby="marken-alle">
+    <h2 class="t-h2" id="marken-alle">{t(lang, "marken.alle")}</h2>
+    <ul class="marken-raster" data-hausfilter>
+      {
+        marken.map((m) => (
+          <li class="marke-kachel" data-haeuser={m.houses.join(" ")}>
+            <a href={m.slug ? link(lang, { kind: "marke", slug: m.slug }) : link(lang, { kind: "haus", id: m.houses[0] })} class="marke-link">
+              <span class="marke-logo">
+                {m.logo ? (
+                  <img src={asset(m.logo.datei)} alt="" width={Math.round(56 * m.logo.verhaeltnis * (m.logo.skala ?? 1))} height={Math.round(56 * (m.logo.skala ?? 1))} loading="lazy" decoding="async" />
+                ) : (
+                  <span class="marke-wort" aria-hidden="true">
+                    {m.name}
+                  </span>
+                )}
+              </span>
+              <span class="marke-text">
+                <h3 class="marke-name">{m.name}</h3>
+                <span class="marke-haeuser">
+                  {m.houses.map((h) => (
+                    <span class={`haus-chip chip-${h}`}>
+                      <i aria-hidden="true" />
+                      {t(lang, `haus.${h}`)}
+                    </span>
+                  ))}
+                  <span class="sr-only">{hausText(m.houses)}</span>
+                </span>
+                <span class="marke-anzahl t-klein">{m.count > 0 ? tp(lang, "marken.anzahl", m.count) : t(lang, "marken.imLaden")}</span>
+              </span>
+              <span class="marke-pfeil" aria-hidden="true">
+                <Icon name="pfeil" size={18} />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .marken-kopf {
+    background: var(--verlauf-marke);
+    color: var(--color-weiss);
+    position: relative;
+    overflow: hidden;
+  }
+  .marken-kopf::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(70% 120% at 85% 0%, rgb(217 182 122 / 0.22), transparent 60%);
+    pointer-events: none;
+  }
+  .marken-kopf-inhalt {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+  .marken-kopf-inhalt :global(.pfad),
+  .marken-kopf-inhalt :global(.pfad a),
+  .marken-kopf-inhalt :global(.pfad [aria-current]),
+  .marken-kopf-inhalt :global(.pfad li + li::before) {
+    color: rgb(255 255 255 / 0.8);
+  }
+  .marken-intro {
+    opacity: 0.9;
+    font-size: 1.0625rem;
+  }
+  .marken-kopf :global(.markenband) {
+    background: transparent;
+  }
+  .marken-raster {
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+    gap: 10px;
+  }
+  .marke-kachel {
+    transition: opacity 280ms ease-out;
+  }
+  .marke-kachel[data-ausgeblendet] {
+    opacity: 0;
+  }
+  .marke-kachel[hidden] {
+    display: none;
+  }
+  .marke-link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: calc(var(--radius-bild) + 2px);
+    overflow: hidden;
+    background: var(--color-weiss);
+    box-shadow: 0 0 0 1px rgb(0 46 82 / 0.08);
+    text-decoration: none;
+    transition: transform 250ms var(--ease-schaufenster), box-shadow 250ms ease-out;
+  }
+  .marke-link:hover,
+  .marke-link:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 24px 40px -24px rgb(0 30 60 / 0.45), 0 0 0 1px rgb(0 46 82 / 0.1);
+  }
+  .marke-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 96px;
+    padding: 14px 16px;
+    background: var(--color-creme);
+  }
+  @media (min-width: 768px) {
+    .marken-raster {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .marke-logo {
+      height: 140px;
+      padding: 20px 28px;
+    }
+  }
+  .marke-logo img {
+    max-width: 100%;
+    max-height: min(64px, 100%);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(1) brightness(0.4);
+    transition: filter 300ms ease-out, transform 300ms ease-out;
+  }
+  .marke-link:hover .marke-logo img,
+  .marke-link:focus-visible .marke-logo img {
+    filter: none;
+    transform: scale(1.05);
+  }
+  .marke-wort {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+  .marke-text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 14px 52px;
+  }
+  @media (min-width: 768px) {
+    .marke-text {
+      padding: 16px 52px 18px 18px;
+    }
+  }
+  .marke-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .marke-haeuser {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .haus-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px 3px 8px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-weiss);
+  }
+  .haus-chip i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.8);
+  }
+  .chip-lanners {
+    background: var(--verlauf-lanners);
+  }
+  .chip-jager {
+    background: var(--verlauf-jager);
+  }
+  .marke-anzahl {
+    color: var(--color-schiefer);
+  }
+  .marke-pfeil {
+    position: absolute;
+    right: 16px;
+    bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--color-glas);
+    transition: background-color 200ms ease-out, color 200ms ease-out;
+  }
+  .marke-link:hover .marke-pfeil {
+    background: var(--color-tusche);
+    color: var(--color-weiss);
+  }
+</style>

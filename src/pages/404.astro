@@ -1,0 +1,120 @@
+---
+/**
+ * 404 (D8): mehrsprachig. GitHub Pages liefert für jede unbekannte Adresse diese
+ * eine Datei; ein kleines Skript zeigt die Sprache aus dem Pfad (/de/…), ohne
+ * JavaScript steht Luxemburgisch oben und die anderen Sprachen darunter.
+ */
+import "../styles/global.css";
+import { LANGS, t, type Lang } from "../i18n/index.ts";
+import { link, asset } from "../lib/page.ts";
+import { features } from "../config/site.ts";
+import Telefone from "../components/Telefone.astro";
+import Logo from "../components/Logo.astro";
+const blocks = LANGS.map((lang: Lang) => ({
+  lang,
+  h1: t(lang, "f404.h1"),
+  text: t(lang, "f404.text"),
+  anrufen: t(lang, "f404.anrufen").split("{telefone}"),
+  links: [
+    { href: link(lang, { kind: "abteilung", id: "damen" }), label: t(lang, "nav.damen") },
+    { href: link(lang, { kind: "abteilung", id: "herren" }), label: t(lang, "nav.herren") },
+    { href: link(lang, "haeuser"), label: t(lang, "nav.haeuser") },
+  ],
+  suche: { action: link(lang, "suche"), label: t(lang, "suche.label"), btn: t(lang, "suche.btn") },
+}));
+const script = `(function(){var m=location.pathname.match(/\\/(lb|de|fr|en)\\//);var l=m?m[1]:'lb';document.documentElement.lang=l;document.documentElement.classList.add('js');var b=document.querySelectorAll('[data-f404]');for(var i=0;i<b.length;i++){b[i].hidden=b[i].getAttribute('data-f404')!==l;}})();`;
+---
+<!doctype html>
+<html lang="lb">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t("lb", "seo.f404.title")}</title>
+    <meta name="description" content={t("lb", "seo.f404.desc")} />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="icon" href={asset("favicon.svg")} type="image/svg+xml" />
+  </head>
+  <body>
+    {features.demo && <div class="f404-demo">{t("lb", "demo.leiste")}</div>}
+    <header class="container-lj f404-kopf"><Logo lang="lb" /></header>
+    <main class="container-lj f404" id="inhalt">
+      {
+        blocks.map((b) => (
+          <section data-f404={b.lang} lang={b.lang} class="f404-block">
+            <h1 class="t-h1">{b.h1}</h1>
+            <p class="f404-text">{b.text}</p>
+            <form role="search" action={b.suche.action} method="get" class="f404-suche">
+              <label class="feld-label" for={`q-${b.lang}`}>{b.suche.label}</label>
+              <div class="f404-zeile">
+                <input class="feld" id={`q-${b.lang}`} name="q" type="search" />
+                <button class="btn btn-primaer" type="submit">{b.suche.btn}</button>
+              </div>
+            </form>
+            <ul class="f404-links">
+              {b.links.map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+            <p>
+              {b.anrufen[0]}
+              <Telefone lang={b.lang} />
+              {b.anrufen[1]}
+            </p>
+          </section>
+        ))
+      }
+    </main>
+    <script is:inline set:html={script} />
+  </body>
+</html>
+
+<style>
+  .f404-demo {
+    background: var(--color-tusche);
+    color: var(--color-weiss);
+    font-size: 0.875rem;
+    padding: 8px 16px;
+  }
+  .f404-kopf {
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+  }
+  .f404 {
+    padding-bottom: 84px;
+  }
+  .f404-block {
+    max-width: 760px;
+    margin-top: 52px;
+    display: grid;
+    gap: 20px;
+  }
+  .f404-text {
+    font-size: 1.125rem;
+  }
+  .f404-zeile {
+    display: flex;
+    gap: 8px;
+  }
+  .f404-zeile .feld {
+    flex: 1;
+  }
+  .f404-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .f404-links a {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    line-height: 1.15;
+    text-decoration: none;
+  }
+  .f404-links a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+</style>

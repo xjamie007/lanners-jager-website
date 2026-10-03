@@ -1,0 +1,95 @@
+---
+/**
+ * Versand und Zahlung (D8, D10.6): Länder, Kosten und Lieferzeit aus
+ * src/config/versand.ts (unbestätigt, Demo-Werte beschriftet), Abholung,
+ * Zahlung je Haus getrennt, Gutscheine im Laden.
+ */
+import Page from "../layouts/Page.astro";
+import Offen from "../components/Offen.astro";
+import { versand } from "../config/versand.ts";
+import { features } from "../config/site.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { formatPrice } from "@shared/format.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<Page suchbar lang={lang} route="versand" h1={t(lang, "recht.versand.h1")} title={t(lang, "seo.versand.title")} description={t(lang, "seo.versand.desc")}>
+  {
+    features.payShip && (
+      <>
+        <h2 class="t-h2">{t(lang, "recht.versand.laenderH2")}</h2>
+        <table class="versand-tabelle">
+          <thead>
+            <tr>
+              <th scope="col">{t(lang, "kasse.land")}</th>
+              <th scope="col">{t(lang, "recht.versand.kosten")}</th>
+              <th scope="col">{t(lang, "recht.versand.lieferzeit")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {versand.laender.map((l) => (
+              <tr>
+                <th scope="row">{t(lang, `land.${l.code}`)}</th>
+                <td>
+                  {formatPrice(l.kostenCent, lang)}
+                  {l.demoWert && <span class="nebentext"> ({t(lang, "demo.wert")})</span>}
+                </td>
+                <td>{t(lang, "recht.versand.lieferzeitWert", { n: l.lieferzeitTage })}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="t-klein">
+          <Offen op="OP-06.2" lang={lang} />
+        </p>
+        <h2 class="t-h2">{t(lang, "recht.versand.dienstH2")}</h2>
+        <p>
+          <Offen op="OP-06.3" lang={lang} />
+        </p>
+      </>
+    )
+  }
+  {
+    features.payCollect && (
+      <>
+        <h2 class="t-h2">{t(lang, "recht.versand.abholungH2")}</h2>
+        <p class="prosa">
+          {t(lang, "recht.versand.abholung")} <Offen op="OP-06.6" lang={lang} />
+        </p>
+      </>
+    )
+  }
+  <h2 class="t-h2">{t(lang, "recht.versand.zahlungH2")}</h2>
+  <div class="prosa">
+    <p>{t(lang, "recht.versand.zahlung")}</p>
+    <p>
+      {t(lang, "recht.versand.zahlarten")} <Offen op="OP-06.1" lang={lang} />
+    </p>
+    <p>{t(lang, "recht.versand.gutscheine")}</p>
+  </div>
+</Page>
+
+<style>
+  .versand-tabelle {
+    border-collapse: collapse;
+    width: 100%;
+    /* schmale Handys: Spalten brechen um statt seitlich überzulaufen */
+    table-layout: fixed;
+    max-width: 640px;
+  }
+  .versand-tabelle th,
+  .versand-tabelle td {
+    text-align: left;
+    padding: 8px 16px 8px 0;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+  }
+  .versand-tabelle thead th {
+    font-weight: 600;
+  }
+  .versand-tabelle tbody th {
+    font-weight: 400;
+  }
+</style>

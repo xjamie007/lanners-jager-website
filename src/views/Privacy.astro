@@ -1,0 +1,91 @@
+---
+/**
+ * Datenschutz (D8, D10.9): Zwecke, Rechtsgrundlagen, Mitverarbeiter, Fristen,
+ * keine Cookies, Google Maps (2-Klick-Karte), Rechte, CNPD. Offene Punkte bleiben sichtbar.
+ */
+import Page from "../layouts/Page.astro";
+import Offen from "../components/Offen.astro";
+import { features, buyEnabled } from "../config/site.ts";
+import { t, type Lang } from "../i18n/index.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<Page lang={lang} route="datenschutz" h1={t(lang, "recht.datenschutz.h1")} intro={t(lang, "recht.datenschutz.intro")} title={t(lang, "seo.datenschutz.title")} description={t(lang, "seo.datenschutz.desc")}>
+  <p class="t-klein nebentext entwurf"><span class="offen">{t(lang, "recht.entwurf")}</span></p>
+
+  <h2 class="t-h2">{t(lang, "recht.datenschutz.verantwortlichH2")}</h2>
+  <p class="prosa">{t(lang, "recht.datenschutz.verantwortlich")} <Offen op="OP-02.1" lang={lang} /></p>
+
+  {
+    features.reserve && (
+      <>
+        <h2 class="t-h2">{t(lang, "recht.datenschutz.reservierungH2")}</h2>
+        <p class="prosa">{t(lang, "recht.datenschutz.reservierung")}</p>
+      </>
+    )
+  }
+  {
+    buyEnabled && (
+      <>
+        <h2 class="t-h2">{t(lang, "recht.datenschutz.bestellungH2")}</h2>
+        <p class="prosa">{t(lang, "recht.datenschutz.bestellung")}</p>
+      </>
+    )
+  }
+  <h2 class="t-h2">{t(lang, "recht.datenschutz.anfrageH2")}</h2>
+  <p class="prosa">{t(lang, "recht.datenschutz.anfrage")}</p>
+
+  <h2 class="t-h2">{t(lang, "recht.datenschutz.empfaengerH2")}</h2>
+  <ul class="prosa liste">
+    <li>{t(lang, "recht.datenschutz.empfaengerSofttouch")}</li>
+    <li>{t(lang, "recht.datenschutz.empfaengerSupabase")}</li>
+    {buyEnabled && <li>{t(lang, "recht.datenschutz.empfaengerZahlung")} <Offen op="OP-06.1" lang={lang} /></li>}
+    <li>{t(lang, "recht.datenschutz.empfaengerMail")} <Offen op="OP-02.4" lang={lang} /></li>
+    <li>{t(lang, "recht.datenschutz.empfaengerHosting")}</li>
+  </ul>
+
+  <h2 class="t-h2">{t(lang, "recht.datenschutz.fristenH2")}</h2>
+  <ul class="prosa liste">
+    {features.reserve && <li>{t(lang, "recht.datenschutz.fristenReservierung")}</li>}
+    {buyEnabled && <li>{t(lang, "recht.datenschutz.fristenBestellung")}</li>}
+    <li>{t(lang, "recht.datenschutz.fristenAnfrage")}</li>
+  </ul>
+  <p class="prosa">{t(lang, "recht.datenschutz.fristenJob")} <Offen op="OP-06.8" lang={lang} /></p>
+
+  <h2 class="t-h2">{t(lang, "recht.datenschutz.cookiesH2")}</h2>
+  <p class="prosa">{t(lang, "recht.datenschutz.cookies")}</p>
+
+  <h2 class="t-h2">{t(lang, "recht.datenschutz.externH2")}</h2>
+  <p class="prosa">{t(lang, "recht.datenschutz.extern")}</p>
+
+  <h2 class="t-h2" id="maps">{t(lang, "recht.datenschutz.mapsH2")}</h2>
+  <p class="prosa">
+    {t(lang, "recht.datenschutz.maps")}{" "}
+    <a href="https://policies.google.com/privacy" rel="noopener">
+      {t(lang, "recht.datenschutz.mapsLink")}<span class="sr-only"> ({t(lang, "site.externerLink")})</span>
+    </a>
+  </p>
+
+  <h2 class="t-h2">{t(lang, "recht.datenschutz.rechteH2")}</h2>
+  <p class="prosa">
+    {t(lang, "recht.datenschutz.rechte")}{" "}
+    <a href="https://cnpd.public.lu" rel="noopener">
+      cnpd.public.lu<span class="sr-only"> ({t(lang, "site.externerLink")})</span>
+    </a>
+  </p>
+</Page>
+
+<style>
+  .entwurf {
+    margin-top: 12px;
+  }
+  .liste {
+    padding-left: 1.2em;
+    margin: 0;
+  }
+  .liste li + li {
+    margin-top: 6px;
+  }
+</style>

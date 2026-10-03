@@ -1,0 +1,43 @@
+---
+/**
+ * Bestätigung für Anfragen (F4, Kontakt): "Ihre Nachricht ist angekommen. Wir antworten
+ * [Antwortzeit fehlt]. Eilt es, rufen Sie an." Statisch, ohne JavaScript lesbar.
+ * Mit ?g=&t= merkt sich der Browser die Anfrage für den Demo-Postausgang.
+ */
+import Page from "../layouts/Page.astro";
+import Offen from "../components/Offen.astro";
+import Telefone from "../components/Telefone.astro";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import type { StaticRoute } from "../i18n/routes.ts";
+interface Props {
+  lang: Lang;
+  route: StaticRoute;
+}
+const { lang, route } = Astro.props;
+const tpl = t(lang, "danke.anfrageText");
+const [vorZeit, rest] = tpl.split("{antwortzeit}");
+const [zwischen, nach] = rest.split("{telefone}");
+---
+<Page lang={lang} route={route} h1={t(lang, "danke.anfrageH1")} title={t(lang, "seo.dankeAnfrage.title")} description={t(lang, "seo.dankeAnfrage.desc")} noindex>
+  <p class="prosa danke-text">
+    {vorZeit}<Offen op="OP-16" lang={lang} />{zwischen}<Telefone lang={lang} />{nach}
+  </p>
+  <p class="danke-weiter">
+    <a class="btn btn-sekundaer" href={link(lang, "sortiment")}>{t(lang, "danke.weiterStoebern")}</a>
+  </p>
+  <script>
+    import { gruppeMerken } from "../scripts/demo-post.ts";
+    gruppeMerken("anfrage");
+  </script>
+</Page>
+
+<style>
+  .danke-text {
+    margin-top: 20px;
+    font-size: 1.125rem;
+  }
+  .danke-weiter {
+    margin-top: 32px;
+  }
+</style>

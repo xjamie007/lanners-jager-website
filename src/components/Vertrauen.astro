@@ -1,0 +1,122 @@
+---
+/**
+ * Vertrauensleiste in Tasche, Kasse und Mini-Tasche: was der Kunde sicher hat,
+ * je nach aktiven Wegen (Feature-Flags). Unbestätigte Zusagen tragen wie überall
+ * den sichtbaren Platzhalter des offenen Punkts; nichts wird erfunden.
+ * `kompakt`: nur Titel, bei der Beratung die Telefonnummern (Kasse, Mini-Tasche).
+ * `nur`: Auswahl der Punkte.
+ */
+import Offen from "./Offen.astro";
+import Icon from "./Icon.astro";
+import Telefone from "./Telefone.astro";
+import { features, buyEnabled } from "../config/site.ts";
+import { versand } from "../config/versand.ts";
+import { t, type Lang } from "../i18n/index.ts";
+
+type Punkt = "reserve" | "collect" | "ship" | "zahlung" | "umtausch" | "beratung";
+interface Props {
+  lang: Lang;
+  kompakt?: boolean;
+  nur?: Punkt[];
+}
+const { lang, kompakt = false, nur } = Astro.props;
+const lieferzeit = versand.laender[0]?.lieferzeitTage ?? 3;
+const alle: { id: Punkt; aktiv: boolean; icon: "haken" | "ort" | "lieferung" | "schild" | "umtausch" | "telefon"; text?: string; op?: string }[] = [
+  { id: "reserve", aktiv: features.reserve, icon: "haken", text: t(lang, "vertrauen.reserveText"), op: "OP-05.5" },
+  { id: "collect", aktiv: features.payCollect, icon: "ort", text: t(lang, "vertrauen.collectText"), op: "OP-06.6" },
+  { id: "ship", aktiv: features.payShip, icon: "lieferung", text: t(lang, "vertrauen.shipText", { n: lieferzeit }), op: versand.op },
+  { id: "zahlung", aktiv: buyEnabled, icon: "schild", text: t(lang, "vertrauen.zahlungText") },
+  { id: "umtausch", aktiv: true, icon: "umtausch", op: "OP-06.4" },
+  { id: "beratung", aktiv: true, icon: "telefon" },
+];
+const punkte = alle.filter((p) => p.aktiv && (!nur || nur.includes(p.id)));
+---
+<div class:list={["vertrauen", { "vertrauen-kompakt": kompakt }]}>
+  <ul aria-label={t(lang, "vertrauen.titel")}>
+    {
+      punkte.map((p) => (
+        <li>
+          <span class="vt-icon">
+            <Icon name={p.icon} size={kompakt ? 18 : 20} />
+          </span>
+          <span class="vt-text">
+            <strong>
+              {t(lang, `vertrauen.${p.id}`)}
+              {p.op && <Offen op={p.op} lang={lang} />}
+            </strong>
+            {p.id === "beratung" && (
+              <span>
+                <Telefone lang={lang} />
+              </span>
+            )}
+            {!kompakt && p.text && <span>{p.text}</span>}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .vertrauen ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+  .vertrauen li {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  .vt-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--haus-verlauf);
+    color: var(--color-weiss);
+  }
+  .vt-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding-top: 1px;
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+  .vt-text strong {
+    font-size: 0.9375rem;
+  }
+  .vt-text > span {
+    color: var(--color-schiefer);
+  }
+  .vt-text :global(a) {
+    color: inherit;
+  }
+
+  .vertrauen-kompakt ul {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px 14px;
+  }
+  .vertrauen-kompakt li {
+    grid-template-columns: 30px 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+  .vertrauen-kompakt .vt-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .vertrauen-kompakt .vt-text strong {
+    font-size: 0.8125rem;
+    line-height: 1.3;
+  }
+  .vertrauen-kompakt .vt-text > span {
+    font-size: 0.8125rem;
+  }
+</style>

@@ -1,0 +1,135 @@
+---
+/**
+ * Impressum (D8): Betreiber fehlt (OP-02.1), beide Firmen mit allen Daten aus B1.
+ * Was fehlt, bleibt sichtbar als Platzhalter. Aufsichtsbehörde Datenschutz: CNPD.
+ * Kein Link auf die 2025 eingestellte EU-Plattform zur Online-Streitbeilegung (OP-20).
+ */
+import Page from "../layouts/Page.astro";
+import Offen from "../components/Offen.astro";
+import { houses, telHref, type Angabe } from "../config/houses.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import bildnachweis from "../content/bildnachweis.json" with { type: "json" };
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const order = [...houses].sort((a, b) => Number(a.nr) - Number(b.nr));
+const zeilen = (h: (typeof houses)[number]): { label: string; wert: Angabe }[] => [
+  { label: t(lang, "recht.impressum.firma"), wert: h.legal.firma },
+  { label: t(lang, "recht.impressum.rechtsform"), wert: h.legal.rechtsform },
+  { label: t(lang, "recht.impressum.vertreten"), wert: h.legal.vertreten },
+  { label: t(lang, "recht.impressum.rcs"), wert: h.legal.rcs },
+  { label: t(lang, "recht.impressum.mwst"), wert: h.legal.mwst },
+  { label: t(lang, "recht.impressum.gewerbe"), wert: h.legal.gewerbe },
+];
+---
+<Page lang={lang} route="impressum" h1={t(lang, "recht.impressum.h1")} title={t(lang, "seo.impressum.title")} description={t(lang, "seo.impressum.desc")}>
+  <h2 class="t-h2">{t(lang, "recht.impressum.betreiberH2")}</h2>
+  <p class="prosa">
+    {t(lang, "recht.impressum.betreiber")} <Offen op="OP-02.1" lang={lang} />
+  </p>
+
+  <h2 class="t-h2">{t(lang, "recht.impressum.firmenH2")}</h2>
+  <div class="impressum-firmen">
+    {
+      order.map((h) => (
+        <section aria-labelledby={`imp-${h.id}`}>
+          <h3 class="t-hausname" id={`imp-${h.id}`}>{h.name}</h3>
+          <dl class="impressum-dl">
+            {zeilen(h).map((z) => (
+              <div>
+                <dt>{z.label}</dt>
+                <dd>{typeof z.wert === "string" ? z.wert : <Offen op={z.wert.op} lang={lang} wert={z.wert.wert} />}</dd>
+              </div>
+            ))}
+            <div>
+              <dt>{t(lang, "recht.impressum.adresse")}</dt>
+              <dd>
+                {h.streetAddress}, {h.postalCode} {h.locality}
+              </dd>
+            </div>
+            <div>
+              <dt>{t(lang, "recht.impressum.telefon")}</dt>
+              <dd>
+                <a href={telHref(h)}>{h.phone}</a>
+              </dd>
+            </div>
+            <div>
+              <dt>{t(lang, "recht.impressum.email")}</dt>
+              <dd>
+                <a href={`mailto:${h.email}`}>{h.email}</a>
+              </dd>
+            </div>
+          </dl>
+        </section>
+      ))
+    }
+  </div>
+
+  <h2 class="t-h2">{t(lang, "recht.impressum.aufsichtH2")}</h2>
+  <p class="prosa">
+    {t(lang, "recht.impressum.aufsicht")}{" "}
+    <a href="https://cnpd.public.lu" rel="noopener">
+      cnpd.public.lu<span class="sr-only"> ({t(lang, "site.externerLink")})</span>
+    </a>
+  </p>
+
+  <h2 class="t-h2">{t(lang, "recht.impressum.markenH2")}</h2>
+  <p class="prosa">{t(lang, "recht.impressum.marken")}</p>
+
+  <h2 class="t-h2" id="bildnachweis">{t(lang, "recht.impressum.bildH2")}</h2>
+  <p class="prosa">{t(lang, "recht.impressum.bildText")}</p>
+  <ul class="bildnachweis">
+    {
+      [...new Map([...bildnachweis.fotos, ...bildnachweis.artikelfotos].map((f) => [f.quelle, f])).values()].map((f) => (
+        <li>
+          <a href={f.quelle} rel="noopener">
+            {f.fotograf}
+            <span class="sr-only"> ({t(lang, "site.externerLink")})</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="prosa bildnachweis-logos">{t(lang, "recht.impressum.logoText")}</p>
+</Page>
+
+<style>
+  .bildnachweis {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem;
+  }
+  .bildnachweis-logos {
+    margin-top: 16px;
+  }
+  .impressum-firmen {
+    display: grid;
+    gap: 40px;
+  }
+  .impressum-dl {
+    margin: 16px 0 0;
+    display: grid;
+    gap: 10px;
+  }
+  .impressum-dl > div {
+    display: grid;
+    gap: 2px;
+  }
+  @media (min-width: 768px) {
+    .impressum-dl > div {
+      grid-template-columns: 280px 1fr;
+      gap: 16px;
+    }
+  }
+  .impressum-dl dt {
+    font-weight: 600;
+  }
+  .impressum-dl dd {
+    margin: 0;
+  }
+</style>

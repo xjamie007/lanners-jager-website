@@ -1,0 +1,468 @@
+---
+/**
+ * Die Größenleiste (C5), das Signature-Feature: auf einen Blick, welche Größe
+ * in welchem Haus jetzt da ist. Ein <form> mit einem fieldset je Haus; jede
+ * Zelle ist ein Radio (Wert = 14-stelliger Schlüssel) mit sichtbarem Label und
+ * vollständigem zugänglichem Namen ("M, Jager, 2 Stück da"). Nicht vorrätige
+ * Größen sind disabled. 2D-Größen (Weite × Länge) als echte <table>.
+ *
+ * Ohne JavaScript: Stand des Builds als lesbare Übersicht, Radios ausgeblendet,
+ * statt der Buttons die Telefonnummern. Mit JavaScript: src/scripts/groessen.ts
+ * holt den Live-Bestand (Edge Function stock) und bedient Tasche und Reservierung.
+ */
+import { getHouse } from "../config/houses.ts";
+import { features, buyEnabled } from "../config/site.ts";
+import { t, tp, type Lang } from "../i18n/index.ts";
+import { formatDay, formatTime } from "@shared/format.ts";
+import { todayInLux } from "@shared/hours.ts";
+import type { Article } from "../lib/catalog/types.ts";
+import { sizeRows, matrixAxes, cellAt } from "../lib/product.ts";
+import Icon from "./Icon.astro";
+import Telefone from "./Telefone.astro";
+import { doppelpunkt } from "@shared/text.ts";
+
+interface Props {
+  lang: Lang;
+  article: Article;
+  asOf: string;
+}
+const { lang, article: a, asOf } = Astro.props;
+const rows = sizeRows(a);
+const mode: "1d" | "2d" | "tu" = a.tu ? "tu" : a.twoD ? "2d" : "1d";
+const nurBei = a.houses.length === 1 ? a.houses[0] : null;
+const nirgends = a.stockByHouse.lanners + a.stockByHouse.jager === 0;
+const zustand = (stock: number) => (stock <= 0 ? t(lang, "groesse.nicht") : stock === 1 ? t(lang, "groesse.letztes") : tp(lang, "groesse.da", stock));
+const zustandKey = (stock: number) => (stock <= 0 ? "nicht" : stock === 1 ? "letztes" : "da");
+const axes = mode === "2d" ? matrixAxes(a) : null;
+// Ohne JavaScript steht das Datum dabei, denn "heute" stimmt am nächsten Tag nicht mehr
+const standText = t(lang, "groesse.standTag", { datum: formatDay(todayInLux(new Date(asOf)), lang, false), zeit: formatTime(asOf) });
+const [ohneJsVor, ohneJsNach] = t(lang, "groesse.ohneJs").split("{telefone}");
+---
+<form class="gl" data-groessenleiste data-pagefind-ignore data-modus={mode} aria-labelledby="gl-titel" novalidate>
+  <div class="gl-kopf">
+    <h2 class="t-h3" id="gl-titel">{t(lang, "groesse.waehlen")}</h2>
+    <p class="t-klein nebentext gl-stand" data-gl-stand>
+      <time datetime={asOf}>{standText}</time>
+    </p>
+  </div>
+
+  {nurBei && <p class="gl-nurbei t-klein">{t(lang, "groesse.nurBei", { haus: getHouse(nurBei).short })}</p>}
+
+  <p class="feld-fehler gl-fehler" data-gl-fehler id="gl-fehler" hidden>
+    <Icon name="warnung" size={18} />
+    <span>{t(lang, "groesse.keineAuswahl")}</span>
+  </p>
+
+  {
+    mode === "2d" && rows.length > 1 && (
+      <fieldset class="gl-matrixwahl nur-js" data-gl-matrixwahl>
+        <legend class="t-klein nebentext">{t(lang, "groesse.matrixHaus")}</legend>
+        <div class="gl-matrixwahl-optionen">
+          {rows.map((r, i) => (
+            <label class="gl-matrixwahl-option">
+              <input type="radio" name="matrix-haus" value={r.house} checked={i === 0} />
+              <span>{getHouse(r.house).short}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    )
+  }
+
+  <div class="gl-haeuser" data-gl-haeuser>
+    {
+      rows.map((row) => {
+        const h = getHouse(row.house);
+        const verfuegbar = row.cells.filter((c) => c && c.stock > 0).map((c) => c!.size.label);
+        return (
+          <div class="gl-hausblock" data-gl-block={row.house} style={`--haus-farbe: var(--color-${h.color})`}>
+            <button type="button" class="gl-auchbei nur-js" data-gl-auchbei={row.house} aria-expanded="false" hidden>
+              {verfuegbar.length
+                ? t(lang, "groesse.auchBei", { haus: h.short, groessen: verfuegbar.join(", ") })
+                : t(lang, "groesse.auchBeiNicht", { haus: h.short })}
+            </button>
+            <fieldset class="gl-haus" data-gl-haus={row.house} aria-describedby="gl-fehler">
+              <legend class="gl-legend">
+                <span class="t-hausname gl-hausname">{h.short}</span>
+                <span class="t-klein">{t(lang, "haus.adresse", { nr: h.nr })}</span>
+              </legend>
+
+              {mode === "1d" && (
+                <div class="gl-zellen">
+                  {row.cells.map((c, i) => {
+                    const size = a.sizes[i];
+                    const stock = c?.stock ?? 0;
+                    const id = c ? `v-${c.key14}` : `v-${row.house}-${size.x}${size.y}`;
+                    return (
+                      <span class="gl-zelle-wrap">
+                        <input class="gl-input" type="radio" name="variante" id={id} value={c?.key14 ?? ""} disabled={stock <= 0} data-haus={row.house} data-groesse={size.label} data-stock={stock} />
+                        <label for={id} class="gl-zelle" data-zustand={zustandKey(stock)}>
+                          <span class="gl-groesse" aria-hidden="true">{size.label}</span>
+                          <span class="gl-eins" aria-hidden="true">1</span>
+                          <span class="sr-only" data-gl-name>{t(lang, "groesse.zelle", { groesse: size.label, haus: h.short, zustand: zustand(stock) })}</span>
+                        </label>
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
+
+              {mode === "tu" && row.cells[0] && (
+                <label class="gl-tu" data-zustand={zustandKey(row.cells[0].stock)}>
+                  <input class="gl-input gl-tu-input" type="radio" name="variante" value={row.cells[0].key14} disabled={row.cells[0].stock <= 0} data-haus={row.house} data-groesse={t(lang, "groesse.einheitsgroesse")} data-stock={row.cells[0].stock} />
+                  <span data-gl-name>{row.cells[0].stock > 0 ? tp(lang, "groesse.tu", row.cells[0].stock, { haus: h.short }) : t(lang, "groesse.tuNicht", { haus: h.short })}</span>
+                </label>
+              )}
+
+              {mode === "2d" && axes && (
+                <div class="gl-matrix" data-gl-matrix={row.house}>
+                  <p class="gl-achse-weite t-klein" aria-hidden="true">{t(lang, "groesse.weite")}</p>
+                  <div class="gl-scroll" role="region" aria-label={t(lang, "groesse.matrix", { haus: h.short })} tabindex="0">
+                    <table class="gl-tabelle">
+                      <caption class="sr-only">{t(lang, "groesse.matrix", { haus: h.short })}</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col" class="gl-ecke t-klein">{t(lang, "groesse.laenge")}</th>
+                          {axes.xs.map((x) => (
+                            <th scope="col">{x.label}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {axes.ys.map((y) => (
+                          <tr>
+                            <th scope="row">{y.label}</th>
+                            {axes.xs.map((x) => {
+                              const c = cellAt(a, row.house, x.x, y.y);
+                              const stock = c?.stock ?? 0;
+                              const label = `${x.label}/${y.label}`;
+                              const id = c ? `v-${c.key14}` : `v-${row.house}-${x.x}${y.y}`;
+                              return (
+                                <td>
+                                  <span class="gl-zelle-wrap">
+                                    <input class="gl-input" type="radio" name="variante" id={id} value={c?.key14 ?? ""} disabled={stock <= 0} data-haus={row.house} data-groesse={label} data-stock={stock} />
+                                    <label for={id} class="gl-zelle gl-zelle-klein" data-zustand={zustandKey(stock)}>
+                                      <span class="gl-groesse" aria-hidden="true">{stock > 0 ? (stock === 1 ? "1" : "") : ""}</span>
+                                      <span class="gl-eins" aria-hidden="true">1</span>
+                                      <span class="sr-only" data-gl-name>{t(lang, "groesse.zelle", { groesse: label, haus: h.short, zustand: zustand(stock) })}</span>
+                                    </label>
+                                  </span>
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </fieldset>
+          </div>
+        );
+      })
+    }
+  </div>
+
+  <p class="gl-zusammenfassung" data-gl-zusammenfassung aria-live="polite"></p>
+
+  <div class="gl-nirgends" data-gl-nirgends hidden={!nirgends}>
+    <p>{t(lang, "groesse.nirgends")}</p>
+    {a.expectedDelivery && <p>{t(lang, "groesse.nachlieferung", { datum: formatDay(a.expectedDelivery, lang, false) })}</p>}
+    <p>
+      {t(lang, "groesse.nachfragen")}{doppelpunkt(lang)}<Telefone lang={lang} />
+    </p>
+  </div>
+
+  <div class="gl-buttons nur-js" data-gl-buttons>
+    {
+      buyEnabled && (
+        <button type="submit" class="btn btn-primaer btn-voll" data-gl-aktion="tasche">
+          {t(lang, "btn.tasche")}
+        </button>
+      )
+    }
+    {
+      features.reserve && (
+        <button type="submit" class={`btn ${buyEnabled ? "btn-sekundaer" : "btn-primaer"} btn-voll`} data-gl-aktion="reservieren">
+          {t(lang, "btn.reservieren")}
+        </button>
+      )
+    }
+  </div>
+  <p class="gl-status" role="status" data-gl-status></p>
+  <p class="ohne-js gl-ohnejs">{ohneJsVor}<Telefone lang={lang} />{ohneJsNach}</p>
+</form>
+
+<style is:global>
+  .gl {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .gl-kopf {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .gl-nurbei {
+    font-weight: 600;
+  }
+  .gl-haeuser {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .gl-hausblock {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .gl-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+  .gl-hausname {
+    font-size: 1.75rem;
+  }
+  .gl-zellen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  /* oben ausrichten: Zellen ohne sichtbare Ziffer ("letztes Stück") hätten sonst eine andere Grundlinie */
+  .gl-zelle-wrap {
+    position: relative;
+    display: inline-flex;
+    vertical-align: top;
+  }
+  .gl-input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    pointer-events: none;
+  }
+  .gl-zelle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    box-sizing: border-box;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 150ms ease-out, color 150ms ease-out, box-shadow 150ms ease-out, outline-color 150ms ease-out;
+  }
+  .gl-zelle-klein {
+    width: 44px;
+    height: 44px;
+  }
+  /* Da: gefüllt in der Hausfarbe */
+  .gl-zelle[data-zustand="da"],
+  .gl-zelle[data-zustand="letztes"] {
+    background: var(--haus-farbe);
+    color: var(--color-weiss);
+  }
+  /* Nicht da: Kontur schiefer, Größe schiefer, Diagonale von links unten nach rechts oben */
+  .gl-zelle[data-zustand="nicht"] {
+    color: var(--color-schiefer);
+    box-shadow: inset 0 0 0 var(--stroke) var(--color-schiefer);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' preserveAspectRatio='none'%3E%3Cline x1='0' y1='10' x2='10' y2='0' stroke='%235C5F66' stroke-width='1' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+    cursor: not-allowed;
+  }
+  /* Letztes Stück: kleine "1" in einem 14-px-Quadrat oben rechts */
+  .gl-eins {
+    display: none;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 14px;
+    height: 14px;
+    background: var(--color-weiss);
+    color: var(--haus-farbe);
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 14px;
+    text-align: center;
+  }
+  .gl-zelle[data-zustand="letztes"] .gl-eins {
+    display: block;
+  }
+  .gl-zelle-klein[data-zustand="letztes"] .gl-groesse {
+    display: none;
+  }
+  /* Gewählt: 3 px Kontur tusche mit 2 px Abstand außen */
+  .gl-input:checked + .gl-zelle {
+    outline: 3px solid var(--color-tusche);
+    outline-offset: 2px;
+  }
+  .gl-input:focus-visible + .gl-zelle {
+    outline: 3px solid var(--color-schiefer);
+    outline-offset: 2px;
+  }
+  .gl-input:checked:focus-visible + .gl-zelle {
+    outline-color: var(--color-tusche);
+  }
+  .gl-zelle[data-aktualisiert] {
+    transition-duration: 300ms;
+  }
+
+  /* Einheitsgröße */
+  .gl-tu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 0 16px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: inset 0 0 0 var(--stroke) var(--color-schiefer);
+  }
+  .gl-tu[data-zustand="da"],
+  .gl-tu[data-zustand="letztes"] {
+    background: var(--haus-farbe);
+    color: var(--color-weiss);
+    box-shadow: none;
+  }
+  .gl-tu[data-zustand="nicht"] {
+    color: var(--color-schiefer);
+    cursor: not-allowed;
+  }
+  .gl-tu-input {
+    position: static;
+    opacity: 1;
+    width: 20px;
+    height: 20px;
+    pointer-events: auto;
+    accent-color: var(--color-weiss);
+  }
+  .gl-tu:has(input:checked) {
+    outline: 3px solid var(--color-tusche);
+    outline-offset: 2px;
+  }
+
+  /* 2D-Matrix */
+  .gl-matrixwahl-optionen {
+    display: flex;
+    box-shadow: inset 0 0 0 var(--stroke) var(--color-tusche);
+    width: max-content;
+    margin-top: 6px;
+  }
+  .gl-matrixwahl-option {
+    position: relative;
+    display: flex;
+  }
+  .gl-matrixwahl-option input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  .gl-matrixwahl-option span {
+    padding: 0 18px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+  .gl-matrixwahl-option + .gl-matrixwahl-option span {
+    box-shadow: inset var(--stroke) 0 0 var(--color-tusche);
+  }
+  .gl-matrixwahl-option input:checked + span {
+    background: var(--color-tusche);
+    color: var(--color-weiss);
+  }
+  .gl-matrixwahl-option input:focus-visible + span {
+    outline: 3px solid var(--color-tusche);
+    outline-offset: 2px;
+  }
+  .gl-achse-weite {
+    margin: 0 0 4px 52px;
+    font-weight: 600;
+  }
+  .gl-scroll {
+    overflow-x: auto;
+    max-width: 100%;
+    padding: 6px 6px 8px 0;
+  }
+  .gl-tabelle {
+    border-collapse: separate;
+    border-spacing: 6px;
+    margin: -6px;
+  }
+  .gl-tabelle th {
+    font-weight: 600;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    padding: 0;
+    min-width: 44px;
+  }
+  .gl-tabelle th[scope="row"],
+  .gl-ecke {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--color-weiss);
+    text-align: left;
+    padding-right: 6px;
+  }
+  .gl-tabelle td {
+    padding: 0;
+  }
+  .gl-zelle-klein .gl-groesse {
+    font-size: 0.75rem;
+  }
+
+  .gl-auchbei {
+    align-self: flex-start;
+    background: none;
+    border: 0;
+    padding: 6px 0;
+    min-height: 44px;
+    text-align: left;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .gl-zusammenfassung:empty {
+    display: none;
+  }
+  .gl-zusammenfassung {
+    font-weight: 600;
+  }
+  .gl-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .gl-status:empty {
+    display: none;
+  }
+  /* Ohne JavaScript: lesbare Übersicht, keine Auswahl */
+  html:not(.js) .gl-zelle {
+    cursor: default;
+  }
+  html:not(.js) .gl-input {
+    display: none;
+  }
+  html:not(.js) .gl-tu-input {
+    display: none;
+  }
+</style>

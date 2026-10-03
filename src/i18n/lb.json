@@ -1,0 +1,3250 @@
+{
+  "site": {
+    "name": {
+      "text": "Lanners & Jager",
+      "review": "lb-native"
+    },
+    "skip": {
+      "text": "Direkt bei den Inhalt",
+      "review": "lb-native"
+    },
+    "ort": {
+      "text": "Ettelbréck",
+      "review": "lb-native"
+    },
+    "externerLink": {
+      "text": "mécht eng aner Websäit op",
+      "review": "lb-native"
+    },
+    "neuesFenster": {
+      "text": "mécht an enger neier Fënster op",
+      "review": "lb-native"
+    },
+    "laden": {
+      "text": "Gëtt gelueden …",
+      "review": "lb-native"
+    },
+    "pflicht": {
+      "text": "Pflichtfeld",
+      "review": "lb-native"
+    },
+    "freiwillig": {
+      "text": "fräiwëlleg",
+      "review": "lb-native"
+    },
+    "telefone": {
+      "text": "Lanners {lanners}, Jager {jager}",
+      "review": "lb-native"
+    }
+  },
+  "nav": {
+    "haupt": {
+      "text": "Haaptnavigatioun",
+      "review": "lb-native"
+    },
+    "sortiment": {
+      "text": "Sortiment",
+      "review": "lb-native"
+    },
+    "damen": {
+      "text": "Fraen",
+      "review": "lb-native"
+    },
+    "herren": {
+      "text": "Hären",
+      "review": "lb-native"
+    },
+    "accessoires": {
+      "text": "Hitt & Accessoiren",
+      "review": "lb-native"
+    },
+    "marken": {
+      "text": "Marken",
+      "review": "lb-native"
+    },
+    "sale": {
+      "text": "Sale",
+      "review": "lb-native"
+    },
+    "haeuser": {
+      "text": "D'Haiser",
+      "review": "lb-native"
+    },
+    "menu": {
+      "text": "Menü",
+      "review": "lb-native"
+    },
+    "schliessen": {
+      "text": "Zoumaachen",
+      "review": "lb-native"
+    },
+    "suche": {
+      "text": "Sichen",
+      "review": "lb-native"
+    },
+    "tasche": {
+      "text": "Akafskuerf",
+      "review": "lb-native"
+    },
+    "tascheAnzahl_one": {
+      "text": "Akafskuerf, {n} Artikel",
+      "review": "lb-native"
+    },
+    "tascheAnzahl_other": {
+      "text": "Akafskuerf, {n} Artikelen",
+      "review": "lb-native"
+    },
+    "tascheLeer": {
+      "text": "Akafskuerf, eidel",
+      "review": "lb-native"
+    },
+    "service": {
+      "text": "Service",
+      "review": "lb-native"
+    },
+    "start": {
+      "text": "Startsäit",
+      "review": "lb-native"
+    },
+    "neu": {
+      "text": "Nei erakomm",
+      "review": "lb-native"
+    },
+    "alleArtikel": {
+      "text": "All Artikelen",
+      "review": "lb-native"
+    },
+    "geschichte": {
+      "text": "Geschicht",
+      "review": "lb-native"
+    },
+    "untermenu": {
+      "text": "Ënnermenü {name} opmaachen",
+      "review": "lb-native"
+    }
+  },
+  "sprache": {
+    "label": {
+      "text": "Sprooch",
+      "review": "lb-native"
+    },
+    "im": {
+      "lb": {
+        "text": "Lëtzebuergesch",
+        "review": "lb-native"
+      },
+      "de": {
+        "text": "Däitsch",
+        "review": "lb-native"
+      },
+      "fr": {
+        "text": "Franséisch",
+        "review": "lb-native"
+      },
+      "en": {
+        "text": "Englesch",
+        "review": "lb-native"
+      },
+      "nl": {
+        "text": "Hollännesch",
+        "review": "lb-native"
+      }
+    }
+  },
+  "haus": {
+    "legend": {
+      "text": "Haus auswielen",
+      "review": "lb-native"
+    },
+    "beide": {
+      "text": "Béid Haiser",
+      "review": "lb-native"
+    },
+    "lanners": {
+      "text": "Lanners",
+      "review": "lb-native"
+    },
+    "jager": {
+      "text": "Jager",
+      "review": "lb-native"
+    },
+    "adresse": {
+      "text": "Grand-Rue {nr}",
+      "review": "lb-native"
+    },
+    "beideNamen": {
+      "text": "Lanners a Jager",
+      "review": "lb-native"
+    },
+    "shopWaehlen": {
+      "text": "Shop wielen",
+      "review": "lb-native"
+    }
+  },
+  "demo": {
+    "leiste": {
+      "text": "Demo: Artikelen, Präisser a Stocke si Beispilldaten. Et gëtt näischt verkaaft.",
+      "review": "lb-native"
+    },
+    "postausgang": {
+      "text": "Demo-Postausgang",
+      "review": "lb-native"
+    },
+    "artikel": {
+      "text": "Demo-Artikel",
+      "review": "lb-native"
+    },
+    "foto": {
+      "text": "Demo-Foto",
+      "review": "lb-native"
+    },
+    "wert": {
+      "text": "Demo-Wäert",
+      "review": "lb-native"
+    }
+  },
+  "offen": {
+    "fehlt": {
+      "text": "[feelt]",
+      "review": "lb-native"
+    },
+    "unbestaetigt": {
+      "text": "[net confirméiert]",
+      "review": "lb-native"
+    },
+    "titel": {
+      "text": "Oppene Punkt {op}",
+      "review": "lb-native"
+    }
+  },
+  "footer": {
+    "mehrUeber": {
+      "text": "Méi iwwer {haus}",
+      "review": "lb-native"
+    },
+    "telefon": {
+      "text": "Telefon",
+      "review": "lb-native"
+    },
+    "email": {
+      "text": "E-Mail",
+      "review": "lb-native"
+    },
+    "facebook": {
+      "text": "{haus} op Facebook",
+      "review": "lb-native"
+    },
+    "oeffnungszeiten": {
+      "text": "Ëffnungszäiten",
+      "review": "lb-native"
+    },
+    "gutscheine": {
+      "text": "Kaddosbongen",
+      "review": "lb-native"
+    },
+    "howto": {
+      "text": "Wéi et geet",
+      "review": "lb-native"
+    },
+    "kontakt": {
+      "text": "Kontakt",
+      "review": "lb-native"
+    },
+    "impressum": {
+      "text": "Impressum",
+      "review": "lb-native"
+    },
+    "datenschutz": {
+      "text": "Dateschutz",
+      "review": "lb-native"
+    },
+    "agb": {
+      "text": "AGB",
+      "review": "lb-native"
+    },
+    "widerruf": {
+      "text": "Widderruff",
+      "review": "lb-native"
+    },
+    "versand": {
+      "text": "Versand & Bezuelen",
+      "review": "lb-native"
+    }
+  },
+  "zeiten": {
+    "titel": {
+      "text": "Ëffnungszäiten",
+      "review": "lb-native"
+    },
+    "tag": {
+      "text": "Dag",
+      "review": "lb-native"
+    },
+    "zeit": {
+      "text": "Zäit",
+      "review": "lb-native"
+    },
+    "heute": {
+      "text": "haut",
+      "review": "lb-native"
+    },
+    "geschlossen": {
+      "text": "zou",
+      "review": "lb-native"
+    },
+    "von_bis": {
+      "text": "{von}–{bis}",
+      "review": "lb-native"
+    },
+    "und": {
+      "text": " an ",
+      "review": "lb-native"
+    },
+    "feiertage": {
+      "text": "Op gesetzleche Feierdeeg zou.",
+      "review": "lb-native"
+    },
+    "naechsteFeiertage": {
+      "text": "Nächst Feierdeeg",
+      "review": "lb-native"
+    },
+    "abweichend": {
+      "text": "Aner Ëffnungszäiten",
+      "review": "lb-native"
+    },
+    "jetztOffen": {
+      "text": "Elo op",
+      "review": "lb-native"
+    },
+    "jetztZu": {
+      "text": "Elo zou",
+      "review": "lb-native"
+    },
+    "tage": {
+      "mo": {
+        "text": "Méindeg",
+        "review": "lb-native"
+      },
+      "di": {
+        "text": "Dënschdeg",
+        "review": "lb-native"
+      },
+      "mi": {
+        "text": "Mëttwoch",
+        "review": "lb-native"
+      },
+      "do": {
+        "text": "Donneschdeg",
+        "review": "lb-native"
+      },
+      "fr": {
+        "text": "Freideg",
+        "review": "lb-native"
+      },
+      "sa": {
+        "text": "Samschdeg",
+        "review": "lb-native"
+      },
+      "so": {
+        "text": "Sonndeg",
+        "review": "lb-native"
+      }
+    },
+    "monate": {
+      "10": {
+        "text": "Oktober",
+        "review": "lb-native"
+      },
+      "11": {
+        "text": "November",
+        "review": "lb-native"
+      },
+      "12": {
+        "text": "Dezember",
+        "review": "lb-native"
+      },
+      "01": {
+        "text": "Januar",
+        "review": "lb-native"
+      },
+      "02": {
+        "text": "Februar",
+        "review": "lb-native"
+      },
+      "03": {
+        "text": "Mäerz",
+        "review": "lb-native"
+      },
+      "04": {
+        "text": "Abrëll",
+        "review": "lb-native"
+      },
+      "05": {
+        "text": "Mee",
+        "review": "lb-native"
+      },
+      "06": {
+        "text": "Juni",
+        "review": "lb-native"
+      },
+      "07": {
+        "text": "Juli",
+        "review": "lb-native"
+      },
+      "08": {
+        "text": "August",
+        "review": "lb-native"
+      },
+      "09": {
+        "text": "September",
+        "review": "lb-native"
+      }
+    },
+    "kurz": {
+      "mo": {
+        "text": "Mé",
+        "review": "lb-native"
+      },
+      "di": {
+        "text": "Dë",
+        "review": "lb-native"
+      },
+      "mi": {
+        "text": "Më",
+        "review": "lb-native"
+      },
+      "do": {
+        "text": "Do",
+        "review": "lb-native"
+      },
+      "fr": {
+        "text": "Fr",
+        "review": "lb-native"
+      },
+      "sa": {
+        "text": "Sa",
+        "review": "lb-native"
+      },
+      "so": {
+        "text": "So",
+        "review": "lb-native"
+      }
+    },
+    "spanne": {
+      "text": "{von} bis {bis}",
+      "review": "lb-native"
+    }
+  },
+  "hero": {
+    "h1": {
+      "text": "Zwee Moudenhaiser an der Grand-Rue",
+      "review": "lb-native"
+    },
+    "sub": {
+      "text": "Fraen- an Häremoud bei Lanners, Häremoud an Hitt bei Jager, mëtten zu Ettelbréck. Kuckt hei, wat an Ärer Gréisst do ass, reservéiert et a probéiert et am Buttek un.",
+      "review": "lb-native"
+    },
+    "subKauf": {
+      "text": "Oder bestellt direkt.",
+      "review": "lb-native"
+    },
+    "btnSortiment": {
+      "text": "Bei d'Sortiment",
+      "review": "lb-native"
+    },
+    "btnHowto": {
+      "text": "Wéi et geet",
+      "review": "lb-native"
+    },
+    "vorzeile": {
+      "text": "Ettelbréck · Grand-Rue 18 & 32",
+      "review": "lb-native"
+    }
+  },
+  "home": {
+    "neuH2": {
+      "text": "Nei erakomm",
+      "review": "lb-native"
+    },
+    "neuAlle": {
+      "text": "Alles kucken",
+      "review": "lb-native"
+    },
+    "neuAlleSr": {
+      "text": "All nei erakomm Artikele kucken",
+      "review": "lb-native"
+    },
+    "neuLeer": {
+      "text": "Grad ass näischt Neies markéiert.",
+      "review": "lb-native"
+    },
+    "neuLeerLink": {
+      "text": "Kuckt Iech dat ganzt Sortiment un.",
+      "review": "lb-native"
+    },
+    "neuRegion": {
+      "text": "Nei erakomm",
+      "review": "lb-native"
+    },
+    "zurueck": {
+      "text": "Zréck",
+      "review": "lb-native"
+    },
+    "weiter": {
+      "text": "Weider",
+      "review": "lb-native"
+    },
+    "sortimentH2": {
+      "text": "Sortiment",
+      "review": "lb-native"
+    },
+    "howtoH2": {
+      "text": "Wéi et geet",
+      "review": "lb-native"
+    },
+    "howtoLink": {
+      "text": "Alles iwwer Reservéieren, Ofhuelen a Liwweren",
+      "review": "lb-native"
+    },
+    "markenH2": {
+      "text": "Marken an den zwee Haiser",
+      "review": "lb-native"
+    },
+    "haeuserH2": {
+      "text": "Déi zwee Haiser",
+      "review": "lb-native"
+    },
+    "faqH2": {
+      "text": "Dacks gestallte Froen",
+      "review": "lb-native"
+    },
+    "route": {
+      "text": "Wee plangen",
+      "review": "lb-native"
+    },
+    "routeSr": {
+      "text": "Wee bei {haus} op Google Maps",
+      "review": "lb-native"
+    },
+    "zumHaus": {
+      "text": "Bei d'Haus",
+      "review": "lb-native"
+    },
+    "zumHausSr": {
+      "text": "Bei d'Haus {haus}",
+      "review": "lb-native"
+    },
+    "markenVorzeile": {
+      "text": "Wat mir féieren",
+      "review": "lb-native"
+    },
+    "shopsVorzeile": {
+      "text": "Zwee Haiser, zwee Shoppen",
+      "review": "lb-native"
+    },
+    "shopsH2": {
+      "text": "Wielt Äert Haus",
+      "review": "lb-native"
+    },
+    "shopsText": {
+      "text": "All Haus huet säin eegent Sortiment. Am Shop gesitt Dir just dat, wat do verkaf gëtt, mat Ëffnungszäiten, Marken a Kontakt.",
+      "review": "lb-native"
+    },
+    "neuVorzeile": {
+      "text": "Frësch am Buttek",
+      "review": "lb-native"
+    },
+    "sortimentVorzeile": {
+      "text": "Fir Hatt, fir Hien",
+      "review": "lb-native"
+    },
+    "katDamen": {
+      "text": "Moud bei Lanners",
+      "review": "lb-native"
+    },
+    "katHerren": {
+      "text": "Bei Lanners a bei Jager",
+      "review": "lb-native"
+    },
+    "katAccessoires": {
+      "text": "Hitt, Schal, Rimmen, Täschen",
+      "review": "lb-native"
+    },
+    "katSale": {
+      "text": "Reduzéiert a béid Haiser",
+      "review": "lb-native"
+    },
+    "howtoVorzeile": {
+      "text": "Online kucken, am Buttek probéieren",
+      "review": "lb-native"
+    },
+    "geschichteVorzeile": {
+      "text": "Zënter 1891",
+      "review": "lb-native"
+    },
+    "geschichteH2": {
+      "text": "Traditioun an der Grand-Rue",
+      "review": "lb-native"
+    },
+    "geschichteText": {
+      "text": "Jager-Oberlinkels huet 1891 als Hutgeschäft an der Grand-Rue 32 ugefaangen. Haut stinn zwee Moudenhaiser fir eng perséinlech Berodung matzen zu Ettelbréck.",
+      "review": "lb-native"
+    },
+    "geschichteLink": {
+      "text": "Eis Geschicht liesen",
+      "review": "lb-native"
+    },
+    "faqVorzeile": {
+      "text": "Gutt ze wëssen",
+      "review": "lb-native"
+    }
+  },
+  "howto": {
+    "s1Titel": {
+      "text": "Gréisst an Haus wielen.",
+      "review": "lb-native"
+    },
+    "s1Text": {
+      "text": "D'Gréisstenleescht weist, wat bei Lanners a bei Jager grad do ass. De Stock kënnt all zéng Minutten aus der Keess vum Buttek.",
+      "review": "lb-native"
+    },
+    "s2Titel": {
+      "text": "Reservéieren oder bestellen.",
+      "review": "lb-native"
+    },
+    "s2TitelReserve": {
+      "text": "Reservéieren.",
+      "review": "lb-native"
+    },
+    "s2TextReserve": {
+      "text": "Eng Reservatioun ass gratis an onverbindlech.",
+      "review": "lb-native"
+    },
+    "s2TextKauf": {
+      "text": "Oder Dir bezuelt online an huelt am Haus of oder loosst liwweren.",
+      "review": "lb-native"
+    },
+    "s3Titel": {
+      "text": "Uprobéieren, ofhuelen, droen.",
+      "review": "lb-native"
+    },
+    "s3Text": {
+      "text": "Mir leeën Är Reservatioun {n} Aarbechtsdeeg zréck. Dir probéiert am Buttek un, loosst Iech beroden a bezuelt nëmmen, wat passt.",
+      "review": "lb-native"
+    },
+    "h1": {
+      "text": "Wéi et geet",
+      "review": "lb-native"
+    },
+    "intro": {
+      "text": "Online kucken, am Buttek uprobéieren: Sou kommt Dir bei Lanners a Jager un Är Gréisst.",
+      "review": "lb-native"
+    },
+    "schritteH2": {
+      "text": "An dräi Schrëtt",
+      "review": "lb-native"
+    },
+    "reservierenH2": {
+      "text": "Reservéieren",
+      "review": "lb-native"
+    },
+    "reservierenText": {
+      "text": "Wielt op der Produitsäit Gréisst an Haus a schéckt d'Reservatioun of. D'Haus leet den Artikel ab dem Dag, deen Dir wielt, {n} Aarbechtsdeeg fir Iech zréck. Bezuelt gëtt am Buttek, an nëmmen dat, wat Iech passt.",
+      "review": "lb-native"
+    },
+    "reservierenFrei": {
+      "text": "Reservéieren ass gratis an onverbindlech.",
+      "review": "lb-native"
+    },
+    "abholenH2": {
+      "text": "Online bezuelen an am Haus ofhuelen",
+      "review": "lb-native"
+    },
+    "abholenText": {
+      "text": "Dir bezuelt online an huelt ab dem nächsten Ëffnungsdag of, an deem Haus, wou den Artikel läit. Bréngt d'Bestellnummer mat.",
+      "review": "lb-native"
+    },
+    "anderesHaus": {
+      "text": "Ofhuelen am aneren Haus:",
+      "review": "lb-native"
+    },
+    "liefernH2": {
+      "text": "Liwwere loossen",
+      "review": "lb-native"
+    },
+    "liefernText": {
+      "text": "Mir liwweren bannent Lëtzebuerg an {n} Aarbechtsdeeg. Versandkäschten: {kosten}.",
+      "review": "lb-native"
+    },
+    "bezahlenH2": {
+      "text": "Bezuelen",
+      "review": "lb-native"
+    },
+    "bezahlenText": {
+      "text": "Confection Lanners a Jager-Oberlinkels sinn zwee Haiser mat enger eegener Keess. Leien Artikelen aus béiden Haiser an Ärem Akafskuerf, bezuelt Dir bei all Haus separat. Är Kontaktdonnéeë gitt Dir dofir nëmmen eng Kéier an.",
+      "review": "lb-native"
+    },
+    "rueckgabeH2": {
+      "text": "Zréckginn an ëmtauschen",
+      "review": "lb-native"
+    },
+    "rueckgabeText": {
+      "text": "Online kaaft Artikele kënnt Dir bannent 14 Deeg zréckginn. Dat ass Äert gesetzlecht Réckzuchsrecht, d'Detailer stinn an der Widderruffsbeléierung.",
+      "review": "lb-native"
+    },
+    "umtausch": {
+      "text": "Ëmtausch am Buttek:",
+      "review": "lb-native"
+    },
+    "faqH2": {
+      "text": "Froen dozou",
+      "review": "lb-native"
+    }
+  },
+  "haeuser": {
+    "h1": {
+      "text": "D'Haiser",
+      "review": "lb-native"
+    },
+    "intro": {
+      "text": "Zwee Haiser, 14 Hausnummeren auserneen an der Grand-Rue zu Ettelbréck.",
+      "review": "lb-native"
+    },
+    "lannersText": {
+      "text": "Confection Lanners an der Grand-Rue 18 ass dat méi grousst vun den zwee Haiser: 520 m² Fraen- an Häremoud, vum Business-Kostüm bis bei d'Fräizäitjackett. Hei fannt Dir Boss, Maerz, Scotch & Soda, Save the Duck, Camel Active, PME Legend a State of Art. Loosst Iech a Rou beroden.",
+      "review": "lb-native"
+    },
+    "lannersKurz": {
+      "text": "Dat méi grousst vun den zwee Haiser: 520 m² Fraen- an Häremoud, vum Business-Kostüm bis bei d'Fräizäitjackett. Loosst Iech a Rou beroden.",
+      "review": "lb-native"
+    },
+    "lannersHoflieferant": {
+      "text": "Confection Lanners ass Fournisseur vum groussherzogleche Haff.",
+      "review": "lb-native"
+    },
+    "jagerText": {
+      "text": "Jager-Oberlinkels ass zënter 1891 an der Grand-Rue 32 doheem. Ugefaangen huet et als Hutgeschäft, duerno sinn Hiemer dobäikomm. Haut kleet Jager Hären vu Kapp bis Fouss an: Lacoste, Levi's, Barbour, Gardeur, Hitt vu Stetson a Fynch Hatton, dozou Ënnerwäsch, Accessoiren a Liederwueren.",
+      "review": "lb-native"
+    },
+    "jagerKurz": {
+      "text": "Zënter 1891 an der Grand-Rue 32, ugefaangen als Hutgeschäft. Haut kleet Jager Hären vu Kapp bis Fouss an.",
+      "review": "lb-native"
+    },
+    "fakten": {
+      "text": "Op ee Bléck",
+      "review": "lb-native"
+    },
+    "abteilungen": {
+      "text": "Rayonen",
+      "review": "lb-native"
+    },
+    "lannersAbteilungen": {
+      "text": "Fraen an Hären",
+      "review": "lb-native"
+    },
+    "jagerAbteilungen": {
+      "text": "Hären",
+      "review": "lb-native"
+    },
+    "marken": {
+      "text": "Marken",
+      "review": "lb-native"
+    },
+    "flaeche": {
+      "text": "Fläch",
+      "review": "lb-native"
+    },
+    "seit": {
+      "text": "Zënter",
+      "review": "lb-native"
+    },
+    "jagerSeit": {
+      "text": "Zënter 1891 op dëser Adress",
+      "review": "lb-native"
+    },
+    "gegruendet": {
+      "text": "Gegrënnt",
+      "review": "lb-native"
+    },
+    "geschichte": {
+      "text": "Geschicht",
+      "review": "lb-native"
+    },
+    "jagerGeschichte1": {
+      "text": "Ugefaangen als Hutgeschäft",
+      "review": "lb-native"
+    },
+    "jagerGeschichte2": {
+      "text": "duerno Hut- an Hiemergeschäft",
+      "review": "lb-native"
+    },
+    "jagerGeschichte3": {
+      "text": "haut Häreausstatter",
+      "review": "lb-native"
+    },
+    "kontaktH2": {
+      "text": "Adress a Kontakt",
+      "review": "lb-native"
+    },
+    "zeitenH2": {
+      "text": "Ëffnungszäiten",
+      "review": "lb-native"
+    },
+    "neuH2": {
+      "text": "Nei erakomm bei {haus}",
+      "review": "lb-native"
+    },
+    "zumHaus": {
+      "text": "Bei d'Haus {haus}",
+      "review": "lb-native"
+    }
+  },
+  "marken": {
+    "h1": {
+      "text": "Marken",
+      "review": "lb-native"
+    },
+    "intro": {
+      "text": "All d'Marke vu Lanners a Jager, mam Stock no Gréisst an no Haus.",
+      "review": "lb-native"
+    },
+    "beide": {
+      "text": "béid Haiser",
+      "review": "lb-native"
+    },
+    "anzahl_one": {
+      "text": "{n} Artikel",
+      "review": "lb-native"
+    },
+    "anzahl_other": {
+      "text": "{n} Artikelen",
+      "review": "lb-native"
+    },
+    "buchstaben": {
+      "text": "No Ufanksbuschtaf",
+      "review": "lb-native"
+    },
+    "h1Marke": {
+      "text": "{marke} zu Ettelbréck",
+      "review": "lb-native"
+    },
+    "vorlageEins": {
+      "text": "{marke} fannt Dir bei {haus} an der Grand-Rue {nr} zu Ettelbréck. Hei gesitt Dir, wéi eng Gréissten grad do sinn.",
+      "review": "lb-native"
+    },
+    "vorlageBeide": {
+      "text": "{marke} fannt Dir bei Lanners a bei Jager an der Grand-Rue zu Ettelbréck. Hei gesitt Dir, wéi eng Gréissten grad do sinn.",
+      "review": "lb-native"
+    },
+    "band": {
+      "text": "Eis Marken",
+      "review": "lb-native"
+    },
+    "alle": {
+      "text": "All Marken",
+      "review": "lb-native"
+    },
+    "bandPause": {
+      "text": "Band stoppen",
+      "review": "lb-native"
+    },
+    "bandWeiter": {
+      "text": "Band weiderlafe loossen",
+      "review": "lb-native"
+    },
+    "imLaden": {
+      "text": "Am Buttek ze kréien",
+      "review": "lb-native"
+    },
+    "weitere": {
+      "text": "Aner Marken",
+      "review": "lb-native"
+    }
+  },
+  "liste": {
+    "anzahl_one": {
+      "text": "{n} Artikel",
+      "review": "lb-native"
+    },
+    "anzahl_other": {
+      "text": "{n} Artikelen",
+      "review": "lb-native"
+    },
+    "filtern": {
+      "text": "Filteren",
+      "review": "lb-native"
+    },
+    "filterTitel": {
+      "text": "Filter",
+      "review": "lb-native"
+    },
+    "haus": {
+      "text": "Haus",
+      "review": "lb-native"
+    },
+    "marke": {
+      "text": "Mark",
+      "review": "lb-native"
+    },
+    "groesse": {
+      "text": "Gréisst",
+      "review": "lb-native"
+    },
+    "farbe": {
+      "text": "Faarf",
+      "review": "lb-native"
+    },
+    "preis": {
+      "text": "Präis",
+      "review": "lb-native"
+    },
+    "nurSale": {
+      "text": "Nëmme Sale",
+      "review": "lb-native"
+    },
+    "alle": {
+      "text": "All",
+      "review": "lb-native"
+    },
+    "zeigen_one": {
+      "text": "{n} Artikel weisen",
+      "review": "lb-native"
+    },
+    "zeigen_other": {
+      "text": "{n} Artikele weisen",
+      "review": "lb-native"
+    },
+    "zuruecksetzen": {
+      "text": "Filter zrécksetzen",
+      "review": "lb-native"
+    },
+    "sortieren": {
+      "text": "Sortéieren",
+      "review": "lb-native"
+    },
+    "sortEmpfohlen": {
+      "text": "Recommandéiert",
+      "review": "lb-native"
+    },
+    "sortNeu": {
+      "text": "Nei",
+      "review": "lb-native"
+    },
+    "sortPreisAuf": {
+      "text": "Präis eropgoend",
+      "review": "lb-native"
+    },
+    "sortPreisAb": {
+      "text": "Präis erofgoend",
+      "review": "lb-native"
+    },
+    "mehr": {
+      "text": "Méi Artikele lueden",
+      "review": "lb-native"
+    },
+    "filterFehler": {
+      "text": "D'Filtere sinn de Moment net disponibel. D'Säiten hei ënnen weisen all d'Artikelen.",
+      "review": "lb-native"
+    },
+    "geladen_one": {
+      "text": "{n} Artikel méi gelueden",
+      "review": "lb-native"
+    },
+    "geladen_other": {
+      "text": "{n} Artikele méi gelueden",
+      "review": "lb-native"
+    },
+    "seiten": {
+      "text": "Säiten",
+      "review": "lb-native"
+    },
+    "seite": {
+      "text": "Säit {n}",
+      "review": "lb-native"
+    },
+    "seiteVon": {
+      "text": "Säit {n} vun {m}",
+      "review": "lb-native"
+    },
+    "vorherige": {
+      "text": "Vireg Säit",
+      "review": "lb-native"
+    },
+    "naechste": {
+      "text": "Nächst Säit",
+      "review": "lb-native"
+    },
+    "leer": {
+      "text": "Mat dëse Filter gëtt et grad näischt.",
+      "review": "lb-native"
+    },
+    "leerReset": {
+      "text": "Filter zrécksetzen.",
+      "review": "lb-native"
+    },
+    "stand": {
+      "text": "Disponibilitéit Stand: {datum}. Live ass de Stock op der Produitsäit.",
+      "review": "lb-native"
+    },
+    "gefunden_one": {
+      "text": "{n} Artikel fonnt",
+      "review": "lb-native"
+    },
+    "gefunden_other": {
+      "text": "{n} Artikele fonnt",
+      "review": "lb-native"
+    },
+    "preisBis": {
+      "text": "bis {b}",
+      "review": "lb-native"
+    },
+    "preisVonBis": {
+      "text": "{a} bis {b}",
+      "review": "lb-native"
+    },
+    "preisUeber": {
+      "text": "iwwer {a}",
+      "review": "lb-native"
+    },
+    "warengruppen": {
+      "text": "Kategorien",
+      "review": "lb-native"
+    },
+    "alleArtikel": {
+      "text": "All {name}",
+      "review": "lb-native"
+    },
+    "saleH1": {
+      "text": "Sale",
+      "review": "lb-native"
+    },
+    "sortimentH1": {
+      "text": "Sortiment",
+      "review": "lb-native"
+    },
+    "neuH1": {
+      "text": "Nei erakomm",
+      "review": "lb-native"
+    }
+  },
+  "karte": {
+    "statt": {
+      "text": "amplaz",
+      "review": "lb-native"
+    },
+    "jetzt": {
+      "text": "elo",
+      "review": "lb-native"
+    },
+    "beide": {
+      "text": "Lanners a Jager",
+      "review": "lb-native"
+    },
+    "nurBei": {
+      "text": "Nëmme bei {haus}",
+      "review": "lb-native"
+    },
+    "nicht": {
+      "text": "Grad net op Lager",
+      "review": "lb-native"
+    }
+  },
+  "produkt": {
+    "pfad": {
+      "text": "Navigatiounswee",
+      "review": "lb-native"
+    },
+    "farbe": {
+      "text": "Faarf: {farbe}",
+      "review": "lb-native"
+    },
+    "farben": {
+      "text": "Faarwen",
+      "review": "lb-native"
+    },
+    "farbeLink": {
+      "text": "Faarf {farbe}",
+      "review": "lb-native"
+    },
+    "farbeAktiv": {
+      "text": "Faarf {farbe}, ausgewielt",
+      "review": "lb-native"
+    },
+    "inklMwst": {
+      "text": "inkl. TVA",
+      "review": "lb-native"
+    },
+    "statt": {
+      "text": "amplaz",
+      "review": "lb-native"
+    },
+    "jetzt": {
+      "text": "elo",
+      "review": "lb-native"
+    },
+    "ab": {
+      "text": "ab {preis}",
+      "review": "lb-native"
+    },
+    "omnibus": {
+      "text": "Niddregste Präis vun de leschten 30 Deeg: {preis}",
+      "review": "lb-native"
+    },
+    "beschreibung": {
+      "text": "Beschreiwung",
+      "review": "lb-native"
+    },
+    "material": {
+      "text": "Material",
+      "review": "lb-native"
+    },
+    "pflege": {
+      "text": "Fleeg",
+      "review": "lb-native"
+    },
+    "artikelnummer": {
+      "text": "Artikelnummer",
+      "review": "lb-native"
+    },
+    "nurSpracheBeschreibung": {
+      "text": "Beschreiwung nëmmen op {sprache} disponibel.",
+      "review": "lb-native"
+    },
+    "nurSpracheMaterial": {
+      "text": "Material nëmmen op {sprache} uginn.",
+      "review": "lb-native"
+    },
+    "nurSprachePflege": {
+      "text": "Fleeghiweiser nëmmen op {sprache} disponibel.",
+      "review": "lb-native"
+    },
+    "keinText": {
+      "text": "Fir dësen Artikel gëtt et nach keng Beschreiwung.",
+      "review": "lb-native"
+    },
+    "passt": {
+      "text": "Passt dozou",
+      "review": "lb-native"
+    },
+    "mehrVon": {
+      "text": "Méi vun {marke}",
+      "review": "lb-native"
+    },
+    "galerie": {
+      "text": "Fotoen",
+      "review": "lb-native"
+    },
+    "ansicht": {
+      "text": "Usiicht {i} vun {n}",
+      "review": "lb-native"
+    },
+    "fotoZurueck": {
+      "text": "Viregt Foto",
+      "review": "lb-native"
+    },
+    "fotoWeiter": {
+      "text": "Nächst Foto",
+      "review": "lb-native"
+    },
+    "alt": {
+      "text": "{marke} {name} a(n) {farbe}, Usiicht {i} vun {n}",
+      "review": "lb-native"
+    },
+    "offline": {
+      "text": "Dësen Artikel ass net méi online. Frot am Buttek no: {telefone}.",
+      "review": "lb-native"
+    },
+    "aehnlich": {
+      "text": "Ähnlech Artikelen",
+      "review": "lb-native"
+    },
+    "vorraetigBei": {
+      "text": "Op Lager bei {liste}.",
+      "review": "lb-native"
+    },
+    "vorraetigNirgends": {
+      "text": "Grad an kengem Haus op Lager.",
+      "review": "lb-native"
+    }
+  },
+  "groesse": {
+    "waehlen": {
+      "text": "Gréisst wielen",
+      "review": "lb-native"
+    },
+    "stand": {
+      "text": "Stand: {zeit} Auer",
+      "review": "lb-native"
+    },
+    "standHeute": {
+      "text": "Stand: haut, {zeit} Auer",
+      "review": "lb-native"
+    },
+    "standTag": {
+      "text": "Stand: {datum}, {zeit} Auer",
+      "review": "lb-native"
+    },
+    "da_one": {
+      "text": "{n} Stéck do",
+      "review": "lb-native"
+    },
+    "da_other": {
+      "text": "{n} Stéck do",
+      "review": "lb-native"
+    },
+    "letztes": {
+      "text": "lescht Stéck",
+      "review": "lb-native"
+    },
+    "nicht": {
+      "text": "net op Lager",
+      "review": "lb-native"
+    },
+    "zelle": {
+      "text": "{groesse}, {haus}, {zustand}",
+      "review": "lb-native"
+    },
+    "zusammenfassung_one": {
+      "text": "Gréisst {g} bei {haus}, Grand-Rue {nr}: nach {n} Stéck.",
+      "review": "lb-native"
+    },
+    "zusammenfassung_other": {
+      "text": "Gréisst {g} bei {haus}, Grand-Rue {nr}: nach {n} Stéck.",
+      "review": "lb-native"
+    },
+    "zusammenfassungTu_one": {
+      "text": "Bei {haus}, Grand-Rue {nr}: nach {n} Stéck.",
+      "review": "lb-native"
+    },
+    "zusammenfassungTu_other": {
+      "text": "Bei {haus}, Grand-Rue {nr}: nach {n} Stéck.",
+      "review": "lb-native"
+    },
+    "liveAus": {
+      "text": "Live-Stock grad net erreechbar. {stand}.",
+      "review": "lb-native"
+    },
+    "aktualisiert": {
+      "text": "Stock aktualiséiert.",
+      "review": "lb-native"
+    },
+    "nirgends": {
+      "text": "Grad an kengem Haus op Lager.",
+      "review": "lb-native"
+    },
+    "nachlieferung": {
+      "text": "Nei Liwwerung erwaart ab dem {datum}.",
+      "review": "lb-native"
+    },
+    "nachfragen": {
+      "text": "Am Buttek nofroen",
+      "review": "lb-native"
+    },
+    "keineAuswahl": {
+      "text": "Wielt eng Gréisst an en Haus.",
+      "review": "lb-native"
+    },
+    "auchBei": {
+      "text": "Och bei {haus} op Lager: {groessen}",
+      "review": "lb-native"
+    },
+    "auchBeiNicht": {
+      "text": "Bei {haus} grad net op Lager.",
+      "review": "lb-native"
+    },
+    "auchBeiZeigen": {
+      "text": "Gréisste bei {haus} weisen",
+      "review": "lb-native"
+    },
+    "nurBei": {
+      "text": "Nëmme bei {haus}",
+      "review": "lb-native"
+    },
+    "weite": {
+      "text": "Wäit",
+      "review": "lb-native"
+    },
+    "laenge": {
+      "text": "Längt",
+      "review": "lb-native"
+    },
+    "matrix": {
+      "text": "Gréisste bei {haus}: Wäit a Längt",
+      "review": "lb-native"
+    },
+    "matrixHaus": {
+      "text": "Haus fir d'Gréissttabell",
+      "review": "lb-native"
+    },
+    "tu_one": {
+      "text": "Bei {haus}: {n} Stéck do",
+      "review": "lb-native"
+    },
+    "tu_other": {
+      "text": "Bei {haus}: {n} Stéck do",
+      "review": "lb-native"
+    },
+    "tuNicht": {
+      "text": "Bei {haus}: net op Lager",
+      "review": "lb-native"
+    },
+    "einheitsgroesse": {
+      "text": "Eenheetsgréisst",
+      "review": "lb-native"
+    },
+    "ohneJs": {
+      "text": "Fir ze reservéieren, rufft eis un: {telefone}.",
+      "review": "lb-native"
+    },
+    "maxBestand": {
+      "text": "Méi sinn der grad net do.",
+      "review": "lb-native"
+    }
+  },
+  "btn": {
+    "tasche": {
+      "text": "An den Akafskuerf",
+      "review": "lb-native"
+    },
+    "reservieren": {
+      "text": "Reservéieren an am Buttek uprobéieren",
+      "review": "lb-native"
+    }
+  },
+  "wege": {
+    "reserve": {
+      "text": "Reservéieren ass gratis. Mir leeën den Artikel {n} Aarbechtsdeeg fir Iech zréck.",
+      "review": "lb-native"
+    },
+    "collect": {
+      "text": "Online bezuelt, huelt Dir ab dem nächsten Ëffnungsdag am Haus of.",
+      "review": "lb-native"
+    },
+    "ship": {
+      "text": "Liwwerung bannent Lëtzebuerg an {n} Aarbechtsdeeg.",
+      "review": "lb-native"
+    }
+  },
+  "tasche": {
+    "h1": {
+      "text": "Akafskuerf",
+      "review": "lb-native"
+    },
+    "status": {
+      "text": "Am Akafskuerf.",
+      "review": "lb-native"
+    },
+    "zur": {
+      "text": "Bei den Akafskuerf",
+      "review": "lb-native"
+    },
+    "leer": {
+      "text": "Ären Akafskuerf ass eidel.",
+      "review": "lb-native"
+    },
+    "ausHaus": {
+      "text": "Aus dem Haus {haus}, Grand-Rue {nr}",
+      "review": "lb-native"
+    },
+    "groesse": {
+      "text": "Gréisst {g}",
+      "review": "lb-native"
+    },
+    "farbe": {
+      "text": "Faarf {f}",
+      "review": "lb-native"
+    },
+    "menge": {
+      "text": "Unzuel",
+      "review": "lb-native"
+    },
+    "mengeVon": {
+      "text": "Unzuel fir {name}",
+      "review": "lb-native"
+    },
+    "entfernen": {
+      "text": "Ewechhuelen",
+      "review": "lb-native"
+    },
+    "entfernenSr": {
+      "text": "{name} aus dem Akafskuerf ewechhuelen",
+      "review": "lb-native"
+    },
+    "entfernt": {
+      "text": "{name} gouf aus dem Akafskuerf ewechgeholl.",
+      "review": "lb-native"
+    },
+    "wie": {
+      "text": "Wéi wëllt Dir et kréien?",
+      "review": "lb-native"
+    },
+    "wegReserve": {
+      "text": "Reservéieren an am Buttek uprobéieren",
+      "review": "lb-native"
+    },
+    "wegReserveText": {
+      "text": "Gratis, bezuelt gëtt am Buttek.",
+      "review": "lb-native"
+    },
+    "wegCollect": {
+      "text": "Online bezuelen an am Haus ofhuelen",
+      "review": "lb-native"
+    },
+    "wegCollectText": {
+      "text": "Ab dem nächsten Ëffnungsdag an deem Haus, wou den Artikel läit.",
+      "review": "lb-native"
+    },
+    "wegShip": {
+      "text": "Online bezuelen a liwwere loossen",
+      "review": "lb-native"
+    },
+    "wegShipText": {
+      "text": "Bannent Lëtzebuerg.",
+      "review": "lb-native"
+    },
+    "zweiHaeuser": {
+      "text": "Ären Akafskuerf huet Artikelen aus zwee Haiser. Dir bezuelt bei all Haus separat.",
+      "review": "lb-native"
+    },
+    "weiterReservieren": {
+      "text": "Weider bei d'Reservatioun",
+      "review": "lb-native"
+    },
+    "bezahlenBei_one": {
+      "text": "Bei {haus} bezuelen ({n} Artikel, {summe})",
+      "review": "lb-native"
+    },
+    "bezahlenBei_other": {
+      "text": "Bei {haus} bezuelen ({n} Artikelen, {summe})",
+      "review": "lb-native"
+    },
+    "zwischensumme": {
+      "text": "Zwëschesumm",
+      "review": "lb-native"
+    },
+    "ohneJs": {
+      "text": "Den Akafskuerf brauch JavaScript. Rufft eis un: {telefone}.",
+      "review": "lb-native"
+    },
+    "angepasst": {
+      "text": "D'Unzuel vu(n) {name} gouf un de Stock ugepasst.",
+      "review": "lb-native"
+    },
+    "nichtMehrDa": {
+      "text": "{g} ass bei {haus} grad net méi do.",
+      "review": "lb-native"
+    },
+    "nichtMehrDaAlt_one": {
+      "text": "{g} ass bei {haus} grad net méi do. Bei {anders}: {n} Stéck.",
+      "review": "lb-native"
+    },
+    "nichtMehrDaAlt_other": {
+      "text": "{g} ass bei {haus} grad net méi do. Bei {anders}: {n} Stéck.",
+      "review": "lb-native"
+    },
+    "preisNeu": {
+      "text": "De Präis huet geännert, elo {preis}.",
+      "review": "lb-native"
+    },
+    "max": {
+      "text": "Héchstens {n} Stéck pro Artikel.",
+      "review": "lb-native"
+    },
+    "knapp_one": {
+      "text": "Nach just 1 Stéck do",
+      "review": "lb-native"
+    },
+    "knapp_other": {
+      "text": "Nach just {n} Stéck do",
+      "review": "lb-native"
+    },
+    "miniTitel": {
+      "text": "An den Akafskuerf geluecht",
+      "review": "lb-native"
+    },
+    "weiterEinkaufen": {
+      "text": "Weider akafen",
+      "review": "lb-native"
+    },
+    "miniAnzahl_one": {
+      "text": "{n} Artikel an Ärem Akafskuerf",
+      "review": "lb-native"
+    },
+    "miniAnzahl_other": {
+      "text": "{n} Artikelen an Ärem Akafskuerf",
+      "review": "lb-native"
+    },
+    "bei": {
+      "text": "Bei {haus}, Grand-Rue {nr}",
+      "review": "lb-native"
+    }
+  },
+  "form": {
+    "vorname": {
+      "text": "Virnumm",
+      "review": "lb-native"
+    },
+    "name": {
+      "text": "Numm",
+      "review": "lb-native"
+    },
+    "email": {
+      "text": "E-Mail",
+      "review": "lb-native"
+    },
+    "emailHinweis": {
+      "text": "Do schécke mir d'Bestätegung hin.",
+      "review": "lb-native"
+    },
+    "mobil": {
+      "text": "GSM-Nummer",
+      "review": "lb-native"
+    },
+    "mobilHinweis": {
+      "text": "Wann eppes net klappt, ruffe mir Iech un.",
+      "review": "lb-native"
+    },
+    "telefon": {
+      "text": "Telefon",
+      "review": "lb-native"
+    },
+    "abholung": {
+      "text": "Ofhuelen ab",
+      "review": "lb-native"
+    },
+    "abholungBei": {
+      "text": "Ofhuelen bei {haus} ab",
+      "review": "lb-native"
+    },
+    "bemerkung": {
+      "text": "Bemierkung",
+      "review": "lb-native"
+    },
+    "bemerkungHinweis": {
+      "text": "Zum Beispill: Ech wéilt och d'Gréisst driwwer uprobéieren.",
+      "review": "lb-native"
+    },
+    "nachricht": {
+      "text": "Message",
+      "review": "lb-native"
+    },
+    "einwilligungReserve": {
+      "text": "Ech sinn domat d'accord, datt {haeuser} meng Donnéeë fir dës Reservatioun benotzen an dofir am Keessesystem späicheren. Méi dozou an der {link}.",
+      "review": "lb-native"
+    },
+    "einwilligungAnfrage": {
+      "text": "Ech sinn domat d'accord, datt {haeuser} meng Donnéeë fir dës Ufro benotzen. Méi dozou an der {link}.",
+      "review": "lb-native"
+    },
+    "datenschutzLink": {
+      "text": "Dateschutzerklärung",
+      "review": "lb-native"
+    },
+    "fehlerTitel": {
+      "text": "Dës Donnéeë feelen oder stëmmen net:",
+      "review": "lb-native"
+    },
+    "fehlerVorname": {
+      "text": "Gitt Äre Virnumm un.",
+      "review": "lb-native"
+    },
+    "fehlerName": {
+      "text": "Gitt Äre Numm un.",
+      "review": "lb-native"
+    },
+    "fehlerEmail": {
+      "text": "Gitt Är E-Mail-Adress un, zum Beispill numm@beispill.lu.",
+      "review": "lb-native"
+    },
+    "fehlerMobil": {
+      "text": "Gitt eng GSM-Nummer un, zum Beispill 621 123 456.",
+      "review": "lb-native"
+    },
+    "fehlerTelefon": {
+      "text": "Gitt eng Telefonsnummer un, zum Beispill 621 123 456.",
+      "review": "lb-native"
+    },
+    "fehlerDatum": {
+      "text": "Wielt en Datum ab dem {datum}. Sonndes an op Feierdeeg ass zou.",
+      "review": "lb-native"
+    },
+    "fehlerEinwilligung": {
+      "text": "Bestätegt, datt mir Är Donnéeë dofir benotze dierfen.",
+      "review": "lb-native"
+    },
+    "fehlerNachricht": {
+      "text": "Schreift Äre Message.",
+      "review": "lb-native"
+    },
+    "fehlerKontaktweg": {
+      "text": "Gitt eng E-Mail-Adress oder eng Telefonsnummer un, fir datt mir äntwerte kënnen.",
+      "review": "lb-native"
+    },
+    "fehlerHaus": {
+      "text": "Wielt en Haus.",
+      "review": "lb-native"
+    },
+    "fehlerAllgemein": {
+      "text": "Dat huet net geklappt. Probéiert et nach eng Kéier oder rufft un: {telefone}.",
+      "review": "lb-native"
+    },
+    "fehlerZuViele": {
+      "text": "Ze vill Ufroen a kuerzer Zäit. Probéiert et an e puer Minutten nach eng Kéier.",
+      "review": "lb-native"
+    },
+    "fehlerBestand": {
+      "text": "En Artikel ass an der Tëschenzäit net méi do. Kuckt d'Hiweiser bei den Artikelen.",
+      "review": "lb-native"
+    },
+    "fehlerPreis": {
+      "text": "E Präis huet geännert. Kuckt de Resumé.",
+      "review": "lb-native"
+    },
+    "fehlerTasche": {
+      "text": "Ären Akafskuerf ass eidel oder huet näischt aus dësem Haus.",
+      "review": "lb-native"
+    },
+    "honeypot": {
+      "text": "Dëst Feld w.e.g. eidel loossen",
+      "review": "lb-native"
+    },
+    "fehlerOhneJs": {
+      "text": "Dës Donnéeë feelen oder stëmmen net. Kuckt d'Pflichtfelder no a schéckt de Formulaire nach eng Kéier.",
+      "review": "lb-native"
+    },
+    "pflichtHinweis": {
+      "text": "Felder ouni de Vermierk „fräiwëlleg“ brauche mir.",
+      "review": "lb-native"
+    }
+  },
+  "reservieren": {
+    "h1": {
+      "text": "Reservéieren",
+      "review": "lb-native"
+    },
+    "intro": {
+      "text": "D'Reservatioun ass gratis. D'Haus leet d'Artikele fir Iech zréck, uprobéiert a bezuelt gëtt am Buttek.",
+      "review": "lb-native"
+    },
+    "zusammenfassung": {
+      "text": "Är Reservatioun",
+      "review": "lb-native"
+    },
+    "kontaktH2": {
+      "text": "Är Donnéeën",
+      "review": "lb-native"
+    },
+    "abholungH2": {
+      "text": "Wéini kommt Dir?",
+      "review": "lb-native"
+    },
+    "zeitenVon": {
+      "text": "Ëffnungszäite vu(n) {haus}",
+      "review": "lb-native"
+    },
+    "senden": {
+      "text": "Reservatioun schécken",
+      "review": "lb-native"
+    },
+    "leer": {
+      "text": "Et gëtt näischt ze reservéieren. Wielt fir d'éischt op enger Produitsäit eng Gréisst.",
+      "review": "lb-native"
+    },
+    "ohneJs": {
+      "text": "Fir ze reservéieren brauch dës Säit JavaScript. Rufft eis un: {telefone}.",
+      "review": "lb-native"
+    }
+  },
+  "kasse": {
+    "h1": {
+      "text": "Keess",
+      "review": "lb-native"
+    },
+    "bei": {
+      "text": "Bestellung bei {firma}",
+      "review": "lb-native"
+    },
+    "fuer": {
+      "text": "{haus}, Grand-Rue {nr}",
+      "review": "lb-native"
+    },
+    "kontaktH2": {
+      "text": "Kontakt",
+      "review": "lb-native"
+    },
+    "abholungH2": {
+      "text": "Ofhuelen",
+      "review": "lb-native"
+    },
+    "abholungText": {
+      "text": "Dir huelt bei {haus}, Grand-Rue {nr}, of.",
+      "review": "lb-native"
+    },
+    "lieferungH2": {
+      "text": "Liwweradress",
+      "review": "lb-native"
+    },
+    "strasse": {
+      "text": "Strooss an Hausnummer",
+      "review": "lb-native"
+    },
+    "zusatz": {
+      "text": "Adresszousaz",
+      "review": "lb-native"
+    },
+    "plz": {
+      "text": "Postleitzuel",
+      "review": "lb-native"
+    },
+    "ort": {
+      "text": "Uertschaft",
+      "review": "lb-native"
+    },
+    "land": {
+      "text": "Land",
+      "review": "lb-native"
+    },
+    "rechnungGleich": {
+      "text": "D'Rechnungsadress ass d'Liwweradress",
+      "review": "lb-native"
+    },
+    "rechnungH2": {
+      "text": "Rechnungsadress",
+      "review": "lb-native"
+    },
+    "zusammenfassung": {
+      "text": "Resumé",
+      "review": "lb-native"
+    },
+    "zwischensumme": {
+      "text": "Zwëschesumm",
+      "review": "lb-native"
+    },
+    "versand": {
+      "text": "Versand",
+      "review": "lb-native"
+    },
+    "gesamt": {
+      "text": "Total inkl. TVA",
+      "review": "lb-native"
+    },
+    "rechtliches": {
+      "text": "Et gëllen d'{agb} an d'{widerruf} vu(n) {firma}. Wéi mir Är Donnéeë benotzen, steet an der {datenschutz}.",
+      "review": "lb-native"
+    },
+    "agbLink": {
+      "text": "AGB",
+      "review": "lb-native"
+    },
+    "widerrufLink": {
+      "text": "Widderruffsbeléierung",
+      "review": "lb-native"
+    },
+    "datenschutzLink": {
+      "text": "Dateschutzerklärung",
+      "review": "lb-native"
+    },
+    "gutschein": {
+      "text": "Kaddosbonge léist Dir am Buttek an.",
+      "review": "lb-native"
+    },
+    "bestellen": {
+      "text": "Bezuelflichteg bestellen",
+      "review": "lb-native"
+    },
+    "weiter": {
+      "text": "Duerno geet et weider bei de Bezuelservice.",
+      "review": "lb-native"
+    },
+    "zahlarten": {
+      "text": "Bezuelméiglechkeeten: {liste}.",
+      "review": "lb-native"
+    },
+    "fehlerStrasse": {
+      "text": "Gitt Strooss an Hausnummer un.",
+      "review": "lb-native"
+    },
+    "fehlerPlz": {
+      "text": "Gitt eng Postleitzuel un, zum Beispill L-9050.",
+      "review": "lb-native"
+    },
+    "fehlerOrt": {
+      "text": "Gitt d'Uertschaft un.",
+      "review": "lb-native"
+    },
+    "fehlerRStrasse": {
+      "text": "Gitt Strooss an Hausnummer vun der Rechnungsadress un.",
+      "review": "lb-native"
+    },
+    "fehlerRPlz": {
+      "text": "Gitt d'Postleitzuel vun der Rechnungsadress un, zum Beispill L-9050.",
+      "review": "lb-native"
+    },
+    "fehlerROrt": {
+      "text": "Gitt d'Uertschaft vun der Rechnungsadress un.",
+      "review": "lb-native"
+    },
+    "fehlerLand": {
+      "text": "Wielt e Land, an dat mir liwweren.",
+      "review": "lb-native"
+    },
+    "danach": {
+      "text": "Duerno bezuelt Dir bei {haus}.",
+      "review": "lb-native"
+    },
+    "ohneJs": {
+      "text": "D'Keess brauch JavaScript. Rufft eis un: {telefone}.",
+      "review": "lb-native"
+    }
+  },
+  "danke": {
+    "resH1": {
+      "text": "Är Reservatioun ass ukomm.",
+      "review": "lb-native"
+    },
+    "resHaus": {
+      "text": "Bei {haus}, Grand-Rue {hausnr}: {positionen}. Reservatiounsnummer {resnr}. Läit ab dem {von} fir Iech prett, bis den {bis}.",
+      "review": "lb-native"
+    },
+    "resHausOhneNr": {
+      "text": "Bei {haus}, Grand-Rue {hausnr}: {positionen}. Läit ab dem {von} fir Iech prett, bis den {bis}.",
+      "review": "lb-native"
+    },
+    "resMail": {
+      "text": "Eng Bestätegung ass ënnerwee un {email}.",
+      "review": "lb-native"
+    },
+    "resAusstehend": {
+      "text": "Är Reservatioun ass bei eis ukomm. D'Haus bestätegt se Iech per E-Mail.",
+      "review": "lb-native"
+    },
+    "kaufH1Neutral": {
+      "text": "Är Bestellung",
+      "review": "lb-native"
+    },
+    "kaufH1": {
+      "text": "Merci, Är Bestellung ass bezuelt.",
+      "review": "lb-native"
+    },
+    "kaufAbholen": {
+      "text": "Dir kënnt se ab dem {datum} bei {haus}, Grand-Rue {hausnr}, ofhuelen. Bréngt d'Bestellnummer {bestellnr} mat.",
+      "review": "lb-native"
+    },
+    "kaufLiefern": {
+      "text": "Mir schécken se un {adresse}. Dir kritt eng Mail, soubal de Pak ënnerwee ass.",
+      "review": "lb-native"
+    },
+    "kaufWartet": {
+      "text": "D'Bezuelung gëtt nach bestätegt. Dat dauert meeschtens nëmmen e puer Sekonnen.",
+      "review": "lb-native"
+    },
+    "kaufWartetLange": {
+      "text": "D'Bestätegung dauert méi laang wéi soss. Dir kritt eng Mail, soubal d'Bezuelung ukomm ass.",
+      "review": "lb-native"
+    },
+    "kaufFehlgeschlagen": {
+      "text": "D'Bezuelung gouf net ofgeschloss. Ären Akafskuerf ass nach do.",
+      "review": "lb-native"
+    },
+    "kaufNachpruefen": {
+      "text": "Är Bezuelung ass ukomm, mee en Artikel war an der Tëschenzäit net méi disponibel. Mir mellen eis bannent engem Aarbechtsdag. Ass den Artikel net disponibel, gi mir de ganze Betrag zréck.",
+      "review": "lb-native"
+    },
+    "weiterBezahlen": {
+      "text": "Elo bei {haus} bezuelen",
+      "review": "lb-native"
+    },
+    "nichtGefunden": {
+      "text": "Dës Bestellung fanne mir net. Rufft un: {telefone}.",
+      "review": "lb-native"
+    },
+    "anfrageH1": {
+      "text": "Äre Message ass ukomm.",
+      "review": "lb-native"
+    },
+    "anfrageText": {
+      "text": "Mir äntweren {antwortzeit}. Wann et presséiert, rufft un: {telefone}.",
+      "review": "lb-native"
+    },
+    "zurTasche": {
+      "text": "Bei den Akafskuerf",
+      "review": "lb-native"
+    },
+    "weiterStoebern": {
+      "text": "Weider am Sortiment",
+      "review": "lb-native"
+    }
+  },
+  "demozahlung": {
+    "h1": {
+      "text": "Demo-Bezuelung",
+      "review": "lb-native"
+    },
+    "text": {
+      "text": "Hei géif de Bezuelservice d'Bezuelung ofwéckelen. An der Demo wielt Dir selwer, wat geschitt.",
+      "review": "lb-native"
+    },
+    "betrag": {
+      "text": "{betrag} un {firma}",
+      "review": "lb-native"
+    },
+    "erfolg": {
+      "text": "Erfollegräich Bezuelung simuléieren",
+      "review": "lb-native"
+    },
+    "verkauft": {
+      "text": "Bezuelung erfollegräich, mee den Artikel ass an der Tëschenzäit am Buttek verkaaft",
+      "review": "lb-native"
+    },
+    "fehler": {
+      "text": "Bezuelung feele loossen",
+      "review": "lb-native"
+    },
+    "abbrechen": {
+      "text": "Ofbriechen",
+      "review": "lb-native"
+    }
+  },
+  "demopost": {
+    "h1": {
+      "text": "Demo-Postausgang",
+      "review": "lb-native"
+    },
+    "intro": {
+      "text": "Hei gesitt Dir d'Mailen, déi d'Websäit verschécke géif: fir d'Reservatiounen, Bestellungen an Ufroen aus dësem Browser. An der Demo gëtt näischt verschéckt.",
+      "review": "lb-native"
+    },
+    "leer": {
+      "text": "Nach keng Mailen. Reservéiert, bestellt oder schreift eis eppes.",
+      "review": "lb-native"
+    },
+    "an": {
+      "text": "Un",
+      "review": "lb-native"
+    },
+    "betreff": {
+      "text": "Betreff",
+      "review": "lb-native"
+    },
+    "zeit": {
+      "text": "Zäit",
+      "review": "lb-native"
+    },
+    "fehler": {
+      "text": "De Postausgang ass grad net erreechbar.",
+      "review": "lb-native"
+    }
+  },
+  "kontakt": {
+    "h1": {
+      "text": "Kontakt",
+      "review": "lb-native"
+    },
+    "intro": {
+      "text": "Rufft un, kommt laanscht oder schreift eis.",
+      "review": "lb-native"
+    },
+    "formH2": {
+      "text": "Schreift eis",
+      "review": "lb-native"
+    },
+    "haus": {
+      "text": "Un wéi een Haus?",
+      "review": "lb-native"
+    },
+    "egal": {
+      "text": "egal",
+      "review": "lb-native"
+    },
+    "senden": {
+      "text": "Message schécken",
+      "review": "lb-native"
+    }
+  },
+  "gutschein": {
+    "h1": {
+      "text": "Kaddosbongen",
+      "review": "lb-native"
+    },
+    "text": {
+      "text": "E Kaddosbong, zwee Haiser: De Bong gëllt bei Confection Lanners a bei Jager-Oberlinkels. Dir kritt en ab 20 € op Letzshop. Ageléist gëtt en am Buttek.",
+      "review": "lb-native"
+    },
+    "auchImLaden": {
+      "text": "Och am Buttek ze kréien:",
+      "review": "lb-native"
+    },
+    "btn": {
+      "text": "Kaddosbong op Letzshop kafen",
+      "review": "lb-native"
+    },
+    "hinweis": {
+      "text": "De Kaddosbong gëllt a béiden Haiser.",
+      "review": "lb-native"
+    }
+  },
+  "suche": {
+    "h1": {
+      "text": "Sichen",
+      "review": "lb-native"
+    },
+    "label": {
+      "text": "Wat sicht Dir?",
+      "review": "lb-native"
+    },
+    "beispiel": {
+      "text": "Zum Beispill: Barbour, Polo, Hutt",
+      "review": "lb-native"
+    },
+    "btn": {
+      "text": "Sichen",
+      "review": "lb-native"
+    },
+    "leer": {
+      "text": "Fir „{q}“ hu mir näischt fonnt.",
+      "review": "lb-native"
+    },
+    "treffer_one": {
+      "text": "{n} Resultat",
+      "review": "lb-native"
+    },
+    "treffer_other": {
+      "text": "{n} Resultater",
+      "review": "lb-native"
+    },
+    "ohneJs": {
+      "text": "D'Sich brauch JavaScript. Kuckt Iech d'Sortiment un:",
+      "review": "lb-native"
+    },
+    "fehler": {
+      "text": "D'Sich ass grad net disponibel.",
+      "review": "lb-native"
+    },
+    "gruppeArtikel": {
+      "text": "Artikelen",
+      "review": "lb-native"
+    },
+    "gruppeSeiten": {
+      "text": "Infoen a Service",
+      "review": "lb-native"
+    },
+    "laedt": {
+      "text": "D'Sich gëtt virbereet …",
+      "review": "lb-native"
+    }
+  },
+  "f404": {
+    "h1": {
+      "text": "Dës Säit gëtt et net (méi).",
+      "review": "lb-native"
+    },
+    "text": {
+      "text": "Sicht, wat Dir braucht, oder gitt weider:",
+      "review": "lb-native"
+    },
+    "anrufen": {
+      "text": "Oder rufft un: {telefone}.",
+      "review": "lb-native"
+    }
+  },
+  "faq": {
+    "q1": {
+      "text": "Ass de Stock op der Websäit aktuell?",
+      "review": "lb-native"
+    },
+    "a1": {
+      "text": "Bal live. D'Websäit gläicht de Stock all zéng Minutte mat der Keess vu béiden Haiser of a kontrolléiert en op der Produitsäit an ier Dir ofschéckt nach eng Kéier. Gouf e Stéck an der Tëschenzäit am Buttek verkaaft, soe mir Iech et, ier Dir reservéiert oder bezuelt.",
+      "review": "lb-native"
+    },
+    "q2": {
+      "text": "Wat kascht eng Reservatioun?",
+      "review": "lb-native"
+    },
+    "a2": {
+      "text": "Näischt, an Dir verflicht Iech zu näischt. Passt eppes net, loosst Dir et einfach am Buttek.",
+      "review": "lb-native"
+    },
+    "q3": {
+      "text": "Wéi laang gëtt reservéiert?",
+      "review": "lb-native"
+    },
+    "a3": {
+      "text": "{n} Aarbechtsdeeg ab dem Ofhueldatum, deen Dir wielt. Duerno geet den Artikel zréck an de Verkaf.",
+      "review": "lb-native"
+    },
+    "q4": {
+      "text": "Kann ech an engem Haus reservéieren an am aneren ofhuelen?",
+      "review": "lb-native"
+    },
+    "a4": {
+      "text": "Dat klären mir nach mat den Haiser.",
+      "review": "lb-native"
+    },
+    "q5": {
+      "text": "Liwwert Dir och?",
+      "review": "lb-native"
+    },
+    "a5": {
+      "text": "Jo, bannent Lëtzebuerg.",
+      "review": "lb-native"
+    },
+    "q6": {
+      "text": "Kann ech zréckginn oder ëmtauschen?",
+      "review": "lb-native"
+    },
+    "a6": {
+      "text": "Online kaaft Artikele kënnt Dir bannent 14 Deeg zréckginn (Réckzuchsrecht, kuckt d'Widderruffsbeléierung).",
+      "review": "lb-native"
+    },
+    "a6Umtausch": {
+      "text": "Ëmtausch am Buttek:",
+      "review": "lb-native"
+    },
+    "q7": {
+      "text": "Gëllt e Kaddosbong a béiden Haiser?",
+      "review": "lb-native"
+    },
+    "a7": {
+      "text": "Jo, bei Confection Lanners a bei Jager-Oberlinkels. Dir léist en am Buttek an.",
+      "review": "lb-native"
+    },
+    "q9": {
+      "text": "Wou kann ech parken?",
+      "review": "lb-native"
+    },
+    "a9": {
+      "text": "Déi nootste Parkplaze nenne mir hei, soubal d'Haiser se bestätegt hunn.",
+      "review": "lb-native"
+    },
+    "q10": {
+      "text": "A wéi enge Sprooche gëtt ech beroden?",
+      "review": "lb-native"
+    },
+    "a10": {
+      "text": "Dat bestätegen d'Haiser nach.",
+      "review": "lb-native"
+    }
+  },
+  "land": {
+    "LU": {
+      "text": "Lëtzebuerg",
+      "review": "lb-native"
+    },
+    "BE": {
+      "text": "Belsch",
+      "review": "lb-native"
+    },
+    "DE": {
+      "text": "Däitschland",
+      "review": "lb-native"
+    },
+    "FR": {
+      "text": "Frankräich",
+      "review": "lb-native"
+    }
+  },
+  "seo": {
+    "start": {
+      "title": {
+        "text": "Fraen- an Häremoud zu Ettelbréck | Lanners & Jager",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Zwee Moudenhaiser an der Grand-Rue zu Ettelbréck: Boss, Barbour, Lacoste, Maerz a méi. Kuckt, wat an Ärer Gréisst do ass, a reservéiert online zum Uprobéieren.",
+        "review": "lb-native"
+      }
+    },
+    "herren": {
+      "title": {
+        "text": "Häremoud zu Ettelbréck: Boss, Barbour, Lacoste a méi",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Kostümer, Hiemer, Polos, Jacketten an Hitt fir Hären bei Lanners a Jager zu Ettelbréck. Stock no Gréisst an Haus live gesinn, online reservéieren a bestellen.",
+        "review": "lb-native"
+      }
+    },
+    "damen": {
+      "title": {
+        "text": "Fraemoud zu Ettelbréck: Maerz, Boss, Scotch & Soda",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Fraemoud bei Confection Lanners, Grand-Rue 18 zu Ettelbréck: Strécksaachen, Jacketten, Boxen a méi. Kuckt, wat an Ärer Gréisst do ass, a reservéiert online.",
+        "review": "lb-native"
+      }
+    },
+    "accessoires": {
+      "title": {
+        "text": "Hitt vu Stetson a Fynch Hatton zu Ettelbréck | Jager",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Jager an der Grand-Rue 32 huet 1891 als Hutgeschäft ugefaangen. Haut: Stetson, Fynch Hatton, Kappen an Accessoiren. Gréisst online kucken a reservéieren.",
+        "review": "lb-native"
+      }
+    },
+    "marken": {
+      "title": {
+        "text": "Marken zu Ettelbréck: Boss, Barbour, Lacoste, Levi's a méi",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "All d'Marke vu Lanners a Jager an der Grand-Rue zu Ettelbréck, vu Barbour a Boss bis Stetson a Save the Duck. Mam Stock no Gréisst an no Haus, live gewisen.",
+        "review": "lb-native"
+      }
+    },
+    "lanners": {
+      "title": {
+        "text": "Confection Lanners: Fraen- an Häremoud zu Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Confection Lanners, Grand-Rue 18 zu Ettelbréck: Fraen- an Häremoud op 520 m² mat Boss, Maerz, Camel Active a méi. Ëffnungszäiten, Wee a Marken op ee Bléck.",
+        "review": "lb-native"
+      }
+    },
+    "jager": {
+      "title": {
+        "text": "Jager-Oberlinkels: Häremoud an Hitt, Grand-Rue Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Jager-Oberlinkels, zënter 1891 an der Grand-Rue 32 zu Ettelbréck: Häremoud an Hitt vu Barbour, Lacoste, Levi's, Stetson a méi. Ëffnungszäiten a Wee bei d'Haus.",
+        "review": "lb-native"
+      }
+    },
+    "haeuser": {
+      "title": {
+        "text": "D'Haiser Lanners a Jager an der Grand-Rue, Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Confection Lanners, Grand-Rue 18, a Jager-Oberlinkels, Grand-Rue 32: zwee Moudenhaiser zu Ettelbréck. Ëffnungszäiten, Wee a Marke vu béiden Haiser op ee Bléck.",
+        "review": "lb-native"
+      }
+    },
+    "howto": {
+      "title": {
+        "text": "Online reservéieren, am Buttek uprobéieren | Lanners & Jager",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Sou reservéiert Dir bei Lanners a Jager zu Ettelbréck: Gréisst an Haus wielen, reservéieren, am Buttek uprobéieren, bezuelen. Oder online bestellen an ofhuelen.",
+        "review": "lb-native"
+      }
+    },
+    "gutscheine": {
+      "title": {
+        "text": "Kaddosbong fir Lanners a Jager zu Ettelbréck, ab 20 €",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "E Kaddosbong, deen a béiden Haiser an der Grand-Rue zu Ettelbréck gëllt: bei Confection Lanners a bei Jager-Oberlinkels. Ab 20 € online, agesat am Buttek.",
+        "review": "lb-native"
+      }
+    },
+    "kontakt": {
+      "title": {
+        "text": "Kontakt an Ëffnungszäiten | Lanners & Jager Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Ëffnungszäiten, Telefon a Wee vu Confection Lanners, Grand-Rue 18, a Jager-Oberlinkels, Grand-Rue 32, zu Ettelbréck. Rufft un oder schreift eis direkt.",
+        "review": "lb-native"
+      }
+    },
+    "sortiment": {
+      "title": {
+        "text": "Sortiment: Fraen- an Häremoud, Ettelbréck | Lanners & Jager",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Dat ganzt Sortiment vu Lanners a Jager an der Grand-Rue zu Ettelbréck: Jacketten, Kostümer, Strécksaachen, Jeans an Hitt. Stock no Gréisst an Haus, live.",
+        "review": "lb-native"
+      }
+    },
+    "sale": {
+      "title": {
+        "text": "Sale bei Lanners a Jager zu Ettelbréck: reduzéiert Moud",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Reduzéiert Fraen- an Häremoud bei Lanners a Jager an der Grand-Rue zu Ettelbréck. Kuckt, wéi eng Gréissten nach do sinn, a reservéiert online zum Uprobéieren.",
+        "review": "lb-native"
+      }
+    },
+    "neu": {
+      "title": {
+        "text": "Nei erakomm bei Lanners a Jager zu Ettelbréck: nei Wuer",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Nei erakomm an den zwee Moudenhaiser vun der Grand-Rue zu Ettelbréck: nei Wuer vu Boss, Barbour, Lacoste a méi. Mam Stock no Gréisst an no Haus, live gewisen.",
+        "review": "lb-native"
+      }
+    },
+    "tasche": {
+      "title": {
+        "text": "Akafskuerf: reservéieren oder bestellen | Lanners & Jager",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Akafskuerf bei Lanners a Jager zu Ettelbréck: reservéieren an am Buttek uprobéieren, oder online bezuelen an ofhuelen oder liwwere loossen. Gratis reservéieren.",
+        "review": "lb-native"
+      }
+    },
+    "reservieren": {
+      "title": {
+        "text": "Reservéieren an am Buttek uprobéieren | Lanners & Jager",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Reservéiert gratis bei Lanners a Jager zu Ettelbréck. D'Haus leet d'Artikele fir Iech zréck, Dir probéiert am Buttek un a bezuelt nëmmen dat, wat Iech passt.",
+        "review": "lb-native"
+      }
+    },
+    "kasse": {
+      "title": {
+        "text": "Keess: online bezuelen | Lanners & Jager, Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Bezuelt online bei Lanners oder Jager zu Ettelbréck an huelt am Haus of oder loosst liwweren. Bei Artikelen aus béiden Haiser bezuelt Dir all Haus separat.",
+        "review": "lb-native"
+      }
+    },
+    "suche": {
+      "title": {
+        "text": "Am Sortiment sichen: Marken, Artikelen | Lanners & Jager",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Sicht am Sortiment vu Lanners a Jager zu Ettelbréck no Mark, Artikel oder Faarf a kuckt, wat an Ärer Gréisst an a wéi engem Haus grad do ass, live a gratis.",
+        "review": "lb-native"
+      }
+    },
+    "impressum": {
+      "title": {
+        "text": "Impressum | Lanners & Jager, Grand-Rue 18 a 32, Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Impressum vun der Websäit vu Confection Lanners, Grand-Rue 18, a Jager-Oberlinkels, Grand-Rue 32, zu Ettelbréck: Firmen, Registernummeren a Kontakt op ee Bléck.",
+        "review": "lb-native"
+      }
+    },
+    "datenschutz": {
+      "title": {
+        "text": "Dateschutzerklärung | Lanners & Jager, Grand-Rue Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Wéi Lanners a Jager Är Donnéeë bei Reservatiounen, Bestellungen an Ufroe benotzen, wéi laang se gespäichert bleiwen a wéi eng Rechter Dir hutt. Keng Cookien.",
+        "review": "lb-native"
+      }
+    },
+    "agb": {
+      "title": {
+        "text": "AGB: Allgemeng Geschäftskonditiounen | Lanners & Jager",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Allgemeng Geschäftskonditioune fir Online-Bestellunge bei Confection Lanners a Jager-Oberlinkels zu Ettelbréck. Entworf, gëtt nach juristesch iwwerpréift.",
+        "review": "lb-native"
+      }
+    },
+    "widerruf": {
+      "title": {
+        "text": "Widderruffsbeléierung | Lanners & Jager, Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Äert Réckzuchsrecht bei Online-Bestellunge bei Confection Lanners a Jager-Oberlinkels: 14 Deeg, Récksendung a Rembourséierung. Entworf, gëtt nach iwwerpréift.",
+        "review": "lb-native"
+      }
+    },
+    "versand": {
+      "title": {
+        "text": "Versand a Bezuelen | Lanners & Jager, Grand-Rue Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Versandlänner, Versandkäschten, Liwwerzäit a Bezuelméiglechkeete bei Lanners a Jager zu Ettelbréck. Ofhuelen am Haus ab dem nächsten Ëffnungsdag ass méiglech.",
+        "review": "lb-native"
+      }
+    },
+    "f404": {
+      "title": {
+        "text": "Säit net fonnt | Lanners & Jager, Grand-Rue Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Dës Säit gëtt et net méi. Sicht am Sortiment vu Lanners a Jager zu Ettelbréck oder rufft eis un: Lanners 81 22 80, Jager 81 22 79. Mir hëllefen Iech gär weider.",
+        "review": "lb-native"
+      }
+    },
+    "demopost": {
+      "title": {
+        "text": "Demo-Postausgang: all Mailen | Lanners & Jager, Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Demo: d'Mailen, déi d'Websäit bei Reservatiounen, Bestellungen an Ufroe verschécke géif. An der Demo gëtt näischt verschéckt, alles bleift hei op dëser Säit.",
+        "review": "lb-native"
+      }
+    },
+    "suffix": {
+      "text": " | Lanners & Jager",
+      "review": "lb-native"
+    },
+    "produktTitle": {
+      "text": "{marke} {name} {farbe}",
+      "review": "lb-native"
+    },
+    "produktDesc": {
+      "text": "{marke} {name} a(n) {farbe}, {preis}. Op Lager bei {haus} zu Ettelbréck, a(n) {groessen}. Online reservéieren oder bestellen.",
+      "review": "lb-native"
+    },
+    "produktDescReserve": {
+      "text": "{marke} {name} a(n) {farbe}, {preis}. Op Lager bei {haus} zu Ettelbréck, a(n) {groessen}. Online reservéieren.",
+      "review": "lb-native"
+    },
+    "produktDescNichts": {
+      "text": "{marke} {name} a(n) {farbe}, {preis}, bei {haus} zu Ettelbréck. Grad net op Lager: Frot am Buttek no.",
+      "review": "lb-native"
+    },
+    "produktDescZusatz": {
+      "text": " Am Buttek uprobéieren.",
+      "review": "lb-native"
+    },
+    "markeTitle": {
+      "text": "{marke} zu Ettelbréck | Lanners & Jager",
+      "review": "lb-native"
+    },
+    "markeDescZusatz": {
+      "text": " Online reservéieren an am Buttek uprobéieren.",
+      "review": "lb-native"
+    },
+    "warengruppeTitle": {
+      "text": "{warengruppe} {fuer} zu Ettelbréck | Lanners & Jager",
+      "review": "lb-native"
+    },
+    "warengruppeDesc": {
+      "text": "{warengruppe} {fuer} {ort}. Kuckt, wéi eng Gréissten a wéi engem Haus do sinn, a reservéiert online.",
+      "review": "lb-native"
+    },
+    "accGruppeTitle": {
+      "text": "{warengruppe} zu Ettelbréck | Lanners & Jager",
+      "review": "lb-native"
+    },
+    "accGruppeDesc": {
+      "text": "{warengruppe} {ort}. Kuckt, wéi eng Gréissten a wéi engem Haus do sinn, a reservéiert online.",
+      "review": "lb-native"
+    },
+    "seite": {
+      "text": " (Säit {n})",
+      "review": "lb-native"
+    },
+    "und": {
+      "text": " a ",
+      "review": "lb-native"
+    },
+    "haeuserBeide": {
+      "text": "Lanners a Jager",
+      "review": "lb-native"
+    },
+    "haeuserEins": {
+      "text": "{haus}, Grand-Rue {nr}",
+      "review": "lb-native"
+    },
+    "ortBeide": {
+      "text": "bei Lanners a Jager an der Grand-Rue zu Ettelbréck",
+      "review": "lb-native"
+    },
+    "ortEins": {
+      "text": "bei {haus}, Grand-Rue {nr} zu Ettelbréck",
+      "review": "lb-native"
+    },
+    "zusatzLive": {
+      "text": " Stock pro Gréisst an Haus live.",
+      "review": "lb-native"
+    },
+    "zusatzReservieren": {
+      "text": " Online reservéieren.",
+      "review": "lb-native"
+    },
+    "dankeRes": {
+      "title": {
+        "text": "Merci, Är Reservatioun ass ukomm | Lanners & Jager",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Är Reservatioun bei Lanners a Jager zu Ettelbréck ass ukomm. Hei gesitt Dir, ab wéini d'Artikele fir Iech prett leien a bis wéini mir se fir Iech zréckleeën.",
+        "review": "lb-native"
+      }
+    },
+    "dankeKauf": {
+      "title": {
+        "text": "Är Bestellung | Lanners & Jager, Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Är Bestellung bei Lanners a Jager zu Ettelbréck: Hei gesitt Dir, ob d'Bezuelung ukomm ass a wéini Dir ofhuele kënnt oder wéini mir de Pak fir Iech verschécken.",
+        "review": "lb-native"
+      }
+    },
+    "dankeAnfrage": {
+      "title": {
+        "text": "Merci fir Äre Message | Lanners & Jager, Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "Äre Message un Lanners a Jager zu Ettelbréck ass ukomm. Mir äntweren esou séier wéi méiglech. Wann et presséiert, rufft un: Lanners 81 22 80, Jager 81 22 79.",
+        "review": "lb-native"
+      }
+    },
+    "geschichte": {
+      "title": {
+        "text": "Geschicht: Jager zënter 1891 a Lanners zu Ettelbréck",
+        "review": "lb-native"
+      },
+      "desc": {
+        "text": "D'Geschicht vun den zwee Moudenhaiser an der Grand-Rue zu Ettelbréck: Jager-Oberlinkels zënter 1891, vum Hutgeschäft zum Häreausstatter, a Confection Lanners.",
+        "review": "lb-native"
+      }
+    }
+  },
+  "recht": {
+    "entwurf": {
+      "text": "Entworf, juristesch iwwerpréiwen",
+      "review": "lb-native"
+    },
+    "textFolgt": {
+      "text": "Den Text kënnt no der juristescher Iwwerpréiwung.",
+      "review": "lb-native"
+    },
+    "stand": {
+      "text": "Stand: {datum}",
+      "review": "lb-native"
+    },
+    "impressum": {
+      "h1": {
+        "text": "Impressum",
+        "review": "lb-native"
+      },
+      "betreiberH2": {
+        "text": "Bedreiwer vun dëser Websäit",
+        "review": "lb-native"
+      },
+      "betreiber": {
+        "text": "Wéi eng vun den zwou Firmen dës Websäit bedreift, steet nach net fest.",
+        "review": "lb-native"
+      },
+      "firmenH2": {
+        "text": "Déi zwee Haiser",
+        "review": "lb-native"
+      },
+      "firma": {
+        "text": "Firma",
+        "review": "lb-native"
+      },
+      "rechtsform": {
+        "text": "Rechtsform",
+        "review": "lb-native"
+      },
+      "vertreten": {
+        "text": "Vertruede vun",
+        "review": "lb-native"
+      },
+      "adresse": {
+        "text": "Adress",
+        "review": "lb-native"
+      },
+      "telefon": {
+        "text": "Telefon",
+        "review": "lb-native"
+      },
+      "email": {
+        "text": "E-Mail",
+        "review": "lb-native"
+      },
+      "rcs": {
+        "text": "Handels- a Firmeregister (RCS)",
+        "review": "lb-native"
+      },
+      "mwst": {
+        "text": "TVA-Nummer",
+        "review": "lb-native"
+      },
+      "gewerbe": {
+        "text": "Autorisatioun d'établissement",
+        "review": "lb-native"
+      },
+      "aufsichtH2": {
+        "text": "Opsiicht Dateschutz",
+        "review": "lb-native"
+      },
+      "aufsicht": {
+        "text": "Zoustänneg ass d'Commission nationale pour la protection des données (CNPD).",
+        "review": "lb-native"
+      },
+      "markenH2": {
+        "text": "Marken",
+        "review": "lb-native"
+      },
+      "marken": {
+        "text": "Déi genannte Marke gehéieren hiren Ënnerhaber. Si beschreiwen d'Sortiment vun den zwee Haiser.",
+        "review": "lb-native"
+      },
+      "bildH2": {
+        "text": "Fotoen a Logoen",
+        "review": "lb-native"
+      },
+      "bildText": {
+        "text": "D'Stëmmungsfotoen an d'Demo-Fotoe vun den Artikele sinn op Unsplash ënner der Unsplash-Lizenz publizéiert. Si weisen net déi richteg Artikelen. Fotografen:",
+        "review": "lb-native"
+      },
+      "logoText": {
+        "text": "D'Logoe vun de Marken sinn hir Wuerenzeechen. D'Zeechnung vum Jager-Eckhaus kënnt aus dem Logo vu Jager-Oberlinkels.",
+        "review": "lb-native"
+      }
+    },
+    "datenschutz": {
+      "h1": {
+        "text": "Dateschutz",
+        "review": "lb-native"
+      },
+      "intro": {
+        "text": "Hei steet, wéi eng Donnéeë mir bei Reservatiounen, Bestellungen an Ufroe benotzen, fir wat, wéi laang a wéi eng Rechter Dir hutt.",
+        "review": "lb-native"
+      },
+      "verantwortlichH2": {
+        "text": "Verantwortlech",
+        "review": "lb-native"
+      },
+      "verantwortlich": {
+        "text": "Verantwortlech ass d'Haus, bei deem Dir reservéiert, bestellt oder eng Ufro schéckt. Wien d'Websäit als Ganzt bedreift, steet nach net fest.",
+        "review": "lb-native"
+      },
+      "reservierungH2": {
+        "text": "Reservatiounen",
+        "review": "lb-native"
+      },
+      "reservierung": {
+        "text": "Mir benotze Virnumm, Numm, E-Mail-Adress, GSM-Nummer, de gewënschten Ofhueldatum, Är Bemierkung an déi reservéiert Artikelen. Domat leet d'Haus d'Artikele fir Iech zréck an erreecht Iech, wann eppes net klappt. D'Reservatioun gëtt am Keessesystem vum Haus gespäichert. D'Rechtsgrondlag ass Är Awëllegung (Art. 6 Abs. 1 Buschtaf a DSGVO), déi Dir zu all Moment zréckzéie kënnt.",
+        "review": "lb-native"
+      },
+      "bestellungH2": {
+        "text": "Online-Bestellungen",
+        "review": "lb-native"
+      },
+      "bestellung": {
+        "text": "Mir benotzen Är Kontaktdonnéeën, d'Liwwer- an d'Rechnungsadress, déi bestallt Artikelen an d'Bezuelreferenz. Ouni dës Donnéeë kënne mir de Kafvertrag net erfëllen. D'Rechtsgrondlag ass d'Erfëllung vum Kontrakt (Art. 6 Abs. 1 Buschtaf b DSGVO); d'Haus bewaart d'Beleeër no de gesetzleche Flichten op (Buschtaf c). Är Bezueldonnéeë gitt Dir nëmme beim Bezuelservice an, mir gesinn se net.",
+        "review": "lb-native"
+      },
+      "anfrageH2": {
+        "text": "Ufroen",
+        "review": "lb-native"
+      },
+      "anfrage": {
+        "text": "Wann Dir eis iwwer de Kontaktformulaire schreift, benotze mir Ären Numm, Är E-Mail-Adress oder Telefonsnummer an Äre Message, fir Iech z'äntweren. D'Rechtsgrondlag ass Är Awëllegung (Art. 6 Abs. 1 Buschtaf a DSGVO).",
+        "review": "lb-native"
+      },
+      "empfaengerH2": {
+        "text": "Wien d'Donnéeë veraarbecht",
+        "review": "lb-native"
+      },
+      "empfaengerSofttouch": {
+        "text": "SoftTouch, Ubidder vum Keessesystem vun den Haiser (Belsch)",
+        "review": "lb-native"
+      },
+      "empfaengerSupabase": {
+        "text": "Supabase, Datebank a Server-Funktioune vun dëser Websäit (Rechenzentrum an der EU)",
+        "review": "lb-native"
+      },
+      "empfaengerZahlung": {
+        "text": "de Bezuelservice fir Online-Bestellungen",
+        "review": "lb-native"
+      },
+      "empfaengerMail": {
+        "text": "den Ubidder fir de Mailversand",
+        "review": "lb-native"
+      },
+      "empfaengerHosting": {
+        "text": "GitHub Pages, Hosting vun de Säiten",
+        "review": "lb-native"
+      },
+      "fristenH2": {
+        "text": "Wéi laang mir späicheren",
+        "review": "lb-native"
+      },
+      "fristenReservierung": {
+        "text": "Reservatiounen: 30 Deeg nom Ofhueldatum, duerno anonymiséiert",
+        "review": "lb-native"
+      },
+      "fristenBestellung": {
+        "text": "Bestellungen: 90 Deeg nom Ofschloss, duerno anonymiséiert; d'Beleeër leien am Keessesystem vum Haus",
+        "review": "lb-native"
+      },
+      "fristenAnfrage": {
+        "text": "Ufroen: 12 Méint",
+        "review": "lb-native"
+      },
+      "fristenJob": {
+        "text": "En alldeegleche Prozess anonymiséiert a läscht d'Donnéeë no dëse Fristen.",
+        "review": "lb-native"
+      },
+      "cookiesH2": {
+        "text": "Keng Cookien, keen Tracking",
+        "review": "lb-native"
+      },
+      "cookies": {
+        "text": "Dës Websäit setzt keng Cookien a moosst keng Visitten. Ären Akafskuerf an d'Haus, dat Dir gewielt hutt, leien nëmmen an Ärem Browser (localStorage), well Dir dës Funktioune benotzt. No engem Feeler am Formulaire hält Äre Browser Är Agaben eng kuerz Zäit fest (sessionStorage), fir datt Dir net alles nei tippe musst. Fir de Schutz géint ze vill Ufroe gëtt Är IP-Adress nëmmen als Préifzomm benotzt an net gespäichert.",
+        "review": "lb-native"
+      },
+      "externH2": {
+        "text": "Linken op aner Servicer",
+        "review": "lb-native"
+      },
+      "extern": {
+        "text": "D'Schrëften leien op dëser Websäit, dofir gëtt et keng Verbindung mat Google. Linken op Google Maps („Wee plangen“), Facebook a Letzshop maachen de Service eréischt op, wann Dir drop klickt.",
+        "review": "lb-native"
+      },
+      "mapsH2": {
+        "text": "Kaarte vu Google Maps",
+        "review": "lb-native"
+      },
+      "maps": {
+        "text": "Op de Säite vun den Haiser kënnt Dir eng Kaart vu Google Maps lueden. Äre Browser verbënnt sech eréischt mat Google (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland), wann Dir op „Kaart lueden“ klickt. Dobäi kritt Google ënner anerem Är IP-Adress an d'Adress vun der Säit; Google kann Cookien setzen an Donnéeën an d'USA iwwerdroen. Rechtsgrondlag ass Är Awëllegung duerch de Klick (Art. 6 Abs. 1 Bst. a DSGVO); se gëllt nëmme fir dësen Opruff vun der Säit. Ouni Klick gëtt näischt u Google iwwerdroen.",
+        "review": "lb-native"
+      },
+      "mapsLink": {
+        "text": "Dateschutzerklärung vu Google",
+        "review": "lb-native"
+      },
+      "rechteH2": {
+        "text": "Är Rechter",
+        "review": "lb-native"
+      },
+      "rechte": {
+        "text": "Dir kënnt Auskunft iwwer Är Donnéeë froen, se korrigéieren, läschen oder aschränke loossen, der Veraarbechtung widderspriechen, Är Donnéeën iwwerdroe loossen an eng Awëllegung zu all Moment zréckzéien. Schreift dofir dem Haus. Dir kënnt Iech och bei der CNPD beschwéieren, der Dateschutzautoritéit zu Lëtzebuerg.",
+        "review": "lb-native"
+      }
+    },
+    "agb": {
+      "h1": {
+        "text": "Allgemeng Geschäftskonditiounen",
+        "review": "lb-native"
+      },
+      "s1": {
+        "text": "Gëltegkeet a Kontraktpartner",
+        "review": "lb-native"
+      },
+      "s2": {
+        "text": "Ofschloss vum Kontrakt",
+        "review": "lb-native"
+      },
+      "s3": {
+        "text": "Präisser a Versandkäschten",
+        "review": "lb-native"
+      },
+      "s4": {
+        "text": "Bezuelung",
+        "review": "lb-native"
+      },
+      "s5": {
+        "text": "Ofhuelen a Liwwerung",
+        "review": "lb-native"
+      },
+      "s6": {
+        "text": "Réckzuchsrecht",
+        "review": "lb-native"
+      },
+      "s7": {
+        "text": "Garantie",
+        "review": "lb-native"
+      },
+      "s8": {
+        "text": "Reservatiounen",
+        "review": "lb-native"
+      },
+      "s9": {
+        "text": "Kaddosbongen",
+        "review": "lb-native"
+      },
+      "s10": {
+        "text": "Schlussbestëmmungen",
+        "review": "lb-native"
+      },
+      "partner": {
+        "text": "Äre Kontraktpartner ass d'Haus, bei deem Dir bezuelt: Confection Lanners fir Artikelen aus der Grand-Rue 18, Jager-Oberlinkels fir Artikelen aus der Grand-Rue 32.",
+        "review": "lb-native"
+      }
+    },
+    "widerruf": {
+      "h1": {
+        "text": "Widderruffsbeléierung",
+        "review": "lb-native"
+      },
+      "s1": {
+        "text": "Réckzuchsrecht",
+        "review": "lb-native"
+      },
+      "s2": {
+        "text": "Konsequenze vum Réckzuch",
+        "review": "lb-native"
+      },
+      "s3": {
+        "text": "Muster-Formulaire fir de Réckzuch",
+        "review": "lb-native"
+      },
+      "s4": {
+        "text": "Ausschloss vum Réckzuchsrecht",
+        "review": "lb-native"
+      },
+      "vorlage": {
+        "text": "D'Widderruffsbeléierung, déi Jager-Oberlinkels op Letzshop benotzt, ass nëmmen eng Virlag a gëtt ugepasst.",
+        "review": "lb-native"
+      },
+      "frist": {
+        "text": "Online kaaft Artikele kënnt Dir bannent 14 Deeg zréckginn.",
+        "review": "lb-native"
+      }
+    },
+    "versand": {
+      "h1": {
+        "text": "Versand a Bezuelen",
+        "review": "lb-native"
+      },
+      "laenderH2": {
+        "text": "Wouhi mir liwweren",
+        "review": "lb-native"
+      },
+      "kosten": {
+        "text": "Versandkäschten",
+        "review": "lb-native"
+      },
+      "lieferzeit": {
+        "text": "Liwwerzäit",
+        "review": "lb-native"
+      },
+      "lieferzeitWert": {
+        "text": "{n} Aarbechtsdeeg",
+        "review": "lb-native"
+      },
+      "dienstH2": {
+        "text": "Versanddéngscht",
+        "review": "lb-native"
+      },
+      "abholungH2": {
+        "text": "Ofhuelen am Haus",
+        "review": "lb-native"
+      },
+      "abholung": {
+        "text": "Online bezuelt Artikele huelt Dir ab dem nächsten Ëffnungsdag an deem Haus of, wou se leien.",
+        "review": "lb-native"
+      },
+      "zahlungH2": {
+        "text": "Bezuelung",
+        "review": "lb-native"
+      },
+      "zahlung": {
+        "text": "Dir bezuelt online beim Bezuelservice. Leien Artikelen aus béiden Haiser an Ärem Akafskuerf, bezuelt Dir bei all Haus separat, well et zwou Firme mat enger eegener Keess sinn.",
+        "review": "lb-native"
+      },
+      "zahlarten": {
+        "text": "De Bezuelservice weist d'Bezuelméiglechkeeten un, wann Dir bezuelt.",
+        "review": "lb-native"
+      },
+      "gutscheine": {
+        "text": "Kaddosbonge léist Dir am Buttek an.",
+        "review": "lb-native"
+      }
+    }
+  },
+  "mail": {
+    "anrede": {
+      "text": "Moien {name},",
+      "review": "lb-native"
+    },
+    "gruss": {
+      "text": "Bis geschwënn an der Grand-Rue.",
+      "review": "lb-native"
+    },
+    "betreffReservierung": {
+      "text": "Är Reservatioun bei {haeuser}",
+      "review": "lb-native"
+    },
+    "betreffBestellung": {
+      "text": "Är Bestellung {nr} bei {haus}",
+      "review": "lb-native"
+    },
+    "betreffNachpruefen": {
+      "text": "Är Bestellung {nr}: Mir mellen eis",
+      "review": "lb-native"
+    },
+    "betreffBereitAbholung": {
+      "text": "Är Bestellung {nr} läit prett",
+      "review": "lb-native"
+    },
+    "betreffBereitVersand": {
+      "text": "Är Bestellung {nr} ass ënnerwee",
+      "review": "lb-native"
+    },
+    "imLaden": {
+      "text": "Bezuelt gëtt am Buttek, an nëmmen dat, wat Iech passt.",
+      "review": "lb-native"
+    },
+    "artikel": {
+      "text": "Är Artikelen",
+      "review": "lb-native"
+    },
+    "fragen": {
+      "text": "Froen? Rufft eis un: {telefon}.",
+      "review": "lb-native"
+    },
+    "bereitAbholung": {
+      "text": "Är Bestellung läit bei {haus}, Grand-Rue {hausnr}, fir Iech prett. Bréngt d'Bestellnummer {bestellnr} mat.",
+      "review": "lb-native"
+    },
+    "bereitVersand": {
+      "text": "Äre Pak ass ënnerwee bei Iech.",
+      "review": "lb-native"
+    },
+    "demo": {
+      "text": "Demo: Dës Mail gouf net verschéckt. Artikelen, Präisser a Stocke si Beispilldaten.",
+      "review": "lb-native"
+    },
+    "datenschutz": {
+      "text": "Wéi mir Är Donnéeë benotzen, steet an der Dateschutzerklärung: {link}",
+      "review": "lb-native"
+    },
+    "zeiten": {
+      "text": "Ëffnungszäiten",
+      "review": "lb-native"
+    }
+  },
+  "shop": {
+    "zumShop": {
+      "text": "An de Shop",
+      "review": "lb-native"
+    },
+    "zumShopVon": {
+      "text": "An de Shop {haus}",
+      "review": "lb-native"
+    },
+    "lannersClaim": {
+      "text": "Fraen- an Häremoud",
+      "review": "lb-native"
+    },
+    "jagerClaim": {
+      "text": "Häremoud an Hitt",
+      "review": "lb-native"
+    },
+    "sortimentAnsehen": {
+      "text": "Sortiment kucken",
+      "review": "lb-native"
+    },
+    "heute": {
+      "text": "Haut",
+      "review": "lb-native"
+    },
+    "alleZeiten": {
+      "text": "All Ëffnungszäiten",
+      "review": "lb-native"
+    },
+    "adresse": {
+      "text": "Adress",
+      "review": "lb-native"
+    },
+    "kontakt": {
+      "text": "Telefon & E-Mail",
+      "review": "lb-native"
+    },
+    "markenH2": {
+      "text": "Marken bei {haus}",
+      "review": "lb-native"
+    },
+    "markenVorzeile": {
+      "text": "Am Haus ze kréien",
+      "review": "lb-native"
+    },
+    "sortimentVorzeile": {
+      "text": "Just dat, wat et hei gëtt",
+      "review": "lb-native"
+    },
+    "sortimentH2": {
+      "text": "Sortiment bei {haus}",
+      "review": "lb-native"
+    },
+    "alleArtikel": {
+      "text": "All Artikele bei {haus}",
+      "review": "lb-native"
+    },
+    "alleArtikelAnzahl": {
+      "text": "All {n} Artikele bei {haus} kucken",
+      "review": "lb-native"
+    },
+    "ueberVorzeile": {
+      "text": "D'Haus",
+      "review": "lb-native"
+    },
+    "ueberH2": {
+      "text": "Iwwer {haus}",
+      "review": "lb-native"
+    },
+    "zeitenVorzeile": {
+      "text": "Wéini mir op sinn",
+      "review": "lb-native"
+    },
+    "kontaktVorzeile": {
+      "text": "Wou Dir eis fannt",
+      "review": "lb-native"
+    },
+    "anderesVorzeile": {
+      "text": "Just e puer Schrëtt méi wäit",
+      "review": "lb-native"
+    },
+    "anderesH2": {
+      "text": "Kuckt och bei {haus} eran",
+      "review": "lb-native"
+    },
+    "jagerZeichnung": {
+      "text": "Zeechnung vum Eckhaus Jager-Oberlinkels aus dem Logo",
+      "review": "lb-native"
+    }
+  },
+  "status": {
+    "offenBis": {
+      "text": "Op bis {zeit}",
+      "review": "lb-native"
+    },
+    "pause": {
+      "text": "Mëttespaus, nees op vun {zeit} un",
+      "review": "lb-native"
+    },
+    "oeffnetHeute": {
+      "text": "Zou, mécht um {zeit} op",
+      "review": "lb-native"
+    },
+    "oeffnetMorgen": {
+      "text": "Zou, mécht muer um {zeit} op",
+      "review": "lb-native"
+    },
+    "oeffnetTag": {
+      "text": "Zou, mécht {tag} um {zeit} op",
+      "review": "lb-native"
+    }
+  },
+  "geschichte": {
+    "vorzeile": {
+      "text": "Zënter 1891 an der Grand-Rue",
+      "review": "lb-native"
+    },
+    "h1": {
+      "text": "Eis Geschicht",
+      "review": "lb-native"
+    },
+    "intro": {
+      "text": "Zwee Moudenhaiser, 14 Hausnummeren auserneen, matzen zu Ettelbréck: Jager-Oberlinkels an der Grand-Rue 32 an d'Confection Lanners an der Grand-Rue 18. Hei liest Dir, wéi aus engem Hutgeschäft en Häreausstatter ginn ass a wat déi zwee Haiser haut ausmécht.",
+      "review": "lb-native"
+    },
+    "zeitVorzeile": {
+      "text": "Zäitstrahl",
+      "review": "lb-native"
+    },
+    "zeitH2": {
+      "text": "Vum Hutgeschäft bis bei zwee Moudenhaiser",
+      "review": "lb-native"
+    },
+    "danach": {
+      "text": "Duerno",
+      "review": "lb-native"
+    },
+    "heute": {
+      "text": "Haut",
+      "review": "lb-native"
+    },
+    "online": {
+      "text": "Online",
+      "review": "lb-native"
+    },
+    "s1Titel": {
+      "text": "Jager mécht als Hutgeschäft op",
+      "review": "lb-native"
+    },
+    "s1Text": {
+      "text": "An der Grand-Rue 32 fänkt d'Geschicht vu Jager-Oberlinkels un: als Hutgeschäft, op där selwechter Adress wéi haut.",
+      "review": "lb-native"
+    },
+    "s2Titel": {
+      "text": "Hitt an Hiemer",
+      "review": "lb-native"
+    },
+    "s2Text": {
+      "text": "Bei d'Hitt kommen Hiemer dobäi: Aus dem Hutgeschäft gëtt en Hut- an Hiemergeschäft.",
+      "review": "lb-native"
+    },
+    "s3Titel": {
+      "text": "Confection Lanners an der Grand-Rue 18",
+      "review": "lb-native"
+    },
+    "s3Text": {
+      "text": "Véierzéng Hausnummeren weider, an der Grand-Rue 18, kleet d'Confection Lanners Fraen an Hären an. D'Grënnungsjoer gëtt hei nogedroen.",
+      "review": "lb-native"
+    },
+    "s4Titel": {
+      "text": "Zwee Haiser, eng Strooss",
+      "review": "lb-native"
+    },
+    "s4Text": {
+      "text": "Jager kleet Hären vu Kapp bis Fouss an, mat Hitt vu Stetson a Fynch Hatton, Barbour, Lacoste a Levi's. Lanners bitt op 520 m² Fraen- an Häremoud vu Boss bis Save the Duck.",
+      "review": "lb-native"
+    },
+    "s5Titel": {
+      "text": "Béid Haiser online",
+      "review": "lb-native"
+    },
+    "s5Text": {
+      "text": "Op dëser Websäit gesitt Dir, wat an Ärer Gréisst a wéi engem Haus do ass. Reservéiert et a probéiert et a Rou am Buttek un.",
+      "review": "lb-native"
+    },
+    "besuchVorzeile": {
+      "text": "Kommt eis besichen",
+      "review": "lb-native"
+    },
+    "besuchH2": {
+      "text": "Matzen zu Ettelbréck",
+      "review": "lb-native"
+    }
+  },
+  "maps": {
+    "laden": {
+      "text": "Kaart lueden",
+      "review": "lb-native"
+    },
+    "hinweis": {
+      "text": "Beim Lueden iwwerdréit Google Maps Donnéeë wéi Är IP-Adress u Google.",
+      "review": "lb-native"
+    },
+    "datenschutz": {
+      "text": "Méi am Dateschutz",
+      "review": "lb-native"
+    },
+    "titel": {
+      "text": "Kaart: {haus} op Google Maps",
+      "review": "lb-native"
+    },
+    "oeffnen": {
+      "text": "Op Google Maps opmaachen",
+      "review": "lb-native"
+    }
+  },
+  "anfahrt": {
+    "vorzeile": {
+      "text": "Sou fannt Dir eis",
+      "review": "lb-native"
+    },
+    "h2": {
+      "text": "Wee & Parken",
+      "review": "lb-native"
+    },
+    "parken": {
+      "text": "Parken",
+      "review": "lb-native"
+    },
+    "parkenText": {
+      "text": "Déi nootste Parkplazen a Parkhaiser nenne mir hei, soubal d'Haiser se bestätegt hunn.",
+      "review": "lb-native"
+    },
+    "zug": {
+      "text": "Mam Zuch",
+      "review": "lb-native"
+    },
+    "zugText": {
+      "text": "Gare Ettelbréck. Zu Fouss bis an d'Grand-Rue:",
+      "review": "lb-native"
+    },
+    "bus": {
+      "text": "Mam Bus",
+      "review": "lb-native"
+    },
+    "busText": {
+      "text": "Nootsten Arrêt a Linnen:",
+      "review": "lb-native"
+    },
+    "fuss": {
+      "text": "Vun Haus zu Haus",
+      "review": "lb-native"
+    },
+    "fussText": {
+      "text": "{haus} läit just e puer Schrëtt méi wäit, an der Grand-Rue {nr}.",
+      "review": "lb-native"
+    }
+  },
+  "schnell": {
+    "label": {
+      "text": "Séieren Zougrëff {haus}",
+      "review": "lb-native"
+    },
+    "anrufen": {
+      "text": "Uruffen",
+      "review": "lb-native"
+    },
+    "route": {
+      "text": "Wee",
+      "review": "lb-native"
+    },
+    "zeiten": {
+      "text": "Ëffnungszäiten",
+      "review": "lb-native"
+    }
+  },
+  "vertrauen": {
+    "titel": {
+      "text": "Gutt ze wëssen",
+      "review": "lb-native"
+    },
+    "reserve": {
+      "text": "Gratis reservéieren",
+      "review": "lb-native"
+    },
+    "reserveText": {
+      "text": "Am Buttek uprobéieren a bezuelen.",
+      "review": "lb-native"
+    },
+    "collect": {
+      "text": "Ofhuelen an der Grand-Rue",
+      "review": "lb-native"
+    },
+    "collectText": {
+      "text": "Vum nächsten Ëffnungsdag un.",
+      "review": "lb-native"
+    },
+    "ship": {
+      "text": "Liwwerung a Lëtzebuerg",
+      "review": "lb-native"
+    },
+    "shipText": {
+      "text": "An {n} Aarbechtsdeeg.",
+      "review": "lb-native"
+    },
+    "zahlung": {
+      "text": "Sécher bezuelen",
+      "review": "lb-native"
+    },
+    "zahlungText": {
+      "text": "Verschlësselt beim Bezueldéngschtleeschter.",
+      "review": "lb-native"
+    },
+    "umtausch": {
+      "text": "Ëmtausch am Buttek",
+      "review": "lb-native"
+    },
+    "beratung": {
+      "text": "Perséinlech Berodung",
+      "review": "lb-native"
+    }
+  }
+}

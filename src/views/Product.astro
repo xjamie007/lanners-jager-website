@@ -1,0 +1,358 @@
+---
+/**
+ * Produktseite (D4), eine Seite je uid8 (Artikel × Farbe). Reihenfolge:
+ * Brotkrumen, Galerie, Marke, Name, Farbe, Preis (Omnibus, inkl. MwSt.),
+ * Farben, Größenleiste mit Buttons, ein Satz je aktivem Weg, aufklappbare
+ * Abschnitte, Passt dazu, Mehr von {Marke}. Offline-Artikel: noindex + Hinweis.
+ */
+import { getImage } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import Gallery from "../components/Gallery.astro";
+import SizeBar from "../components/SizeBar.astro";
+import MiniTasche from "../components/MiniTasche.astro";
+import Price from "../components/Price.astro";
+import ProductImage from "../components/ProductImage.astro";
+import ProductRow from "../components/ProductRow.astro";
+import Offen from "../components/Offen.astro";
+import Telefone from "../components/Telefone.astro";
+import Aufklapp from "../components/Aufklapp.astro";
+import { features, buyEnabled, SITE_URL } from "../config/site.ts";
+import { shop } from "../config/shop.ts";
+import { versand } from "../config/versand.ts";
+import { getHouse } from "../config/houses.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { link, absolute, asset } from "../lib/page.ts";
+import { pathFor } from "../i18n/routes.ts";
+import { breadcrumbJsonLd, productJsonLd, productTitle } from "../lib/seo.ts";
+import { getCatalog, sortRecommended } from "../lib/catalog/index.ts";
+import { textFor, washFor, productDescription } from "../lib/product.ts";
+import { gruppeName, abteilungName } from "../lib/listmeta.ts";
+import { formatPrice } from "@shared/format.ts";
+
+interface Props {
+  lang: Lang;
+  uid8: string;
+}
+const { lang, uid8 } = Astro.props;
+const cat = await getCatalog();
+const a = cat.byUid8.get(uid8)!;
+const ref = { kind: "produkt" as const, slug: a.slug, uid8 };
+const url = absolute(pathFor(ref, lang));
+const offline = !!a.offlineSince;
+
+const crumbs = [{ name: t(lang, "nav.start"), href: link(lang, "home") }];
+if (a.accessoire) {
+  crumbs.push({ name: t(lang, "nav.accessoires"), href: link(lang, { kind: "accessoires" }) });
+  if (a.gruppe) crumbs.push({ name: gruppeName(a.gruppe, lang), href: link(lang, { kind: "warengruppe", abteilung: "accessoires", gruppe: a.gruppe }) });
+} else if (a.abteilung) {
+  crumbs.push({ name: abteilungName(a.abteilung, lang), href: link(lang, { kind: "abteilung", id: a.abteilung }) });
+  if (a.gruppe) crumbs.push({ name: gruppeName(a.gruppe, lang), href: link(lang, { kind: "warengruppe", abteilung: a.abteilung, gruppe: a.gruppe }) });
+}
+crumbs.push({ name: `${a.brand.name} ${a.name}`, href: link(lang, ref) });
+
+const beschreibung = textFor(a, ["lang", "kurz"], lang);
+const material = textFor(a, ["material"], lang);
+const pflege = washFor(a, cat, lang);
+const sprache = (l: string) => t(lang, `sprache.im.${l}`);
+
+// Farben: andere Varianten desselben Artikels
+const farben = a.variants.map((u) => cat.byUid8.get(u)!).filter(Boolean);
+
+// Passt dazu und Mehr von {Marke}, ohne Doppelte (eindeutige View-Transition-Namen)
+const passt = a.related.map((u) => cat.byUid8.get(u)!).filter((x) => x && !x.offlineSince);
+const gesehen = new Set([a.uid8, ...passt.map((x) => x.uid8), ...a.variants]);
+const mehrVon = sortRecommended(cat.online.filter((x) => x.brand.slug === a.brand.slug && !gesehen.has(x.uid8))).slice(0, 4);
+const aehnlich = offline ? sortRecommended(cat.online.filter((x) => x.gruppe === a.gruppe && x.uid8 !== a.uid8)).slice(0, 8) : [];
+
+const imageUrls = a.photos.map((p) => (p.src.startsWith("http") ? p.src : SITE_URL + p.src));
+// kleines Vorschaubild für die Suchtreffer (Pagefind-Meta "image")
+const f0 = a.photos[0];
+const suchBild = !f0 ? null : f0.src.endsWith(".svg") ? f0.src : (await getImage({ src: f0.src, width: 120, height: Math.round((120 * f0.height) / f0.width), format: "webp" })).src;
+const title = productTitle(a, lang);
+const description = productDescription(a, lang, buyEnabled);
+const n = shop.reservierung.haltedauerTage;
+const lieferzeit = versand.laender[0]?.lieferzeitTage ?? 3;
+const vorraetig = (["lanners", "jager"] as const).filter((h) => a.stockByHouse[h] > 0);
+const vorraetigText = vorraetig.map((h) => `${getHouse(h).short}, ${t(lang, "haus.adresse", { nr: getHouse(h).nr })}`).join(t(lang, "seo.und"));
+
+// Daten für die Island (Tasche, Live-Bestand)
+const islandData = {
+  uid8: a.uid8,
+  marke: a.brand.name,
+  name: a.name,
+  farbe: a.colorName,
+  preis: a.nettoCents,
+  alt: a.nettoCents < a.priceCents ? a.priceCents : undefined,
+  bild: a.photos[0]?.src ?? "",
+  fit: a.photos[0]?.fit ?? "contain",
+  url: link(lang, ref),
+  asOf: cat.asOf,
+  cells: a.cells.map((c) => ({ key: c.key14, haus: c.house, groesse: c.size.label, stock: c.stock })),
+  houses: a.houses,
+};
+const [offlineVor, offlineNach] = t(lang, "produkt.offline").split("{telefone}");
+---
+<Base
+  lang={lang}
+  ref={ref}
+  title={title}
+  description={description}
+  noindex={offline}
+  ogType="product"
+  ogImage={a.photos[0] ? SITE_URL + asset(`og/produkt/${a.uid8}.jpg`) : undefined}
+  jsonLd={offline ? [breadcrumbJsonLd(crumbs)] : [breadcrumbJsonLd(crumbs), productJsonLd(a, lang, url, imageUrls)]}
+  section={a.accessoire ? "accessoires" : a.abteilung}
+  strings={["groesse.", "produkt.vorraetig", "tasche.status", "tasche.zur", "tasche.farbe", "tasche.groesse", "tasche.bei", "tasche.miniAnzahl", "tasche.knapp", "seo.und"]}
+>
+  <div class="container-lj">
+    <Breadcrumb lang={lang} items={crumbs} />
+    <div class="produkt" data-pagefind-body>
+      <div class="produkt-bilder">
+        <Gallery lang={lang} article={a} />
+      </div>
+      <div class="produkt-info">
+        <div class="produkt-sticky">
+          <p class="t-marke-gross" data-pagefind-meta="marke">{a.brand.name}</p>
+          <h1 class="t-h1-produkt" data-pagefind-meta={suchBild ? `title, image:${suchBild}` : "title"}>{a.name}</h1>
+          <p class="produkt-farbe" data-pagefind-meta={`farbe:${a.colorName}`}>{t(lang, "produkt.farbe", { farbe: a.colorName })}</p>
+          {a.isDemo && <p class="t-klein nebentext" data-pagefind-ignore>{t(lang, "demo.artikel")}</p>}
+
+          <div class="produkt-preis">
+            <Price lang={lang} price={a.priceCents} netto={a.nettoCents} nettoMax={a.nettoMaxCents} discount={a.discount} size="produkt" />
+            <span class="sr-only" data-pagefind-meta="preis">{formatPrice(a.nettoCents, lang)}</span>
+            {
+              a.lowest30Cents !== null && (
+                <p class="t-klein">
+                  {t(lang, "produkt.omnibus", { preis: formatPrice(a.lowest30Cents, lang) })} <Offen op="OP-06.10" lang={lang} />
+                </p>
+              )
+            }
+            <p class="t-klein nebentext" data-pagefind-ignore>{t(lang, "produkt.inklMwst")}</p>
+          </div>
+
+          {
+            farben.length > 1 && (
+              <nav class="produkt-farben" aria-label={t(lang, "produkt.farben")}>
+                <ul>
+                  {farben.map((f) => (
+                    <li>
+                      <a href={link(lang, { kind: "produkt", slug: f.slug, uid8: f.uid8 })} aria-current={f.uid8 === a.uid8 ? "page" : undefined} data-farbe-link>
+                        {f.photos[0] && <ProductImage photo={f.photos[0]} lang={lang} alt="" sizes="64px" demoLabel={false} />}
+                        <span class="sr-only">{f.uid8 === a.uid8 ? t(lang, "produkt.farbeAktiv", { farbe: f.colorName }) : t(lang, "produkt.farbeLink", { farbe: f.colorName })}</span>
+                      </a>
+                      <span class="farbe-name t-klein" aria-hidden="true">{f.colorName}</span>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )
+          }
+
+          {
+            offline ? (
+              <div class="produkt-offline">
+                <p>
+                  {offlineVor}
+                  <Telefone lang={lang} />
+                  {offlineNach}
+                </p>
+              </div>
+            ) : (
+              <>
+                <SizeBar lang={lang} article={a} asOf={cat.asOf} />
+                <ul class="produkt-wege t-klein" data-pagefind-ignore>
+                  {features.reserve && (
+                    <li>
+                      {t(lang, "wege.reserve", { n })} <Offen op="OP-05.1" lang={lang} />
+                    </li>
+                  )}
+                  {features.payCollect && (
+                    <li>
+                      {t(lang, "wege.collect")} <Offen op="OP-06.6" lang={lang} />
+                    </li>
+                  )}
+                  {features.payShip && (
+                    <li>
+                      {t(lang, "wege.ship", { n: lieferzeit })} <Offen op="OP-06.2" lang={lang} />
+                    </li>
+                  )}
+                </ul>
+                <p class="t-klein produkt-vorraetig" data-gl-vorraetig data-pagefind-ignore>
+                  {vorraetig.length ? t(lang, "produkt.vorraetigBei", { liste: vorraetigText }) : t(lang, "produkt.vorraetigNirgends")}
+                </p>
+              </>
+            )
+          }
+
+          <div class="produkt-details">
+            <Aufklapp titel={t(lang, "produkt.beschreibung")} open>
+              {beschreibung ? (
+                <div lang={beschreibung.lang} class="prosa">
+                  {beschreibung.fallback && (
+                    <p class="t-klein nebentext" lang={lang}>
+                      {t(lang, "produkt.nurSpracheBeschreibung", { sprache: sprache(beschreibung.lang) })}
+                    </p>
+                  )}
+                  {beschreibung.texts.map((x) => <p>{x}</p>)}
+                </div>
+              ) : (
+                <p>{t(lang, "produkt.keinText")}</p>
+              )}
+            </Aufklapp>
+            {
+              material && (
+                <Aufklapp titel={t(lang, "produkt.material")}>
+                  {material.fallback && (
+                    <p class="t-klein nebentext">{t(lang, "produkt.nurSpracheMaterial", { sprache: sprache(material.lang) })}</p>
+                  )}
+                  <div lang={material.lang}>
+                    {material.texts.map((x) => <p>{x}</p>)}
+                  </div>
+                </Aufklapp>
+              )
+            }
+            {
+              pflege && (
+                <Aufklapp titel={t(lang, "produkt.pflege")}>
+                  {pflege.fallback && <p class="t-klein nebentext">{t(lang, "produkt.nurSprachePflege", { sprache: sprache(pflege.lang) })}</p>}
+                  <ul lang={pflege.lang}>
+                    {pflege.texts.map((x) => <li>{x}</li>)}
+                  </ul>
+                </Aufklapp>
+              )
+            }
+            {
+              a.ref && (
+                <Aufklapp titel={t(lang, "produkt.artikelnummer")}>
+                  <p>{a.ref}</p>
+                </Aufklapp>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {
+      offline && aehnlich.length > 0 && (
+        <section class="sektion" aria-labelledby="aehnlich-titel">
+          <h2 class="t-h2 reihe-titel" id="aehnlich-titel">{t(lang, "produkt.aehnlich")}</h2>
+          <ProductRow lang={lang} articles={aehnlich} label={t(lang, "produkt.aehnlich")} id="aehnlich" />
+        </section>
+      )
+    }
+    {
+      !offline && passt.length > 0 && (
+        <section class="sektion" aria-labelledby="passt-titel">
+          <h2 class="t-h2 reihe-titel" id="passt-titel">{t(lang, "produkt.passt")}</h2>
+          <ProductRow lang={lang} articles={passt} label={t(lang, "produkt.passt")} id="passt" />
+        </section>
+      )
+    }
+    {
+      !offline && mehrVon.length > 0 && (
+        <section class="sektion" aria-labelledby="mehr-titel">
+          <h2 class="t-h2 reihe-titel" id="mehr-titel">{t(lang, "produkt.mehrVon", { marke: a.brand.name })}</h2>
+          <ProductRow lang={lang} articles={mehrVon} label={t(lang, "produkt.mehrVon", { marke: a.brand.name })} id="mehr" />
+        </section>
+      )
+    }
+  </div>
+  {!offline && <script type="application/json" id="lj-artikel" set:html={JSON.stringify(islandData).replace(/</g, "\\u003c")} />}
+  {!offline && <MiniTasche lang={lang} />}
+  <script>
+    import "../scripts/groessen.ts";
+  </script>
+</Base>
+
+<style is:global>
+  /* minmax(0, 1fr): die breite Größenmatrix scrollt in sich, statt die Spalte aufzublähen */
+  .produkt {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+  }
+  @media (min-width: 1024px) {
+    .produkt {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 16px;
+      align-items: start;
+    }
+    .produkt-bilder {
+      grid-column: 1 / span 7;
+    }
+    .produkt-info {
+      grid-column: 8 / span 5;
+      align-self: stretch;
+    }
+    .produkt-sticky {
+      position: sticky;
+      top: calc(var(--header-h) + var(--switch-h) + 20px);
+      padding-left: clamp(0px, 2vw, 32px);
+    }
+  }
+  .produkt-sticky {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .produkt-farbe {
+    color: var(--color-schiefer);
+  }
+  .produkt-preis {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .produkt-farben ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .produkt-farben li {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 76px;
+  }
+  .produkt-farben a {
+    display: block;
+    width: 64px;
+  }
+  .produkt-farben a[aria-current="page"] {
+    outline: 1.5px solid var(--color-tusche);
+    outline-offset: 2px;
+  }
+  .farbe-name {
+    line-height: 1.25;
+    hyphens: manual;
+    overflow-wrap: break-word;
+  }
+  .produkt-wege {
+    list-style: none;
+    margin: 4px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .produkt-vorraetig {
+    color: var(--color-schiefer);
+  }
+  .produkt-offline {
+    padding: 20px;
+    background: var(--color-glas);
+  }
+  .produkt-details {
+    margin-top: 12px;
+  }
+  .reihe-titel {
+    margin-bottom: 20px;
+  }
+</style>

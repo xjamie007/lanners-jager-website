@@ -1,0 +1,275 @@
+---
+/**
+ * Listenseite (D3). Statisch 48 Artikel je Seite mit echten Seitenlinks.
+ * Mit JavaScript: Filter und Sortierung über einen JSON-Index (src/scripts/filter.ts),
+ * "Weitere Artikel laden" lädt die nächste Seite nach. Seiten mit Filterparametern
+ * bekommen noindex, follow (im Browser gesetzt) und behalten den Canonical ohne Parameter.
+ */
+import Base from "../layouts/Base.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import ProductCard from "../components/ProductCard.astro";
+import FilterForm from "../components/FilterForm.astro";
+import { facetten, dateiId } from "../lib/filterindex.ts";
+import { t, tp, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import { breadcrumbJsonLd } from "../lib/seo.ts";
+import { getCatalog } from "../lib/catalog/index.ts";
+import { PAGE_SIZE, pageCount, type ListDef } from "../lib/lists.ts";
+import { listMeta, gruppeName } from "../lib/listmeta.ts";
+import { formatDateTime } from "@shared/format.ts";
+import type { Section } from "../components/Header.astro";
+import BrandTicker from "../components/BrandTicker.astro";
+import { alleMarken } from "../lib/marken.ts";
+import { asset } from "../lib/page.ts";
+
+interface Props {
+  lang: Lang;
+  list: ListDef;
+  page: number;
+}
+const { lang, list, page } = Astro.props;
+const cat = await getCatalog();
+const meta = listMeta(list, lang, cat, page);
+const pages = pageCount(list);
+const slice = list.uids.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((u) => cat.byUid8.get(u)!);
+const section: Section =
+  list.kind === "abteilung" || (list.kind === "gruppe" && list.abteilung)
+    ? (list.abteilung as Section)
+    : list.kind === "accessoires" || list.kind === "gruppe"
+      ? "accessoires"
+      : list.kind === "sale"
+        ? "sale"
+        : list.kind === "marke"
+          ? "marken"
+          : null;
+const stand = formatDateTime(cat.asOf, lang);
+// Markenseiten: Logo über der Überschrift, darunter das Band mit den anderen Marken
+const alle = list.kind === "marke" ? alleMarken(cat) : [];
+const markeInfo = alle.find((m) => m.slug === list.marke) ?? null;
+const andereMarken = alle.filter((m) => m.slug !== list.marke);
+---
+<Base
+  lang={lang}
+  ref={list.ref}
+  page={page}
+  title={meta.title}
+  description={meta.desc}
+  jsonLd={[breadcrumbJsonLd(meta.crumbs)]}
+  section={section}
+  strings={["liste.", "karte.", "demo.", "produkt.ab"]}
+>
+  <div class="container-lj" data-liste={list.id} data-seite={page} data-seiten={pages} data-gesamt={list.uids.length} data-basis={link(lang, list.ref)}>
+    <Breadcrumb lang={lang} items={meta.crumbs} />
+    <header class="liste-kopf">
+      {
+        markeInfo?.logo && (
+          <p class="liste-markenlogo">
+            <img src={asset(markeInfo.logo.datei)} alt="" width={Math.round(60 * markeInfo.logo.verhaeltnis * (markeInfo.logo.skala ?? 1))} height={Math.round(60 * (markeInfo.logo.skala ?? 1))} />
+          </p>
+        )
+      }
+      <h1 class="t-h1" data-vt-ziel="kacheltitel" data-vt-statisch="seitentitel">{meta.h1}</h1>
+      <p class="liste-anzahl" data-anzahl aria-live="polite">{tp(lang, "liste.anzahl", list.uids.length)}</p>
+      {meta.intro && <p class="prosa liste-intro">{meta.intro}</p>}
+    </header>
+
+    {
+      list.untergruppen && list.untergruppen.length > 0 && (
+        <nav class="untergruppen" aria-label={t(lang, "liste.warengruppen")}>
+          <ul>
+            {list.untergruppen.map((g) => (
+              <li>
+                <a href={link(lang, g.ref)}>{gruppeName(g.gruppe, lang)}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    <div class="filter-mount">
+      <FilterForm lang={lang} facetten={facetten(list, cat, lang)} listeDatei={dateiId(list.id)} gesamt={list.uids.length} />
+    </div>
+
+    <ul class="raster liste-raster" data-raster data-hausfilter>
+      {
+        slice.map((a, i) => (
+          <li data-haeuser={a.houses.join(" ")}>
+            <ProductCard article={a} lang={lang} headingLevel={2} eager={i < 4 && page === 1} />
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="liste-leer" data-leer hidden>
+      <p>
+        {t(lang, "liste.leer")} <button type="button" class="linkbutton" data-filter-reset>{t(lang, "liste.leerReset")}</button>
+      </p>
+    </div>
+
+    <div class="liste-mehr nur-js" data-mehr-box hidden={page >= pages}>
+      <button type="button" class="btn btn-sekundaer" data-mehr>{t(lang, "liste.mehr")}</button>
+    </div>
+    <p class="sr-only" role="status" data-filter-status></p>
+
+    {
+      pages > 1 && (
+        <nav class="seiten" aria-label={t(lang, "liste.seiten")} data-seitennav>
+          <ul>
+            {page > 1 && (
+              <li>
+                <a href={link(lang, list.ref, page - 1)} rel="prev">
+                  {t(lang, "liste.vorherige")}
+                </a>
+              </li>
+            )}
+            {Array.from({ length: pages }, (_, i) => i + 1).map((p) => (
+              <li>
+                {p === page ? (
+                  <span aria-current="page">{p}</span>
+                ) : (
+                  <a href={link(lang, list.ref, p)}>
+                    <span class="sr-only">{t(lang, "liste.seite", { n: "" })}</span>
+                    {p}
+                  </a>
+                )}
+              </li>
+            ))}
+            {page < pages && (
+              <li>
+                <a href={link(lang, list.ref, page + 1)} rel="next">
+                  {t(lang, "liste.naechste")}
+                </a>
+              </li>
+            )}
+          </ul>
+        </nav>
+      )
+    }
+
+    <p class="t-klein nebentext liste-stand">
+      {t(lang, "liste.stand", { datum: stand })}
+    </p>
+  </div>
+  {
+    andereMarken.length > 0 && (
+      <div class="sektion">
+        <BrandTicker lang={lang} marken={andereMarken} id="weitere-marken" titel={t(lang, "marken.weitere")} vorzeile={t(lang, "home.markenVorzeile")} alleLink variante="marke" />
+      </div>
+    )
+  }
+  <script>
+    import "../scripts/filter.ts";
+  </script>
+</Base>
+
+<style>
+  .liste-kopf {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .liste-markenlogo {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    padding: 18px 26px;
+    margin-bottom: 8px;
+    border-radius: var(--radius-bild);
+    background: var(--color-creme);
+  }
+  .liste-markenlogo img {
+    display: block;
+    max-width: min(260px, 70vw);
+    height: auto;
+    max-height: 64px;
+    width: auto;
+  }
+  .liste-anzahl {
+    color: var(--color-schiefer);
+  }
+  .liste-intro {
+    margin-top: 4px;
+  }
+  .untergruppen {
+    margin-top: 20px;
+  }
+  .untergruppen ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .untergruppen a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+  .filter-mount {
+    margin-top: 20px;
+  }
+  .liste-raster {
+    list-style: none;
+    margin: 32px 0 0;
+    padding: 0;
+  }
+  .liste-raster > li {
+    min-width: 0;
+    transition: opacity 280ms ease-out;
+  }
+  .liste-raster > li[data-ausgeblendet] {
+    opacity: 0;
+  }
+  .liste-raster > li[hidden] {
+    display: none;
+  }
+  .liste-leer {
+    margin-top: 32px;
+  }
+  .linkbutton {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    font: inherit;
+  }
+  .liste-mehr {
+    margin-top: 52px;
+    display: flex;
+    justify-content: center;
+  }
+  .seiten {
+    margin-top: 32px;
+  }
+  .seiten ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .seiten a,
+  .seiten span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 8px;
+  }
+  .seiten [aria-current] {
+    font-weight: 700;
+    box-shadow: inset 0 0 0 var(--stroke) var(--color-tusche);
+  }
+  .liste-stand {
+    margin-top: 32px;
+  }
+</style>

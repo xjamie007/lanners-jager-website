@@ -1,0 +1,8 @@
+{
+ "generatedOn": "2026-10-01",
+ "seed": 20261001,
+ "hinweis": "DEMO-DATEN. Erzeugt mit scripts/build-fixtures.ts aus scripts/fixtures/spec.ts. Nie in eine Produktivumgebung.",
+ "articles": 50,
+ "uid8": 73,
+ "records": 547
+}

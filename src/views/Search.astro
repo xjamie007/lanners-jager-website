@@ -1,0 +1,80 @@
+---
+/**
+ * Suche (D8): Pagefind-Index (statisch, je Sprache über <html lang>), nur hier
+ * und im Suchdialog geladen. Ohne JavaScript gibt es keine Volltextsuche, dafür
+ * die Wege ins Sortiment.
+ */
+import Page from "../layouts/Page.astro";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<Page lang={lang} route="suche" h1={t(lang, "suche.h1")} title={t(lang, "seo.suche.title")} description={t(lang, "seo.suche.desc")} noindex breit>
+  <form class="suchseite-form" role="search" action={link(lang, "suche")} method="get" data-suchseite>
+    <label class="feld-label" for="suche-q">{t(lang, "suche.label")}</label>
+    <div class="suche-zeile">
+      <input class="feld" id="suche-q" name="q" type="search" autocomplete="off" aria-describedby="suche-q-hinweis" />
+      <button class="btn btn-primaer" type="submit">{t(lang, "suche.btn")}</button>
+    </div>
+    <p class="feld-hinweis" id="suche-q-hinweis">{t(lang, "suche.beispiel")}</p>
+  </form>
+  <div class="suchseite-ergebnisse nur-js" data-suchseite-ergebnisse aria-live="polite"></div>
+  <div class="ohne-js suche-ohnejs">
+    <p>{t(lang, "suche.ohneJs")}</p>
+    <ul>
+      <li><a href={link(lang, { kind: "abteilung", id: "damen" })}>{t(lang, "nav.damen")}</a></li>
+      <li><a href={link(lang, { kind: "abteilung", id: "herren" })}>{t(lang, "nav.herren")}</a></li>
+      <li><a href={link(lang, { kind: "accessoires" })}>{t(lang, "nav.accessoires")}</a></li>
+      <li><a href={link(lang, "marken")}>{t(lang, "nav.marken")}</a></li>
+    </ul>
+  </div>
+  <script>
+    import { sucheRendern } from "../scripts/global.ts";
+    const form = document.querySelector<HTMLFormElement>("[data-suchseite]");
+    const ziel = document.querySelector<HTMLElement>("[data-suchseite-ergebnisse]");
+    if (form && ziel) {
+      const input = form.querySelector<HTMLInputElement>("input[name=q]")!;
+      const q = new URLSearchParams(location.search).get("q") ?? "";
+      input.value = q;
+      if (q) void sucheRendern(q, ziel);
+      let timer = 0;
+      input.addEventListener("input", () => {
+        clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          const url = new URL(location.href);
+          if (input.value.trim()) url.searchParams.set("q", input.value.trim());
+          else url.searchParams.delete("q");
+          history.replaceState(history.state, "", url);
+          void sucheRendern(input.value, ziel);
+        }, 200);
+      });
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        void sucheRendern(input.value, ziel);
+      });
+    }
+  </script>
+</Page>
+
+<style>
+  .suchseite-form {
+    margin-top: 32px;
+    max-width: 720px;
+  }
+  .suche-zeile {
+    display: flex;
+    gap: 8px;
+  }
+  .suche-zeile .feld {
+    flex: 1;
+  }
+  .suchseite-ergebnisse {
+    margin-top: 32px;
+  }
+  .suche-ohnejs {
+    margin-top: 32px;
+  }
+</style>

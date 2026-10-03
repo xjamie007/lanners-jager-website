@@ -1,0 +1,327 @@
+---
+/**
+ * Fuß (C3): dunkel im Markenverlauf. Oben je Haus Logo, Adresse, Telefon,
+ * E-Mail, Öffnungszeiten und Links; darunter Navigation in drei Spalten
+ * (Sortiment, Häuser, Service; AGB, Widerruf, Versand & Zahlung nur mit
+ * Kauf-Flag), zuletzt der Sprachumschalter.
+ */
+import { houses, telHref } from "../config/houses.ts";
+import { buyEnabled } from "../config/site.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import HoursTable from "./HoursTable.astro";
+import LangSwitcher from "./LangSwitcher.astro";
+import HouseLogo from "./HouseLogo.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+  lang: Lang;
+  alternates: { lang: Lang; href: string }[];
+}
+const { lang, alternates } = Astro.props;
+const sortiment = [
+  { href: link(lang, { kind: "abteilung", id: "damen" }), label: t(lang, "nav.damen") },
+  { href: link(lang, { kind: "abteilung", id: "herren" }), label: t(lang, "nav.herren") },
+  { href: link(lang, { kind: "accessoires" }), label: t(lang, "nav.accessoires") },
+  { href: link(lang, "neu"), label: t(lang, "nav.neu") },
+  { href: link(lang, "sale"), label: t(lang, "nav.sale") },
+  { href: link(lang, "marken"), label: t(lang, "nav.marken") },
+];
+const haeuser = [
+  { href: link(lang, { kind: "haus", id: "lanners" }), label: "Confection Lanners" },
+  { href: link(lang, { kind: "haus", id: "jager" }), label: "Jager-Oberlinkels" },
+  { href: link(lang, "haeuser"), label: t(lang, "nav.haeuser") },
+  { href: link(lang, "geschichte"), label: t(lang, "nav.geschichte") },
+];
+const service = [
+  { href: link(lang, "howto"), label: t(lang, "footer.howto") },
+  { href: link(lang, "gutscheine"), label: t(lang, "footer.gutscheine") },
+  { href: link(lang, "kontakt"), label: t(lang, "footer.kontakt") },
+];
+const recht = [
+  { href: link(lang, "impressum"), label: t(lang, "footer.impressum") },
+  { href: link(lang, "datenschutz"), label: t(lang, "footer.datenschutz") },
+  ...(buyEnabled
+    ? [
+        { href: link(lang, "agb"), label: t(lang, "footer.agb") },
+        { href: link(lang, "widerruf"), label: t(lang, "footer.widerruf") },
+        { href: link(lang, "versand"), label: t(lang, "footer.versand") },
+      ]
+    : []),
+];
+const spalten = [
+  { titel: t(lang, "nav.sortiment"), links: sortiment },
+  { titel: t(lang, "nav.haeuser"), links: haeuser },
+  { titel: t(lang, "nav.service"), links: service },
+];
+---
+<footer class="fuss auf-dunkel">
+  <div class="container-lj">
+    <div class="fuss-haeuser">
+      {
+        houses.map((h) => (
+          <section class={`fuss-haus fuss-haus-${h.id}`} aria-labelledby={`fuss-${h.id}`}>
+            <h2 class="sr-only" id={`fuss-${h.id}`}>
+              {h.name}
+            </h2>
+            <a href={link(lang, { kind: "haus", id: h.id })} class="fuss-logo" aria-hidden="true" tabindex="-1">
+              <HouseLogo haus={h.id} hell />
+            </a>
+            <address class="fuss-adresse">
+              <span>
+                <Icon name="ort" size={18} />
+                {h.streetAddress}, {h.postalCode} {h.locality}
+              </span>
+              <span>
+                <Icon name="telefon" size={18} />
+                <a href={telHref(h)}>{h.phone}</a>
+              </span>
+              <span>
+                <Icon name="mail" size={18} />
+                <a href={`mailto:${h.email}`}>{h.email}</a>
+              </span>
+            </address>
+            <span class="offen-abzeichen fuss-status" data-offen-box hidden>
+              <span class="status-punkt" data-offen-punkt={h.id} />
+              <span data-offen-status={h.id} />
+            </span>
+            <h3 class="t-h3 fuss-zeiten-titel">{t(lang, "footer.oeffnungszeiten")}</h3>
+            <HoursTable lang={lang} haus={h.id} />
+            <p class="fuss-links">
+              <a href={link(lang, { kind: "haus", id: h.id })}>{t(lang, "shop.zumShopVon", { haus: h.short })}</a>
+              <a href={h.facebook} rel="noopener">
+                {t(lang, "footer.facebook", { haus: h.short })}
+                <span class="sr-only"> ({t(lang, "site.externerLink")})</span>
+              </a>
+            </p>
+          </section>
+        ))
+      }
+    </div>
+
+    <nav class="fuss-nav" id="fuss-nav" aria-label={t(lang, "nav.haupt")} tabindex="-1">
+      {
+        spalten.map((s) => (
+          <div class="fuss-spalte">
+            <p class="fuss-spalte-titel">{s.titel}</p>
+            <ul>
+              {s.links.map((n) => (
+                <li>
+                  <a href={n.href}>{n.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+      <div class="fuss-spalte">
+        <p class="fuss-spalte-titel">{t(lang, "sprache.label")}</p>
+        <LangSwitcher lang={lang} alternates={alternates} id="fuss" variant="fuss" />
+      </div>
+    </nav>
+    <div class="fuss-unten">
+      <p class="fuss-marke">Lanners <span>&amp;</span> Jager · Grand-Rue · Ettelbruck</p>
+      <nav class="fuss-recht" aria-label={t(lang, "nav.service")}>
+        <ul>
+          {recht.map((n) => (
+            <li>
+              <a href={n.href}>{n.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style is:global>
+  .fuss {
+    position: relative;
+    margin-top: var(--section);
+    padding: 64px 0 28px;
+    background: var(--verlauf-marke);
+    color: var(--color-weiss);
+    overflow: hidden;
+  }
+  .fuss::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 4px;
+    background: var(--verlauf-messing);
+  }
+  .fuss::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(60% 80% at 100% 0%, rgb(217 182 122 / 0.16), transparent 60%), radial-gradient(50% 70% at 0% 100%, rgb(15 95 151 / 0.35), transparent 60%);
+    pointer-events: none;
+  }
+  .fuss > .container-lj {
+    position: relative;
+    z-index: 1;
+  }
+  .fuss a {
+    color: inherit;
+  }
+  .fuss-haeuser {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+  @media (min-width: 900px) {
+    .fuss-haeuser {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
+    }
+  }
+  .fuss-haus {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: clamp(22px, 3vw, 34px);
+    border-radius: calc(var(--radius-bild) + 4px);
+    background: rgb(255 255 255 / 0.06);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+    backdrop-filter: blur(6px);
+  }
+  .fuss-logo {
+    display: inline-flex;
+    font-size: 13px;
+    margin-bottom: 6px;
+    text-decoration: none;
+  }
+  .fuss-haus-jager .fuss-logo .hauslogo {
+    width: 15em;
+  }
+  .fuss-adresse {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-style: normal;
+  }
+  .fuss-adresse span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fuss-adresse svg {
+    flex: none;
+    opacity: 0.7;
+  }
+  .fuss-status .status-punkt[data-zustand="offen"] {
+    background: #4ade80;
+    opacity: 1;
+  }
+  .fuss-status .status-punkt[data-zustand="zu"] {
+    background: #fca5a5;
+    opacity: 1;
+  }
+  .fuss-zeiten-titel {
+    margin-top: 6px;
+  }
+  .fuss .zeiten-block {
+    width: 100%;
+  }
+  .fuss-links {
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+  }
+  .fuss-links a,
+  .fuss-nav a,
+  .fuss-recht a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+  }
+  .fuss-nav {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 24px;
+  }
+  @media (min-width: 900px) {
+    .fuss-nav {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .fuss-spalte-titel {
+    margin-bottom: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #e4c48f;
+  }
+  .fuss-spalte ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .fuss-nav a {
+    text-decoration: none;
+    opacity: 0.88;
+  }
+  .fuss-nav a:hover {
+    text-decoration: underline;
+    opacity: 1;
+  }
+  .fuss .sprachen {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .fuss .sprachen-label {
+    display: none;
+  }
+  .fuss .sprachen ul {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .fuss .sprachen a {
+    min-width: 44px;
+    min-height: 36px;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35);
+  }
+  .fuss .sprachen a[aria-current="true"] {
+    background: var(--color-weiss);
+    color: var(--color-tusche);
+    box-shadow: none;
+  }
+  .fuss-unten {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid rgb(255 255 255 / 0.15);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    font-size: 0.875rem;
+  }
+  .fuss-marke {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .fuss-marke span {
+    color: #e4c48f;
+  }
+  .fuss-recht ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .fuss-recht a {
+    opacity: 0.8;
+  }
+</style>

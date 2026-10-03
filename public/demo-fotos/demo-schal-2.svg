@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto schal, hinten</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M96 70H204V320H96Z" vector-effect="non-scaling-stroke"/>
+<path d="M96 130H204M96 190H204M96 250H204M136 70V320M164 70V320" vector-effect="non-scaling-stroke"/>
+<path d="M100 320V340M110 320V340M120 320V340M130 320V340M140 320V340M150 320V340M160 320V340M170 320V340M180 320V340M190 320V340M200 320V340" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

@@ -1,0 +1,135 @@
+---
+/**
+ * Sprachauswahl im Kopf: Globus mit Kürzel der aktuellen Sprache, darunter die
+ * vier Sprachen mit vollem Namen (in der eigenen Sprache, mit lang-Attribut).
+ * Ein <details>, damit sie auch ohne JavaScript aufgeht; global.ts schließt sie
+ * bei Klick daneben und mit Escape. Führt immer auf dieselbe Seite in der anderen Sprache.
+ */
+import { LANGS, LANG_NAMES, t, type Lang } from "../i18n/index.ts";
+import Icon from "./Icon.astro";
+interface Props {
+  lang: Lang;
+  alternates: { lang: Lang; href: string }[];
+  id: string;
+}
+const { lang, alternates, id } = Astro.props;
+const byLang = Object.fromEntries(alternates.map((a) => [a.lang, a.href]));
+---
+<details class="sprachwahl" data-sprachwahl>
+  <summary class="sprachwahl-knopf">
+    <Icon name="globus" size={20} />
+    <span class="sprachwahl-kuerzel" aria-hidden="true">{lang.toUpperCase()}</span>
+    <span class="sr-only">{t(lang, "sprache.label")}: {LANG_NAMES[lang]}</span>
+    <Icon name="runter" size={14} class="sprachwahl-pfeil" />
+  </summary>
+  <nav class="sprachwahl-panel" aria-labelledby={`sprachwahl-${id}`}>
+    <p class="sprachwahl-titel" id={`sprachwahl-${id}`}>{t(lang, "sprache.label")}</p>
+    <ul>
+      {
+        LANGS.map((l) => (
+          <li>
+            <a href={byLang[l]} hreflang={l} lang={l} aria-current={l === lang ? "true" : undefined} data-sprache={l}>
+              <span class="sprachwahl-code" aria-hidden="true">
+                {l.toUpperCase()}
+              </span>
+              <span class="sprachwahl-name">{LANG_NAMES[l]}</span>
+              {l === lang && <Icon name="haken" size={18} />}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</details>
+
+<style is:global>
+  .sprachwahl {
+    position: relative;
+  }
+  .sprachwahl-knopf {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 44px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+    transition: background-color 200ms ease-out;
+  }
+  .sprachwahl-knopf::-webkit-details-marker {
+    display: none;
+  }
+  .sprachwahl-knopf:hover,
+  .sprachwahl[open] .sprachwahl-knopf {
+    background: var(--color-glas);
+  }
+  .sprachwahl-pfeil {
+    transition: transform 200ms ease-out;
+  }
+  .sprachwahl[open] .sprachwahl-pfeil {
+    transform: rotate(180deg);
+  }
+  .sprachwahl-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    z-index: 60;
+    width: 230px;
+    padding: 8px;
+    background: var(--color-weiss);
+    border-radius: 14px;
+    box-shadow: 0 24px 48px -16px rgb(0 30 60 / 0.3), 0 0 0 1px rgb(0 46 82 / 0.07);
+    animation: lj-panel 160ms ease-out;
+  }
+  .sprachwahl-titel {
+    padding: 6px 12px 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-schiefer);
+  }
+  .sprachwahl-panel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .sprachwahl-panel a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .sprachwahl-panel a:hover {
+    background: var(--color-creme);
+  }
+  .sprachwahl-panel a[aria-current="true"] {
+    font-weight: 700;
+  }
+  .sprachwahl-panel a svg {
+    margin-left: auto;
+    color: var(--color-marine);
+  }
+  .sprachwahl-code {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--color-glas);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .sprachwahl-panel a[aria-current="true"] .sprachwahl-code {
+    background: var(--verlauf-marke);
+    color: var(--color-weiss);
+  }
+</style>

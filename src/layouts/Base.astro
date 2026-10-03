@@ -1,0 +1,203 @@
+---
+/**
+ * Grundgerüst jeder Seite: Kopf mit SEO (Title, Description, Canonical,
+ * hreflang mit x-default = lb, Robots, Open Graph, JSON-LD), Demo-Leiste,
+ * Kopf, Inhalt, Fuß. Inline im <head> nur das Nötigste vor dem ersten Zeichnen:
+ * html.js, gewähltes Haus, Zeichen-Animation des Hero (einmal je Sitzung) und die
+ * Ankunft der Seitenwechsel-Morphs (vt-ankunft.js, muss vor dem ersten Zeichnen stehen).
+ */
+import vtAnkunft from "../scripts/vt-ankunft.js?raw";
+import "../styles/global.css";
+import ljGothic from "../assets/fonts/lj-gothic.woff2?url";
+import { t, pick, type Lang } from "../i18n/index.ts";
+import { pathFor, staticRef, type PageRef } from "../i18n/routes.ts";
+import { features, FUNCTIONS_URL, SITE_URL, buyEnabled, modes } from "../config/site.ts";
+import { houses } from "../config/houses.ts";
+import { shop } from "../config/shop.ts";
+import oeffnungszeiten from "../content/oeffnungszeiten.json" with { type: "json" };
+import { addDays, hoursOn, todayInLux, type HouseHours } from "@shared/hours.ts";
+import { alternates as alternatesOf, absolute, link, href, asset } from "../lib/page.ts";
+import { baseGraph, graph } from "../lib/seo.ts";
+import Header, { type Section } from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import SearchDialog from "../components/SearchDialog.astro";
+
+interface Props {
+  lang: Lang;
+  ref: PageRef;
+  page?: number;
+  title: string;
+  description: string;
+  /** zusätzlich noindex (z. B. Tasche, Kasse, Offline-Artikel). In der Demo ist alles noindex. */
+  noindex?: boolean;
+  /** Canonical abweichend (z. B. Filter-URLs auf die Seite ohne Parameter) */
+  canonical?: string;
+  ogImage?: string;
+  ogType?: string;
+  jsonLd?: Record<string, unknown>[];
+  section?: Section;
+  heroAnimation?: boolean;
+  /** Seitenbezogene Texte für Islands (Präfixe der Schlüssel) */
+  strings?: string[];
+  /**
+   * Seiten, die selbst für ein Haus stehen (Start = beide, Hausseiten = ein Haus).
+   * Dort zeigt der Hausschalter immer dieses Haus, und ein Wechsel führt auf die
+   * Seite des anderen Hauses statt zu filtern.
+   */
+  seitenHaus?: "beide" | "lanners" | "jager";
+}
+const {
+  lang,
+  ref,
+  page = 1,
+  title,
+  description,
+  noindex = false,
+  canonical,
+  ogImage,
+  ogType = "website",
+  jsonLd = [],
+  section = null,
+  heroAnimation = false,
+  strings = [],
+  seitenHaus,
+} = Astro.props;
+
+const alternates = alternatesOf(ref, page);
+const selfPath = pathFor(ref, lang, page);
+const canonicalUrl = canonical ?? absolute(selfPath);
+const robots = features.demo ? "noindex, nofollow" : noindex ? "noindex, follow" : "index, follow";
+const ogLocale: Record<Lang, string> = { lb: "lb_LU", de: "de_LU", fr: "fr_LU", en: "en_GB" };
+const ogImg = ogImage ?? SITE_URL + asset("og/haeuser.png");
+
+// Öffnungszeiten der nächsten 10 Tage je Haus für den Live-Status im Kopf
+// (die Seite baut täglich neu; ist sie älter, blendet der Browser den Status aus)
+const heute = todayInLux();
+const zeiten = Object.fromEntries(
+  houses.map((h) => {
+    const hh = (oeffnungszeiten as unknown as Record<string, HouseHours>)[h.id];
+    return [h.id, Object.fromEntries(Array.from({ length: 10 }, (_, i) => addDays(heute, i)).map((d) => [d, hoursOn(hh, d).ranges]))];
+  }),
+);
+
+const config = {
+  lang,
+  zeiten,
+  base: href("/"),
+  functionsUrl: FUNCTIONS_URL,
+  demo: features.demo,
+  features,
+  buyEnabled,
+  modes,
+  routes: {
+    tasche: link(lang, "tasche"),
+    reservieren: link(lang, "reservieren"),
+    reservierenDanke: link(lang, "reservierenDanke"),
+    kasse: link(lang, "kasse"),
+    kasseDanke: link(lang, "kasseDanke"),
+    kasseDemo: link(lang, "kasseDemo"),
+    suche: link(lang, "suche"),
+    demopost: link(lang, "demopost"),
+  },
+  houses: houses.map((h) => ({ id: h.id, name: h.name, short: h.short, nr: h.nr, phone: h.phone, phoneDisplay: h.phoneDisplay, color: h.color })),
+  maxMenge: shop.reservierung.maxMengeJePosition,
+  // nur, was global.ts und config.ts brauchen; jede Seite ergänzt ihre Texte über strings
+  t: pick(lang, ["nav.tasche", "suche.", "site.telefone", "haus.", "zeiten.heute", "zeiten.tage.", "zeiten.kurz.", "zeiten.monate.", "status.", ...strings]),
+};
+
+// ?haus= wählt das Haus für die Filter; in der Kasse heißt der Parameter dasselbe,
+// bedeutet dort aber "bei welchem Haus bezahlen" und darf die Wahl nicht ändern.
+const hausAusUrl = !(ref.kind === "static" && ref.route === "kasse");
+// Auf Seiten eines Hauses gilt immer dieses Haus (vor dem ersten Zeichnen, damit die Hausfarbe nicht springt)
+const hausQuelle = seitenHaus
+  ? JSON.stringify(seitenHaus)
+  : `(function(){var q=${hausAusUrl ? "new URLSearchParams(location.search).get('haus')" : "null"};return (q==='lanners'||q==='jager'||q==='beide')?q:localStorage.getItem('lj-haus');})()`;
+const headScript = `(function(){var d=document.documentElement;d.classList.add('js');try{var h=${hausQuelle};if(h==='lanners'||h==='jager')d.dataset.haus=h;}catch(e){}${
+  heroAnimation
+    ? "try{if(!sessionStorage.getItem('lj-hero')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.dataset.heroZeichnen='1';sessionStorage.setItem('lj-hero','1');}}catch(e){}"
+    : ""
+}})();`;
+// vt-ankunft.js ohne Kommentare und Einrückung (die Datei enthält keine "//" oder "/*" in Zeichenketten)
+const vtSkript = vtAnkunft
+  .replace(/\/\*[\s\S]*?\*\//g, "")
+  .replace(/^\s*\/\/.*$/gm, "")
+  .replace(/\n\s*/g, "\n")
+  .trim();
+---
+<!doctype html>
+<html lang={lang} dir="ltr" data-seiten-haus={seitenHaus}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonicalUrl} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={SITE_URL + a.href} />)}
+    <link rel="alternate" hreflang="x-default" href={SITE_URL + alternates.find((a) => a.lang === "lb")!.href} />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href={asset("favicon.svg")} type="image/svg+xml" />
+    <link rel="preload" href={ljGothic} as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={t(lang, "site.name")} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImg} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline set:html={headScript} />
+    {/* Seitenwechsel: erst zeichnen, wenn <main> gelesen ist (Ziele der Morphs, vt-ankunft.js) */}
+    <link rel="expect" href="#inhalt-gelesen" blocking="render" />
+    <script is:inline set:html={vtSkript} />
+    <script type="application/ld+json" set:html={graph([...baseGraph(lang), ...jsonLd])} />
+  </head>
+  <body>
+    <a class="skiplink" href="#inhalt">{t(lang, "site.skip")}</a>
+    {
+      features.demo && (
+        <div class="demoleiste auf-dunkel" role="note">
+          <div class="container-lj demoleiste-inhalt">
+            <span>{t(lang, "demo.leiste")}</span>
+            <a href={link(lang, "demopost")}>{t(lang, "demo.postausgang")}</a>
+          </div>
+        </div>
+      )
+    }
+    <Header lang={lang} alternates={alternates} section={section} seitenHaus={seitenHaus} />
+    <main id="inhalt" tabindex="-1">
+      <slot />
+    </main>
+    <span id="inhalt-gelesen" hidden></span>
+    <Footer lang={lang} alternates={alternates} />
+    <SearchDialog lang={lang} />
+    <script type="application/json" id="lj-config" set:html={JSON.stringify(config).replace(/</g, "\\u003c")} />
+    <script>
+      import "../scripts/global.ts";
+    </script>
+  </body>
+</html>
+
+<style>
+  .demoleiste {
+    background: var(--color-tusche);
+    color: var(--color-weiss);
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .demoleiste-inhalt {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    padding-block: 8px;
+  }
+  .demoleiste a {
+    color: var(--color-weiss);
+  }
+  main:focus {
+    outline: none;
+  }
+</style>

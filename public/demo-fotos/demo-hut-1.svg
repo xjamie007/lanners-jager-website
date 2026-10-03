@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto hut, vorne</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M40 252C40 236 90 226 150 226C210 226 260 236 260 252C260 268 210 276 150 276C90 276 40 268 40 252Z" vector-effect="non-scaling-stroke"/>
+<path d="M92 246C90 200 96 162 112 140C124 128 140 132 150 140C160 132 176 128 188 140C204 162 210 200 208 246" vector-effect="non-scaling-stroke"/>
+<path d="M93 214C120 222 180 222 207 214M92 232C120 240 180 240 208 232" vector-effect="non-scaling-stroke"/>
+<path d="M150 140V172" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

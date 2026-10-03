@@ -1,0 +1,89 @@
+---
+/**
+ * Sprachumschalter (C3): vier Links mit aria-current, sichtbarem Label und dem
+ * vollen Sprachnamen (mit lang-Attribut) als zugänglichem Namen. Keine Flaggen.
+ * Führt immer auf dieselbe Seite in der anderen Sprache.
+ */
+import { LANGS, LANG_NAMES, t, type Lang } from "../i18n/index.ts";
+interface Props {
+  lang: Lang;
+  alternates: { lang: Lang; href: string }[];
+  id: string;
+  variant?: "kopf" | "fuss" | "menu";
+}
+const { lang, alternates, id, variant = "fuss" } = Astro.props;
+const byLang = Object.fromEntries(alternates.map((a) => [a.lang, a.href]));
+---
+<nav class={`sprachen sprachen-${variant}`} aria-labelledby={`sprache-${id}`}>
+  <span id={`sprache-${id}`} class="sprachen-label">{t(lang, "sprache.label")}</span>
+  <ul>
+    {
+      LANGS.map((l) => (
+        <li>
+          <a href={byLang[l]} hreflang={l} aria-current={l === lang ? "true" : undefined} data-sprache={l}>
+            <span aria-hidden="true">{l.toUpperCase()}</span>
+            <span class="sr-only" lang={l}>{LANG_NAMES[l]}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style is:global>
+  .sprachen {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    line-height: 1.2;
+  }
+  .sprachen-label {
+    color: var(--color-schiefer);
+  }
+  .sprachen ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2px;
+  }
+  .sprachen a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0 4px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .sprachen a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .sprachen a[aria-current="true"] {
+    box-shadow: inset 0 calc(-1 * var(--stroke)) 0 var(--color-tusche);
+  }
+  .sprachen-kopf {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .sprachen-kopf .sprachen-label {
+    font-size: 0.6875rem;
+    padding-left: 4px;
+  }
+  .sprachen-kopf a {
+    min-height: 28px;
+    min-width: 28px;
+  }
+  .sprachen-menu {
+    font-size: 1rem;
+  }
+  .sprachen-menu a {
+    min-width: 44px;
+    min-height: 44px;
+  }
+</style>

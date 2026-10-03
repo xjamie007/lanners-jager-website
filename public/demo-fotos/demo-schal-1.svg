@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto schal, vorne</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M112 62C112 38 188 38 188 62" vector-effect="non-scaling-stroke"/>
+<path d="M112 62L140 62L168 300L140 300Z" vector-effect="non-scaling-stroke"/>
+<path d="M160 62L188 62L176 342L148 342Z" vector-effect="non-scaling-stroke"/>
+<path d="M144 300V318M150 300V318M156 300V318M162 300V318" vector-effect="non-scaling-stroke"/>
+<path d="M152 342V360M158 342V360M164 342V360M170 342V360" vector-effect="non-scaling-stroke"/>
+<path d="M118 112L170 116M124 172L174 176M166 120L184 122M162 210L180 212" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

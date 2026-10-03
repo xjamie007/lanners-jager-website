@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto guertel, vorne</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M60 220C60 170 100 140 150 140C200 140 240 170 240 220C240 270 200 300 150 300C100 300 60 270 60 220" vector-effect="non-scaling-stroke"/>
+<path d="M84 220C84 182 114 160 150 160C186 160 216 182 216 220C216 258 186 280 150 280C114 280 84 258 84 220" vector-effect="non-scaling-stroke"/>
+<path d="M226 192H262V248H226Z" vector-effect="non-scaling-stroke"/>
+<path d="M238 220H262" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

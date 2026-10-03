@@ -1,0 +1,77 @@
+---
+/**
+ * So funktioniert's (E3) als <ol>: drei Schritte in echter Reihenfolge.
+ * Ist kein Kauf-Weg aktiv, fällt "oder bestellen" weg.
+ */
+import { buyEnabled } from "../config/site.ts";
+import { shop } from "../config/shop.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import Offen from "./Offen.astro";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const n = shop.reservierung.haltedauerTage;
+---
+<ol class="schritte">
+  <li>
+    <h3 class="t-h3">{t(lang, "howto.s1Titel")}</h3>
+    <p>{t(lang, "howto.s1Text")}</p>
+  </li>
+  <li>
+    <h3 class="t-h3">{buyEnabled ? t(lang, "howto.s2Titel") : t(lang, "howto.s2TitelReserve")}</h3>
+    <p>
+      {t(lang, "howto.s2TextReserve")} <Offen op="OP-05.5" lang={lang} />
+      {buyEnabled && <> {t(lang, "howto.s2TextKauf")}</>}
+    </p>
+  </li>
+  <li>
+    <h3 class="t-h3">{t(lang, "howto.s3Titel")}</h3>
+    <p>
+      {t(lang, "howto.s3Text", { n })} <Offen op="OP-05.1" lang={lang} />
+    </p>
+  </li>
+</ol>
+
+<style>
+  .schritte {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: schritt;
+    display: grid;
+    gap: 32px;
+  }
+  @media (min-width: 1024px) {
+    .schritte {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 40px;
+    }
+  }
+  .schritte li {
+    counter-increment: schritt;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 16px;
+    max-width: 44ch;
+  }
+  .schritte li::before {
+    content: counter(schritt);
+    grid-row: span 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--haus-verlauf);
+    color: var(--color-weiss);
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    line-height: 1;
+    box-shadow: 0 10px 20px -12px rgb(0 30 60 / 0.8);
+  }
+  .schritte h3 {
+    margin-bottom: 6px;
+  }
+</style>

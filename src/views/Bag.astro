@@ -1,0 +1,283 @@
+---
+/**
+ * Tasche (D5): Positionen nach Haus gruppiert, Menge (höchstens der Bestand),
+ * Entfernen, dann "Wie möchten Sie es bekommen?" mit den aktiven Wegen und
+ * darunter die Vertrauensleiste.
+ * Reservieren gilt für alle Häuser in einem Formular; online bezahlt wird je
+ * Haus getrennt. Ohne JavaScript gibt es keine Tasche (C5), dann die Telefonnummern.
+ */
+import Page from "../layouts/Page.astro";
+import Telefone from "../components/Telefone.astro";
+import Vertrauen from "../components/Vertrauen.astro";
+import Icon from "../components/Icon.astro";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const [ohneJsVor, ohneJsNach] = t(lang, "tasche.ohneJs").split("{telefone}");
+const leerLinks = [
+  { href: link(lang, { kind: "abteilung", id: "damen" }), label: t(lang, "nav.damen") },
+  { href: link(lang, { kind: "abteilung", id: "herren" }), label: t(lang, "nav.herren") },
+  { href: link(lang, { kind: "accessoires" }), label: t(lang, "nav.accessoires") },
+];
+---
+<Page lang={lang} route="tasche" h1={t(lang, "tasche.h1")} title={t(lang, "seo.tasche.title")} description={t(lang, "seo.tasche.desc")} noindex breit strings={["tasche.", "produkt.", "groesse.", "demo.", "karte."]}>
+  <p class="ohne-js tasche-ohnejs">{ohneJsVor}<Telefone lang={lang} />{ohneJsNach}</p>
+  <div class="tasche nur-js" data-tasche-app>
+    <p class="nebentext">{t(lang, "site.laden")}</p>
+  </div>
+  <template data-tasche-leer>
+    <p class="tasche-leer">{t(lang, "tasche.leer")}</p>
+    <ul class="tasche-leer-links">
+      {leerLinks.map((l) => (
+        <li>
+          <a href={l.href}>{l.label}</a>
+        </li>
+      ))}
+    </ul>
+  </template>
+  <template data-tasche-vertrauen>
+    <Vertrauen lang={lang} />
+  </template>
+  <template data-icon-muell><Icon name="muell" size={20} /></template>
+  <p class="sr-only" role="status" data-tasche-ansage></p>
+  <script>
+    import "../scripts/tasche-seite.ts";
+  </script>
+</Page>
+
+<style>
+  .tasche,
+  .tasche-ohnejs {
+    margin-top: 32px;
+  }
+  .tasche :global(.tasche-leer) {
+    font-size: 1.25rem;
+  }
+  .tasche :global(.tasche-leer-links) {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+  }
+  .tasche :global(.tasche-leer-links a) {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    line-height: 1.1;
+    text-decoration: none;
+  }
+  .tasche :global(.tasche-leer-links a:hover) {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+  .tasche :global(.tasche-raster) {
+    display: grid;
+    gap: 52px;
+  }
+  @media (min-width: 1024px) {
+    .tasche :global(.tasche-raster) {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: 40px;
+      align-items: start;
+    }
+  }
+  .tasche :global(.tasche-haus + .tasche-haus) {
+    margin-top: 52px;
+  }
+  .tasche :global(.tasche-haus h2) {
+    margin-bottom: 20px;
+  }
+  .tasche :global(.pos-liste) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 20px;
+  }
+  .tasche :global(.pos) {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 16px;
+    transition:
+      opacity 280ms ease-out,
+      transform 280ms var(--ease-schaufenster),
+      height 280ms var(--ease-schaufenster),
+      margin 280ms var(--ease-schaufenster);
+  }
+  /* Beim Löschen gleitet die Position nach rechts aus und klappt zu (tasche-seite.ts) */
+  .tasche :global(.pos[data-weg]) {
+    opacity: 0;
+    transform: translateX(32px);
+    height: 0 !important;
+    margin-bottom: -20px;
+    overflow: hidden;
+  }
+  .tasche :global(.pos[data-nicht-da]) .pos-bild,
+  .tasche :global(.pos[data-nicht-da] .pos-info > :not(.pos-meldung):not(.pos-aktionen)) {
+    opacity: 0.55;
+  }
+  .tasche :global(.pos-bild) {
+    display: block;
+    aspect-ratio: 3 / 4;
+    background: var(--color-glas);
+  }
+  .tasche :global(.pos-bild img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6%;
+    box-sizing: border-box;
+    mix-blend-mode: multiply;
+  }
+  .tasche :global(.pos-info) {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .tasche :global(.pos-aktionen) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+    margin-top: 8px;
+  }
+  .tasche :global(.pos-menge) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tasche :global(.pos-menge select) {
+    width: auto;
+    min-height: 44px;
+    padding: 8px 40px 8px 12px;
+  }
+  .tasche :global(.pos-muell) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-glas);
+    color: var(--color-schiefer);
+    cursor: pointer;
+    transition:
+      background-color 200ms ease-out,
+      color 200ms ease-out,
+      transform 200ms var(--ease-schaufenster);
+  }
+  .tasche :global(.pos-muell:hover),
+  .tasche :global(.pos-muell:focus-visible) {
+    background: #fdecea;
+    color: var(--color-signal);
+  }
+  .tasche :global(.pos-muell:hover .icon) {
+    animation: lj-wackeln 420ms ease-in-out;
+  }
+  .tasche :global(.pos-muell:active) {
+    transform: scale(0.92);
+  }
+  @keyframes lj-wackeln {
+    0%,
+    100% {
+      transform: rotate(0);
+    }
+    25% {
+      transform: rotate(-12deg);
+    }
+    50% {
+      transform: rotate(9deg);
+    }
+    75% {
+      transform: rotate(-5deg);
+    }
+  }
+  /* Knapper Bestand: "Nur noch 1 Stück verfügbar" mit kurz pulsierendem Punkt (3-mal, WCAG 2.2.2) */
+  .tasche :global(.pos-knapp) {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #9a5b00;
+  }
+  .tasche :global(.pos-knapp::before) {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e08a00;
+    animation: lj-knapp 1.8s ease-out 3;
+  }
+  @keyframes lj-knapp {
+    0% {
+      box-shadow: 0 0 0 0 rgb(224 138 0 / 0.5);
+    }
+    70%,
+    100% {
+      box-shadow: 0 0 0 7px rgb(224 138 0 / 0);
+    }
+  }
+  .tasche :global(.pos-meldung) {
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .tasche :global(.tasche-summe) {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-weight: 600;
+    max-width: 480px;
+  }
+  .tasche :global(.weg-wahl) {
+    background: var(--color-glas);
+    padding: 24px;
+  }
+  /* float holt die Legende in die Fläche, statt sie auf die obere Kante zu setzen */
+  .tasche :global(.weg-wahl legend) {
+    float: left;
+    width: 100%;
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin-bottom: 12px;
+  }
+  .tasche :global(.weg-wahl legend + *) {
+    clear: both;
+  }
+  .tasche :global(.weg-option) {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    cursor: pointer;
+  }
+  .tasche :global(.weg-option input) {
+    width: 22px;
+    height: 22px;
+    margin: 1px 0 0;
+    accent-color: var(--color-tusche);
+  }
+  .tasche :global(.weg-option strong) {
+    display: block;
+  }
+  .tasche :global(.weg-aktionen) {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .tasche :global(.zwei-haeuser) {
+    margin-top: 16px;
+  }
+  .tasche :global(.tasche-vertrauen) {
+    margin-top: 16px;
+    padding: 24px;
+    border: 1px solid rgb(0 46 82 / 0.1);
+  }
+</style>

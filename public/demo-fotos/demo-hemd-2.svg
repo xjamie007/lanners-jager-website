@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto hemd, hinten</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M126 62C136 68 164 68 174 62L216 76C230 81 238 92 240 106L252 290L230 294L218 150L222 350C190 358 110 358 78 350L82 150L70 294L48 290L60 106C62 92 70 81 84 76Z" vector-effect="non-scaling-stroke"/>
+<path d="M126 62C136 54 164 54 174 62" vector-effect="non-scaling-stroke"/>
+<path d="M84 104C120 112 180 112 216 104M150 106V134" vector-effect="non-scaling-stroke"/>
+<path d="M50 276L70 280M230 280L250 276" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

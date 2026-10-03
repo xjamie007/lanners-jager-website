@@ -1,0 +1,96 @@
+---
+/**
+ * Demo-Postausgang (D10.8, nur mit PUBLIC_DEMO=true): zeigt die Mails, die die
+ * Website verschicken würde (MAIL_MODE=log), für die Reservierungen,
+ * Bestellungen und Anfragen aus diesem Browser.
+ */
+import Page from "../layouts/Page.astro";
+import { t, type Lang } from "../i18n/index.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<Page lang={lang} route="demopost" h1={t(lang, "demopost.h1")} intro={t(lang, "demopost.intro")} title={t(lang, "seo.demopost.title")} description={t(lang, "seo.demopost.desc")} noindex breit strings={["demopost."]}>
+  <div class="postausgang nur-js" data-postausgang aria-live="polite">
+    <p class="nebentext">{t(lang, "site.laden")}</p>
+  </div>
+  <script>
+    import { config, tr, escapeHtml, zeitpunktText } from "../scripts/config.ts";
+    import { doppelpunkt } from "../../supabase/functions/_shared/text.ts";
+    import { gruppen } from "../scripts/demo-post.ts";
+    import type { DemoMail } from "../../supabase/functions/_shared/contract.ts";
+
+    const box = document.querySelector<HTMLElement>("[data-postausgang]");
+    async function laden() {
+      if (!box) return;
+      const list = gruppen();
+      if (list.length === 0) {
+        box.innerHTML = `<p>${escapeHtml(tr("demopost.leer"))}</p>`;
+        return;
+      }
+      try {
+        const qs = list.map((g) => `g=${encodeURIComponent(g.g)}&t=${encodeURIComponent(g.t)}`).join("&");
+        const res = await fetch(`${config().functionsUrl}/demo-mail?${qs}`, { headers: { accept: "application/json" } });
+        if (!res.ok) throw new Error(String(res.status));
+        const data = (await res.json()) as { mails: DemoMail[] };
+        if (!data.mails.length) {
+          box.innerHTML = `<p>${escapeHtml(tr("demopost.leer"))}</p>`;
+          return;
+        }
+        box.innerHTML = data.mails
+          .map(
+            (m) => `<details class="post-mail">
+              <summary>
+                <span class="post-betreff">${escapeHtml(m.subject)}</span>
+                <span class="post-meta t-klein">${escapeHtml(tr("demopost.an") + doppelpunkt(config().lang))}${escapeHtml(m.to)}, ${escapeHtml(zeitpunktText(m.createdAt))}, ${escapeHtml(m.lang.toUpperCase())}</span>
+              </summary>
+              <iframe class="post-html" title="${escapeHtml(m.subject)}" sandbox="" srcdoc="${escapeHtml(m.html)}" loading="lazy"></iframe>
+            </details>`,
+          )
+          .join("");
+      } catch {
+        box.innerHTML = `<p>${escapeHtml(tr("demopost.fehler"))}</p>`;
+      }
+    }
+    void laden();
+  </script>
+</Page>
+
+<style>
+  .postausgang {
+    margin-top: 32px;
+    display: grid;
+    gap: 12px;
+    max-width: 900px;
+  }
+  .postausgang :global(.post-mail) {
+    background: var(--color-glas);
+    padding: 0 20px;
+  }
+  .postausgang :global(summary) {
+    cursor: pointer;
+    padding: 14px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    list-style: none;
+  }
+  .postausgang :global(summary::-webkit-details-marker) {
+    display: none;
+  }
+  .postausgang :global(.post-betreff) {
+    font-weight: 600;
+  }
+  .postausgang :global(.post-meta) {
+    color: var(--color-schiefer);
+  }
+  .postausgang :global(.post-html) {
+    display: block;
+    width: 100%;
+    height: 560px;
+    border: 0;
+    background: var(--color-weiss);
+    margin-bottom: 20px;
+  }
+</style>

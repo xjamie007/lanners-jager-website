@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["deno.window"]
+  },
+  "nodeModulesDir": "none",
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env --allow-read --allow-write --allow-sys --env-file=../../.env _dev/serve.ts",
+    "dev:neu": "deno run --allow-net --allow-env --allow-read --allow-write --allow-sys --env-file=../../.env _dev/serve.ts --neu"
+  },
+  "lint": {
+    "rules": { "exclude": ["no-explicit-any"] }
+  }
+}

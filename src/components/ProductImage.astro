@@ -1,0 +1,105 @@
+---
+/**
+ * Produktfoto im Glasrahmen (C7), Format 3:4, mit width/height im Markup.
+ * Freisteller (contain): 6 % Innenabstand und mix-blend-mode: multiply, damit
+ * ihr Weiß mit dem Glasgrau verschmilzt. Modellfotos (cover): randlos.
+ * Demo-Fotos (ist-demo): Freisteller auf Weiß, das Detailbild randlos; beide
+ * mit multiply, damit ihr Weiß überall dasselbe Glasgrau ist.
+ * Echte Fotos: <Picture> mit AVIF und WebP in 320–1280 px (D10.7).
+ * Demo: SVG-Silhouette, darüber klein "Demo-Foto" in der Seitensprache.
+ */
+import { Picture } from "astro:assets";
+import { t, type Lang } from "../i18n/index.ts";
+import type { Photo } from "../lib/catalog/types.ts";
+interface Props {
+  photo: Photo;
+  lang: Lang;
+  alt: string;
+  sizes: string;
+  eager?: boolean;
+  class?: string;
+  /** Kartenfoto für die View Transition (Name wird erst beim Klick gesetzt) */
+  vt?: boolean;
+  /** Hauptfoto der Produktseite */
+  vtHaupt?: boolean;
+  demoLabel?: boolean;
+}
+const { photo, lang, alt, sizes, eager = false, class: cls = "", vt = false, vtHaupt = false, demoLabel = true } = Astro.props;
+const isSvg = photo.src.endsWith(".svg");
+// Demo-Stockfotos liegen fertig in zwei Breiten in public/demo-fotos/ (…-480.webp)
+const demoRaster = photo.demo && !isSvg;
+const srcset = demoRaster ? `${photo.src.replace(/\.webp$/, "-480.webp")} 480w, ${photo.src} 900w` : undefined;
+const fitClass = photo.fit === "cover" ? "fit-cover" : "fit-contain";
+---
+<span class={`produktbild ${fitClass}${demoRaster ? " ist-demo" : ""} ${cls}`} data-vt-foto={vt ? "" : undefined} data-vt-hauptfoto={vtHaupt ? "" : undefined}>
+  {
+    isSvg || demoRaster ? (
+      <img
+        src={photo.src}
+        srcset={srcset}
+        sizes={demoRaster ? sizes : undefined}
+        width={photo.width}
+        height={photo.height}
+        alt={alt}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+        fetchpriority={eager ? "high" : undefined}
+      />
+    ) : (
+      <Picture
+        src={photo.src}
+        width={photo.width}
+        height={photo.height}
+        alt={alt}
+        formats={["avif", "webp"]}
+        widths={[320, 480, 720, 960, 1280]}
+        sizes={sizes}
+        loading={eager ? "eager" : "lazy"}
+        fetchpriority={eager ? "high" : undefined}
+      />
+    )
+  }
+  {photo.demo && demoLabel && <span class="demo-foto" aria-hidden="true">{t(lang, "demo.foto")}</span>}
+</span>
+
+<style is:global>
+  .produktbild {
+    position: relative;
+    display: block;
+    aspect-ratio: 3 / 4;
+    background: var(--color-glas);
+    border-radius: var(--radius-bild);
+    overflow: hidden;
+  }
+  .produktbild img,
+  .produktbild picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .fit-contain img {
+    object-fit: contain;
+    padding: 6%;
+    box-sizing: border-box;
+    mix-blend-mode: multiply;
+  }
+  .fit-cover img {
+    object-fit: cover;
+  }
+  .ist-demo img {
+    mix-blend-mode: multiply;
+  }
+  .demo-foto {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.85);
+    backdrop-filter: blur(4px);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--color-schiefer);
+  }
+</style>

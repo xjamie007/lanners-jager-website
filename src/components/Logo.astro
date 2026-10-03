@@ -1,0 +1,89 @@
+---
+/**
+ * Wortmarke im Kopf (C3): "Lanners & Jager" mit dem Et-Zeichen im
+ * Messingverlauf, darunter "Grand-Rue · Ettelbruck". Die Hauslogos stehen
+ * auf den Hausseiten und im Fuß (HouseLogo.astro).
+ */
+import { link } from "../lib/page.ts";
+import { t, type Lang } from "../i18n/index.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<a class="wortmarke" href={link(lang, "home")}>
+  <span class="wortmarke-zeile" aria-hidden="true">
+    <span class="wm-lanners">Lanners</span>
+    <span class="wm-und">&amp;</span>
+    <span class="wm-jager">Jager</span>
+  </span>
+  <span class="wortmarke-ort" aria-hidden="true">Grand-Rue · Ettelbruck</span>
+  <span class="sr-only">{t(lang, "site.name")}, {t(lang, "nav.start")}</span>
+</a>
+
+<style is:global>
+  .wortmarke {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 44px;
+    text-decoration: none;
+    white-space: nowrap;
+    flex: none;
+  }
+  .wortmarke-zeile {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.22em;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .wm-lanners {
+    color: var(--color-marine);
+  }
+  .wm-jager {
+    color: var(--color-jager);
+  }
+  .wm-und {
+    background: var(--verlauf-messing);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 0.9em;
+  }
+  .wortmarke-ort {
+    margin-top: 3px;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-schiefer);
+  }
+  @media (min-width: 1100px) {
+    .wortmarke-zeile {
+      font-size: 2rem;
+    }
+  }
+  /* Kleine Handys: Die Wortmarke wächst mit der Breite (bei 480 px wieder 1.75rem),
+     die Ortszeile bleibt so breit wie der Schriftzug; unter 360 px entfällt sie. */
+  @media (max-width: 479.98px) {
+    .wortmarke-zeile {
+      font-size: clamp(1.125rem, 5.8vw, 1.75rem);
+    }
+    .wortmarke-ort {
+      font-size: clamp(0.5rem, 2.07vw, 0.625rem);
+      letter-spacing: 0.16em;
+    }
+  }
+  @media (max-width: 359.98px) {
+    .wortmarke-zeile {
+      font-size: 5.6vw;
+    }
+    .wortmarke-ort {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,110 @@
+---
+/**
+ * Häufige Fragen (E5) als <details>. Fragen mit offenen Antworten tragen einen
+ * sichtbaren Platzhalter und gehen nicht in die strukturierten Daten.
+ * Frage 5 (Lieferung) nur mit payShip.
+ */
+import { features, buyEnabled } from "../config/site.ts";
+import { shop } from "../config/shop.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import Offen from "./Offen.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+  lang: Lang;
+  ids?: number[];
+  headingId: string;
+}
+const { lang, ids = [1, 2, 3, 4, 5, 6, 7, 9, 10], headingId } = Astro.props;
+const n = shop.reservierung.haltedauerTage;
+const op: Record<number, string> = { 2: "OP-05.5", 3: "OP-05.1", 4: "OP-05.2", 5: "OP-06.2", 9: "OP-14", 10: "OP-15" };
+const visible = ids.filter((i) => (i === 5 ? features.payShip : true)).filter((i) => (i === 2 || i === 3 || i === 4 ? features.reserve : true));
+---
+<div class="faq" aria-labelledby={headingId}>
+  {
+    visible.map((i) => (
+      <details class="faq-eintrag">
+        <summary>
+          <span class="faq-frage">{t(lang, `faq.q${i}`)}</span>
+          <Icon name="plus" class="faq-plus" />
+          <Icon name="minus" class="faq-minus" />
+        </summary>
+        <div class="aufklapp">
+          <div class="aufklapp-innen prosa">
+            <p>
+              {t(lang, `faq.a${i}`, { n })}
+              {op[i] && <Offen op={op[i]} lang={lang} />}
+              {i === 6 && (
+                <>
+                  {" "}
+                  {t(lang, "faq.a6Umtausch")} <Offen op="OP-06.4" lang={lang} />
+                </>
+              )}
+            </p>
+            {i === 6 && buyEnabled && (
+              <p>
+                <a href={link(lang, "widerruf")}>{t(lang, "footer.widerruf")}</a>
+              </p>
+            )}
+          </div>
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq {
+    max-width: 820px;
+  }
+  .faq-eintrag + .faq-eintrag {
+    margin-top: 4px;
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 52px;
+    padding: 10px 0;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    line-height: 1.35;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary:hover .faq-frage {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .faq-eintrag :global(.faq-minus),
+  .faq-eintrag[open] :global(.faq-plus) {
+    display: none;
+  }
+  .faq-eintrag[open] :global(.faq-minus) {
+    display: block;
+  }
+  :global(.faq-plus),
+  :global(.faq-minus) {
+    flex: none;
+  }
+  .aufklapp {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 200ms ease-out;
+  }
+  @starting-style {
+    details[open] .aufklapp {
+      grid-template-rows: 0fr;
+    }
+  }
+  .aufklapp-innen {
+    overflow: hidden;
+    padding-bottom: 20px;
+  }
+</style>

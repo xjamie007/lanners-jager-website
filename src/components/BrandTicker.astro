@@ -1,0 +1,287 @@
+---
+/**
+ * Markenband: Logos der Marken laufen endlos von rechts nach links.
+ * - Zwei gleiche Spuren hintereinander, beide wandern um ihre eigene Breite:
+ *   nahtlos, ohne JavaScript. Kurze Listen werden innerhalb der Spur wiederholt.
+ * - Nur die erste Folge ist für Screenreader und Tastatur da, Kopien sind aria-hidden.
+ * - Hält an bei Hover, Fokus und über den Pause-Knopf (WCAG 2.2.2).
+ * - Bei reduzierter Bewegung steht das Band und lässt sich seitlich scrollen.
+ */
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import { asset } from "../lib/page.ts";
+import type { MarkeKurz } from "../lib/marken.ts";
+import type { HouseId } from "../config/houses.ts";
+import Icon from "./Icon.astro";
+
+interface Props {
+  lang: Lang;
+  marken: MarkeKurz[];
+  id: string;
+  /** Überschrift über dem Band (sichtbar) */
+  titel?: string;
+  vorzeile?: string;
+  /** Link "Alle Marken" rechts neben der Überschrift */
+  alleLink?: boolean;
+  variante?: "marke" | "lanners" | "jager" | "hell" | "creme";
+  /** Links auf die Markenseite mit ?haus= */
+  haus?: HouseId;
+  /** Sekunden für eine Spur */
+  tempo?: number;
+}
+const { lang, marken, id, titel, vorzeile, alleLink = false, variante = "marke", haus, tempo } = Astro.props;
+const dunkel = variante === "marke" || variante === "lanners" || variante === "jager";
+// Spur mindestens 12 Einträge breit, damit auf breiten Bildschirmen keine Lücke entsteht
+const wiederholung = Math.max(1, Math.ceil(12 / Math.max(1, marken.length)));
+const spur = Array.from({ length: wiederholung }, (_, i) => marken.map((m) => ({ m, kopie: i > 0 }))).flat();
+const dauer = tempo ?? Math.max(24, spur.length * 3.2);
+const hrefOf = (m: MarkeKurz) => (m.slug ? link(lang, { kind: "marke", slug: m.slug }) + (haus ? `?haus=${haus}` : "") : link(lang, "marken"));
+const hoehe = 34;
+---
+<section class={`markenband band-${variante} ${dunkel ? "auf-dunkel" : ""}`} aria-labelledby={titel ? `${id}-titel` : undefined} aria-label={titel ? undefined : t(lang, "marken.band")} data-markenband>
+  {
+    (titel || alleLink) && (
+      <div class="container-lj band-kopf">
+        <div>
+          {vorzeile && <p class="vorzeile">{vorzeile}</p>}
+          {titel && (
+            <h2 class="band-titel" id={`${id}-titel`}>
+              {titel}
+            </h2>
+          )}
+        </div>
+        <div class="band-aktionen">
+          {alleLink && (
+            <a href={link(lang, "marken")} class="band-alle">
+              {t(lang, "marken.alle")}
+              <Icon name="pfeil" size={18} />
+            </a>
+          )}
+        </div>
+      </div>
+    )
+  }
+  <div class="band-fenster" style={`--dauer:${dauer.toFixed(1)}s`}>
+    {
+      [0, 1].map((nr) => (
+        <ul class="band-spur" aria-hidden={nr === 1 ? "true" : undefined} role={nr === 0 ? "list" : undefined}>
+          {spur.map(({ m, kopie }) => {
+            const versteckt = nr === 1 || kopie;
+            return (
+              <li class="band-eintrag" aria-hidden={versteckt && nr === 0 ? "true" : undefined}>
+                <a href={hrefOf(m)} class="band-link" tabindex={versteckt ? -1 : undefined} title={m.name}>
+                  {m.logo ? (
+                    <img
+                      class={`band-logo ${m.logo.einfarbig ? "logo-einfarbig" : "logo-farbig"}`}
+                      src={asset(m.logo.datei)}
+                      alt={versteckt ? "" : m.name}
+                      width={Math.round(hoehe * (m.logo.skala ?? 1) * m.logo.verhaeltnis)}
+                      height={Math.round(hoehe * (m.logo.skala ?? 1))}
+                      style={`width:${Math.round(hoehe * (m.logo.skala ?? 1) * m.logo.verhaeltnis)}px;height:${Math.round(hoehe * (m.logo.skala ?? 1))}px`}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <span class="band-wortmarke">{m.name}</span>
+                  )}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      ))
+    }
+  </div>
+  <div class="container-lj band-fuss nur-js">
+    <button type="button" class="band-pause" data-band-pause aria-pressed="false">
+      <span class="band-pause-an">{t(lang, "marken.bandPause")}</span>
+      <span class="band-pause-aus">{t(lang, "marken.bandWeiter")}</span>
+    </button>
+  </div>
+</section>
+
+<style is:global>
+  .markenband {
+    --band-gap: clamp(36px, 5vw, 72px);
+    position: relative;
+    padding-block: 28px 14px;
+    overflow: hidden;
+  }
+  .band-marke {
+    background: var(--verlauf-marke);
+    color: var(--color-weiss);
+  }
+  .band-lanners {
+    background: var(--verlauf-lanners);
+    color: var(--color-weiss);
+  }
+  .band-jager {
+    background: var(--verlauf-jager);
+    color: var(--color-weiss);
+  }
+  .band-creme {
+    background: var(--color-creme);
+  }
+  .band-hell {
+    background: var(--color-weiss);
+    border-block: 1px solid rgb(0 46 82 / 0.08);
+  }
+  /* feiner Glanz über dunklen Bändern */
+  .markenband.auf-dunkel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(120% 140% at 15% 0%, rgb(255 255 255 / 0.14), transparent 55%);
+    pointer-events: none;
+  }
+  .band-kopf {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+  .band-titel {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);
+    line-height: 1;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .band-alle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .band-alle:hover {
+    text-decoration: underline;
+  }
+  .band-fenster {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+  .band-spur {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: var(--band-gap);
+    padding: 10px var(--band-gap) 10px 0;
+    margin: 0;
+    list-style: none;
+    animation: lj-band var(--dauer, 40s) linear infinite;
+  }
+  .band-fenster:hover .band-spur,
+  .band-fenster:focus-within .band-spur,
+  .markenband[data-pausiert] .band-spur {
+    animation-play-state: paused;
+  }
+  @keyframes lj-band {
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  .band-eintrag {
+    flex: none;
+  }
+  .band-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    padding: 0 6px;
+    text-decoration: none;
+    opacity: 0.86;
+    transition: opacity 200ms ease-out, transform 200ms var(--ease-schaufenster);
+  }
+  .band-link:hover,
+  .band-link:focus-visible {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  .band-logo {
+    display: block;
+    max-width: none;
+    object-fit: contain;
+    transition: filter 300ms ease-out;
+  }
+  .auf-dunkel .logo-einfarbig {
+    filter: brightness(0) invert(1);
+  }
+  /* auf hellem Grund: ruhig in Graphit, beim Hovern in den Farben der Marke */
+  .band-creme .band-logo,
+  .band-hell .band-logo {
+    filter: grayscale(1) contrast(1.2) brightness(0.45);
+  }
+  .band-creme .band-link:hover .band-logo,
+  .band-hell .band-link:hover .band-logo,
+  .band-creme .band-link:focus-visible .band-logo,
+  .band-hell .band-link:focus-visible .band-logo {
+    filter: none;
+  }
+  .auf-dunkel .logo-farbig {
+    padding: 6px 10px;
+    box-sizing: content-box;
+    border-radius: 8px;
+    background: var(--color-weiss);
+  }
+  .band-wortmarke {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .band-fuss {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .band-pause {
+    min-height: 32px;
+    padding: 0 4px;
+    background: none;
+    border: 0;
+    color: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.75;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .band-pause:hover {
+    opacity: 1;
+  }
+  .band-pause-aus,
+  .markenband[data-pausiert] .band-pause-an {
+    display: none;
+  }
+  .markenband[data-pausiert] .band-pause-aus {
+    display: inline;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .band-fenster {
+      overflow-x: auto;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .band-spur {
+      animation: none !important;
+      padding-left: var(--gutter);
+    }
+    .band-spur[aria-hidden="true"],
+    .band-eintrag[aria-hidden="true"],
+    .band-fuss {
+      display: none;
+    }
+  }
+</style>

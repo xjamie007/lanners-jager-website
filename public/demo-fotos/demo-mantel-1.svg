@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto mantel, vorne</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M126 62C136 70 164 70 174 62L222 80C238 86 246 98 248 116L262 300L238 304L224 150L232 372L68 372L76 150L62 304L38 300L52 116C54 98 62 86 78 80Z" vector-effect="non-scaling-stroke"/>
+<path d="M126 62L106 98L132 112L150 236M174 62L194 98L168 112L150 236" vector-effect="non-scaling-stroke"/>
+<path d="M150 236V372" vector-effect="non-scaling-stroke"/>
+<path d="M147 254a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" vector-effect="non-scaling-stroke"/>
+<path d="M147 292a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" vector-effect="non-scaling-stroke"/>
+<path d="M147 330a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" vector-effect="non-scaling-stroke"/>
+<path d="M88 274L112 264M212 274L188 264" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

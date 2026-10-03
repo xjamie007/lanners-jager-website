@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto strick, hinten</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M124 64C134 72 166 72 176 64L220 82C234 88 242 100 244 116L256 300L232 304L220 156L222 340L78 340L80 156L68 304L44 300L56 116C58 100 66 88 80 82Z" vector-effect="non-scaling-stroke"/>
+<path d="M124 64C134 58 166 58 176 64" vector-effect="non-scaling-stroke"/>
+<path d="M78 322H222" vector-effect="non-scaling-stroke"/>
+<path d="M44 286L68 290M232 290L256 286" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

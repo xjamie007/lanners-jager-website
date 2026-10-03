@@ -1,0 +1,21 @@
+---
+/**
+ * Sichtbarer Platzhalter für einen offenen Punkt (Briefing A, "Arbeitsweise bei
+ * fehlenden Daten"). Steht im Register src/content/offene-punkte.json und damit
+ * in OFFENE-PUNKTE.md. Nichts wird erfunden.
+ */
+import register from "../content/offene-punkte.json" with { type: "json" };
+import { t, type Lang } from "../i18n/index.ts";
+
+interface Props {
+  op: string;
+  lang: Lang;
+  /** bekannter, aber unbestätigter Wert wird davor angezeigt */
+  wert?: string;
+}
+const { op, lang, wert } = Astro.props;
+const punkt = register.punkte.find((p) => p.id === op);
+if (!punkt) throw new Error(`Offener Punkt ${op} fehlt im Register`);
+const label = punkt.status === "fehlt" ? t(lang, "offen.fehlt") : t(lang, "offen.unbestaetigt");
+---
+{wert && <>{wert} </>}<span class="offen" data-op={op} data-pagefind-ignore title={`${t(lang, "offen.titel", { op })}: ${punkt.was}`}>{label}</span>

@@ -1,0 +1,15 @@
+---
+/** "Lanners 81 22 80, Jager 81 22 79" mit tel:-Links, NAP wie in der Konfiguration */
+import { getHouse, telHref } from "../config/houses.ts";
+import { t, type Lang } from "../i18n/index.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const l = getHouse("lanners");
+const j = getHouse("jager");
+const tpl = t(lang, "site.telefone");
+const [a, rest] = tpl.split("{lanners}");
+const [b, c] = rest.split("{jager}");
+---
+{a}<a href={telHref(l)}>{l.phoneDisplay}</a>{b}<a href={telHref(j)}>{j.phoneDisplay}</a>{c}

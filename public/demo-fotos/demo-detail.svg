@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto Detail</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M88 200a62 62 0 1 0 124 0a62 62 0 1 0 -124 0" vector-effect="non-scaling-stroke"/>
+<path d="M98 200a52 52 0 1 0 104 0a52 52 0 1 0 -104 0" vector-effect="non-scaling-stroke"/>
+<path d="M126 182a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" vector-effect="non-scaling-stroke"/>
+<path d="M162 182a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" vector-effect="non-scaling-stroke"/>
+<path d="M126 218a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" vector-effect="non-scaling-stroke"/>
+<path d="M162 218a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" vector-effect="non-scaling-stroke"/>
+<path d="M132 182L168 218M168 182L132 218" vector-effect="non-scaling-stroke"/>
+<path d="M20 330C90 316 210 316 280 330" stroke-dasharray="6 6" vector-effect="non-scaling-stroke"/>
+<path d="M20 346C90 332 210 332 280 346" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

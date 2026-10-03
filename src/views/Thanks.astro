@@ -1,0 +1,79 @@
+---
+/**
+ * Bestätigungsseiten (D5, E6) für Reservierung und Kauf. Sie sagen genau, was
+ * jetzt passiert. Die Details holt die Seite mit ?g=&t= (HMAC) bei der Function
+ * `order-status`; bei offener Zahlung fragt sie bis zu 30 Sekunden nach.
+ */
+import Page from "../layouts/Page.astro";
+import HoursTable from "../components/HoursTable.astro";
+import Telefone from "../components/Telefone.astro";
+import Offen from "../components/Offen.astro";
+import { houses } from "../config/houses.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import type { StaticRoute } from "../i18n/routes.ts";
+interface Props {
+  lang: Lang;
+  route: StaticRoute;
+}
+const { lang, route } = Astro.props;
+const kauf = route === "kasseDanke";
+const [nfVor, nfNach] = t(lang, "danke.nichtGefunden").split("{telefone}");
+---
+<Page
+  lang={lang}
+  route={route}
+  h1={kauf ? t(lang, "danke.kaufH1Neutral") : t(lang, "danke.resH1")}
+  title={kauf ? t(lang, "seo.dankeKauf.title") : t(lang, "seo.dankeRes.title")}
+  description={kauf ? t(lang, "seo.dankeKauf.desc") : t(lang, "seo.dankeRes.desc")}
+  noindex
+  strings={["danke.", "tasche.", "kasse.", "groesse."]}
+>
+  <div class="danke" data-danke data-art={kauf ? "kauf" : "reservierung"} aria-live="polite">
+    <p class="nebentext">{t(lang, "site.laden")}</p>
+  </div>
+  <template data-nicht-gefunden>
+    <p>{nfVor}<Telefone lang={lang} />{nfNach}</p>
+  </template>
+  <template data-versand-offen>
+    <Offen op="OP-06.9" lang={lang} />
+  </template>
+  {
+    houses.map((h) => (
+      <template data-danke-zeiten={h.id}>
+        <HoursTable lang={lang} haus={h.id} caption={false} />
+      </template>
+    ))
+  }
+  <div class="danke-links">
+    <a class="btn btn-sekundaer" href={link(lang, "sortiment")}>{t(lang, "danke.weiterStoebern")}</a>
+  </div>
+  <script>
+    import "../scripts/danke.ts";
+  </script>
+</Page>
+
+<style>
+  .danke {
+    margin-top: 20px;
+    display: grid;
+    gap: 20px;
+    max-width: 760px;
+    font-size: 1.0625rem;
+  }
+  .danke :global(.danke-haus) {
+    background: var(--color-glas);
+    padding: 24px;
+    display: grid;
+    gap: 12px;
+  }
+  .danke :global(.danke-haus .zeiten-block) {
+    font-size: 1rem;
+  }
+  .danke-links {
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+</style>

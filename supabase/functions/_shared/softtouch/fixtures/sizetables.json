@@ -1,0 +1,456 @@
+[
+ {
+  "key": "10",
+  "txt": "Konfektion XS-4XL",
+  "active": true,
+  "priority": 1,
+  "sizeX": [
+   {
+    "pos": 1,
+    "txt": "XS"
+   },
+   {
+    "pos": 2,
+    "txt": "S"
+   },
+   {
+    "pos": 3,
+    "txt": "M"
+   },
+   {
+    "pos": 4,
+    "txt": "L"
+   },
+   {
+    "pos": 5,
+    "txt": "XL"
+   },
+   {
+    "pos": 6,
+    "txt": "2XL"
+   },
+   {
+    "pos": 7,
+    "txt": "3XL"
+   },
+   {
+    "pos": 8,
+    "txt": "4XL"
+   }
+  ],
+  "sizeY": [
+   {
+    "pos": 1,
+    "txt": ""
+   }
+  ]
+ },
+ {
+  "key": "11",
+  "txt": "Herren Konfektion 44-60",
+  "active": true,
+  "priority": 2,
+  "sizeX": [
+   {
+    "pos": 1,
+    "txt": "44"
+   },
+   {
+    "pos": 2,
+    "txt": "46"
+   },
+   {
+    "pos": 3,
+    "txt": "48"
+   },
+   {
+    "pos": 4,
+    "txt": "50"
+   },
+   {
+    "pos": 5,
+    "txt": "52"
+   },
+   {
+    "pos": 6,
+    "txt": "54"
+   },
+   {
+    "pos": 7,
+    "txt": "56"
+   },
+   {
+    "pos": 8,
+    "txt": "58"
+   },
+   {
+    "pos": 9,
+    "txt": "60"
+   }
+  ],
+  "sizeY": [
+   {
+    "pos": 1,
+    "txt": ""
+   }
+  ]
+ },
+ {
+  "key": "12",
+  "txt": "Damen Konfektion 32-50",
+  "active": true,
+  "priority": 3,
+  "sizeX": [
+   {
+    "pos": 1,
+    "txt": "32"
+   },
+   {
+    "pos": 2,
+    "txt": "34"
+   },
+   {
+    "pos": 3,
+    "txt": "36"
+   },
+   {
+    "pos": 4,
+    "txt": "38"
+   },
+   {
+    "pos": 5,
+    "txt": "40"
+   },
+   {
+    "pos": 6,
+    "txt": "42"
+   },
+   {
+    "pos": 7,
+    "txt": "44"
+   },
+   {
+    "pos": 8,
+    "txt": "46"
+   },
+   {
+    "pos": 9,
+    "txt": "48"
+   },
+   {
+    "pos": 10,
+    "txt": "50"
+   }
+  ],
+  "sizeY": [
+   {
+    "pos": 1,
+    "txt": ""
+   }
+  ]
+ },
+ {
+  "key": "13",
+  "txt": "Hemden Kragenweite 37-46",
+  "active": true,
+  "priority": 4,
+  "sizeX": [
+   {
+    "pos": 1,
+    "txt": "37"
+   },
+   {
+    "pos": 2,
+    "txt": "38"
+   },
+   {
+    "pos": 3,
+    "txt": "39"
+   },
+   {
+    "pos": 4,
+    "txt": "40"
+   },
+   {
+    "pos": 5,
+    "txt": "41"
+   },
+   {
+    "pos": 6,
+    "txt": "42"
+   },
+   {
+    "pos": 7,
+    "txt": "43"
+   },
+   {
+    "pos": 8,
+    "txt": "44"
+   },
+   {
+    "pos": 9,
+    "txt": "45"
+   },
+   {
+    "pos": 10,
+    "txt": "46"
+   }
+  ],
+  "sizeY": [
+   {
+    "pos": 1,
+    "txt": ""
+   }
+  ]
+ },
+ {
+  "key": "14",
+  "txt": "Hutgrößen 54-62",
+  "active": true,
+  "priority": 5,
+  "sizeX": [
+   {
+    "pos": 1,
+    "txt": "54"
+   },
+   {
+    "pos": 2,
+    "txt": "55"
+   },
+   {
+    "pos": 3,
+    "txt": "56"
+   },
+   {
+    "pos": 4,
+    "txt": "57"
+   },
+   {
+    "pos": 5,
+    "txt": "58"
+   },
+   {
+    "pos": 6,
+    "txt": "59"
+   },
+   {
+    "pos": 7,
+    "txt": "60"
+   },
+   {
+    "pos": 8,
+    "txt": "61"
+   },
+   {
+    "pos": 9,
+    "txt": "62"
+   }
+  ],
+  "sizeY": [
+   {
+    "pos": 1,
+    "txt": ""
+   }
+  ]
+ },
+ {
+  "key": "15",
+  "txt": "Gürtel 80-120",
+  "active": true,
+  "priority": 6,
+  "sizeX": [
+   {
+    "pos": 1,
+    "txt": "80"
+   },
+   {
+    "pos": 2,
+    "txt": "85"
+   },
+   {
+    "pos": 3,
+    "txt": "90"
+   },
+   {
+    "pos": 4,
+    "txt": "95"
+   },
+   {
+    "pos": 5,
+    "txt": "100"
+   },
+   {
+    "pos": 6,
+    "txt": "105"
+   },
+   {
+    "pos": 7,
+    "txt": "110"
+   },
+   {
+    "pos": 8,
+    "txt": "115"
+   },
+   {
+    "pos": 9,
+    "txt": "120"
+   }
+  ],
+  "sizeY": [
+   {
+    "pos": 1,
+    "txt": ""
+   }
+  ]
+ },
+ {
+  "key": "16",
+  "txt": "Einheitsgröße",
+  "active": true,
+  "priority": 0,
+  "sizeX": [
+   {
+    "pos": 1,
+    "txt": "TU"
+   }
+  ],
+  "sizeY": [
+   {
+    "pos": 1,
+    "txt": ""
+   }
+  ]
+ },
+ {
+  "key": "20",
+  "txt": "Herren Jeans 28-40 mit Länge",
+  "active": true,
+  "priority": 7,
+  "sizeX": [
+   {
+    "pos": 1,
+    "txt": "28"
+   },
+   {
+    "pos": 2,
+    "txt": "29"
+   },
+   {
+    "pos": 3,
+    "txt": "30"
+   },
+   {
+    "pos": 4,
+    "txt": "31"
+   },
+   {
+    "pos": 5,
+    "txt": "32"
+   },
+   {
+    "pos": 6,
+    "txt": "33"
+   },
+   {
+    "pos": 7,
+    "txt": "34"
+   },
+   {
+    "pos": 8,
+    "txt": "36"
+   },
+   {
+    "pos": 9,
+    "txt": "38"
+   },
+   {
+    "pos": 10,
+    "txt": "40"
+   }
+  ],
+  "sizeY": [
+   {
+    "pos": 1,
+    "txt": "L30"
+   },
+   {
+    "pos": 2,
+    "txt": "L32"
+   },
+   {
+    "pos": 3,
+    "txt": "L34"
+   },
+   {
+    "pos": 4,
+    "txt": "L36"
+   }
+  ]
+ },
+ {
+  "key": "21",
+  "txt": "Damen Jeans 24-34 mit Länge",
+  "active": true,
+  "priority": 8,
+  "sizeX": [
+   {
+    "pos": 1,
+    "txt": "24"
+   },
+   {
+    "pos": 2,
+    "txt": "25"
+   },
+   {
+    "pos": 3,
+    "txt": "26"
+   },
+   {
+    "pos": 4,
+    "txt": "27"
+   },
+   {
+    "pos": 5,
+    "txt": "28"
+   },
+   {
+    "pos": 6,
+    "txt": "29"
+   },
+   {
+    "pos": 7,
+    "txt": "30"
+   },
+   {
+    "pos": 8,
+    "txt": "31"
+   },
+   {
+    "pos": 9,
+    "txt": "32"
+   },
+   {
+    "pos": 10,
+    "txt": "33"
+   },
+   {
+    "pos": 11,
+    "txt": "34"
+   }
+  ],
+  "sizeY": [
+   {
+    "pos": 1,
+    "txt": "L30"
+   },
+   {
+    "pos": 2,
+    "txt": "L32"
+   },
+   {
+    "pos": 3,
+    "txt": "L34"
+   }
+  ]
+ }
+]

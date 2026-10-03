@@ -1,0 +1,27 @@
+---
+/**
+ * Einwilligung (H, DSGVO): aktive Checkbox, nie vorangekreuzt, mit Link zur
+ * Datenschutzerklärung. Der Text nennt das Haus bzw. die Häuser.
+ */
+import { t, type Lang } from "../../i18n/index.ts";
+import { link } from "../../lib/page.ts";
+interface Props {
+  lang: Lang;
+  art: "reserve" | "anfrage";
+  haeuser: string;
+  id?: string;
+}
+const { lang, art, haeuser, id = "einwilligung" } = Astro.props;
+const tpl = t(lang, art === "reserve" ? "form.einwilligungReserve" : "form.einwilligungAnfrage");
+const [vorLink, nachLink] = tpl.split("{link}");
+const [vorHaus, nachHaus] = vorLink.split("{haeuser}");
+---
+<div class="feld-gruppe" data-feld="einwilligung">
+  <label class="auswahl einwilligung" for={id}>
+    <input type="checkbox" id={id} name="einwilligung" value="1" required aria-describedby={`${id}-fehler`} data-fehler="form.fehlerEinwilligung" />
+    <span>
+      {vorHaus}<span data-einwilligung-haeuser>{haeuser}</span>{nachHaus}<a href={link(lang, "datenschutz")}>{t(lang, "form.datenschutzLink")}</a>{nachLink}
+    </span>
+  </label>
+  <p class="feld-fehler" id={`${id}-fehler`} hidden></p>
+</div>

@@ -1,0 +1,53 @@
+---
+/**
+ * Gemeinsame Teile aller Formulare: Fehlerliste oben (mit Sprunglinks, Fokus
+ * springt dorthin), Hinweis ohne JavaScript (über :target sichtbar), versteckte
+ * Felder (Sprache, Bestätigungs- und Rückkehrpfad), Honeypot gegen Spam.
+ */
+import { t, type Lang } from "../../i18n/index.ts";
+import { F } from "@shared/contract.ts";
+import Icon from "../Icon.astro";
+interface Props {
+  lang: Lang;
+  ok: string;
+  back: string;
+}
+const { lang, ok, back } = Astro.props;
+---
+<div class="fehlerliste" data-fehlerliste tabindex="-1" hidden>
+  <h2>
+    <Icon name="warnung" size={20} />
+    <span>{t(lang, "form.fehlerTitel")}</span>
+  </h2>
+  <ul data-fehlerliste-liste></ul>
+</div>
+<div class="fehlerliste fehler-ohne-js" id="formular-fehler" tabindex="-1">
+  <h2>
+    <Icon name="warnung" size={20} />
+    <span>{t(lang, "form.fehlerOhneJs")}</span>
+  </h2>
+</div>
+<input type="hidden" name={F.lang} value={lang} />
+<input type="hidden" name={F.ok} value={ok} />
+<input type="hidden" name={F.back} value={back} />
+<input type="hidden" name={F.zeit} value="" data-zeitstempel />
+<div class="hp" aria-hidden="true">
+  <label for={`hp-${F.honeypot}`}>{t(lang, "form.honeypot")}</label>
+  <input id={`hp-${F.honeypot}`} name={F.honeypot} type="text" tabindex="-1" autocomplete="off" />
+</div>
+
+<style>
+  .fehler-ohne-js {
+    display: none;
+  }
+  .fehler-ohne-js:target {
+    display: block;
+  }
+  .hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+</style>

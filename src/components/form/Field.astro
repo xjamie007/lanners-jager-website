@@ -1,0 +1,81 @@
+---
+/**
+ * Formularfeld (H, Formulare): sichtbares Label, passender type/autocomplete,
+ * Hinweis unter dem Label, Platz für die Fehlermeldung am Feld (für Screenreader
+ * über aria-describedby angekündigt). Fehlertexte setzt src/scripts/formular.ts.
+ */
+import { t, type Lang } from "../../i18n/index.ts";
+interface Props {
+  lang: Lang;
+  id: string;
+  name: string;
+  label: string;
+  type?: string;
+  required?: boolean;
+  autocomplete?: string;
+  hint?: string;
+  inputmode?: string;
+  as?: "input" | "textarea" | "select";
+  options?: { value: string; label: string }[];
+  value?: string;
+  min?: string;
+  max?: string;
+  /** Schlüssel der Fehlermeldung, wenn das Feld fehlt oder falsch ist */
+  fehler?: string;
+  maxlength?: number;
+  class?: string;
+}
+const { lang, id, name, label, type = "text", required = false, autocomplete, hint, inputmode, as = "input", options = [], value, min, max, fehler, maxlength, class: cls = "" } = Astro.props;
+const describedBy = [hint ? `${id}-hinweis` : null, `${id}-fehler`].filter(Boolean).join(" ");
+---
+<div class={`feld-gruppe ${cls}`} data-feld={name}>
+  <label class="feld-label" for={id}>
+    {label}
+    {!required && <span class="feld-freiwillig"> ({t(lang, "site.freiwillig")})</span>}
+  </label>
+  {hint && <span class="feld-hinweis feld-hinweis-oben" id={`${id}-hinweis`}>{hint}</span>}
+  {
+    as === "textarea" ? (
+      <textarea class="feld" id={id} name={name} required={required} aria-describedby={describedBy} data-fehler={fehler} maxlength={maxlength ?? 2000} rows="5" set:text={value ?? ""} />
+    ) : as === "select" ? (
+      <select class="feld" id={id} name={name} required={required} autocomplete={autocomplete} aria-describedby={describedBy} data-fehler={fehler}>
+        {options.map((o) => (
+          <option value={o.value} selected={o.value === value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <input
+        class="feld"
+        id={id}
+        name={name}
+        type={type}
+        required={required}
+        autocomplete={autocomplete}
+        inputmode={inputmode}
+        aria-describedby={describedBy}
+        data-fehler={fehler}
+        value={value}
+        min={min}
+        max={max}
+        maxlength={maxlength ?? 200}
+      />
+    )
+  }
+  <p class="feld-fehler" id={`${id}-fehler`} hidden></p>
+</div>
+
+<style>
+  .feld-gruppe {
+    display: flex;
+    flex-direction: column;
+  }
+  .feld-freiwillig {
+    font-weight: 400;
+    color: var(--color-schiefer);
+  }
+  .feld-hinweis-oben {
+    margin: -2px 0 8px;
+  }
+</style>

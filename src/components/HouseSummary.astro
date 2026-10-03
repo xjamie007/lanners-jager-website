@@ -1,0 +1,64 @@
+---
+/**
+ * Ein Haus auf der Start- und Kontaktseite (D2.6): Name, zwei Sätze (E4),
+ * Öffnungszeiten, Adresse, Telefon, "Zum Haus" und "Route planen"
+ * (externer Link auf Google Maps; die Karte selbst steht auf der Hausseite).
+ */
+import { getHouse, telHref } from "../config/houses.ts";
+import { mapsRoute } from "../lib/karte.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { link } from "../lib/page.ts";
+import HoursTable from "./HoursTable.astro";
+import { doppelpunkt } from "@shared/text.ts";
+interface Props {
+  lang: Lang;
+  haus: "lanners" | "jager";
+  level?: 2 | 3;
+  ausblick?: boolean;
+  kurz?: boolean;
+}
+const { lang, haus, level = 3, ausblick = false, kurz = true } = Astro.props;
+const h = getHouse(haus);
+const H = `h${level}` as "h2" | "h3";
+const route = mapsRoute(h);
+---
+<section class="haus-kurz" aria-labelledby={`haus-${haus}-${level}`}>
+  <H class="t-hausname" id={`haus-${haus}-${level}`}>{h.name}</H>
+  <p class="haus-text prosa">{t(lang, kurz ? `haeuser.${haus}Kurz` : `haeuser.${haus}Text`)}</p>
+  <address class="haus-adresse">
+    {h.streetAddress}, {h.postalCode} {h.locality}
+    <br />
+    {t(lang, "footer.telefon")}{doppelpunkt(lang)}<a href={telHref(h)}>{h.phoneDisplay}</a>
+    <br />
+    {t(lang, "footer.email")}{doppelpunkt(lang)}<a href={`mailto:${h.email}`}>{h.email}</a>
+  </address>
+  <HoursTable lang={lang} haus={haus} ausblick={ausblick} />
+  <p class="haus-links">
+    <a class="btn btn-sekundaer" href={link(lang, { kind: "haus", id: haus })}>
+      <span aria-hidden="true">{t(lang, "home.zumHaus")}</span>
+      <span class="sr-only">{t(lang, "home.zumHausSr", { haus: h.short })}</span>
+    </a>
+    <a class="textlink" href={route} rel="noopener">
+      <span aria-hidden="true">{t(lang, "home.route")}</span>
+      <span class="sr-only">{t(lang, "home.routeSr", { haus: h.short })} ({t(lang, "site.externerLink")})</span>
+    </a>
+  </p>
+</section>
+
+<style>
+  .haus-kurz {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .haus-adresse {
+    font-style: normal;
+  }
+  .haus-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 24px;
+    margin-top: 8px;
+  }
+</style>

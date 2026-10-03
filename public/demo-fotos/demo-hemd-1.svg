@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" width="900" height="1200">
+<title>Demo-Foto hemd, vorne</title>
+<g fill="none" stroke="#5C5F66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+<path d="M126 62C136 68 164 68 174 62L216 76C230 81 238 92 240 106L252 290L230 294L218 150L222 350C190 358 110 358 78 350L82 150L70 294L48 290L60 106C62 92 70 81 84 76Z" vector-effect="non-scaling-stroke"/>
+<path d="M132 46L118 70L144 72L150 56L156 72L182 70L168 46L150 56L132 46" vector-effect="non-scaling-stroke"/>
+<path d="M146 72V352M154 72V352" vector-effect="non-scaling-stroke"/>
+<path d="M147.5 96a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0" vector-effect="non-scaling-stroke"/>
+<path d="M147.5 136a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0" vector-effect="non-scaling-stroke"/>
+<path d="M147.5 176a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0" vector-effect="non-scaling-stroke"/>
+<path d="M147.5 216a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0" vector-effect="non-scaling-stroke"/>
+<path d="M147.5 256a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0" vector-effect="non-scaling-stroke"/>
+<path d="M147.5 296a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0" vector-effect="non-scaling-stroke"/>
+<path d="M50 276L70 280M230 280L250 276" vector-effect="non-scaling-stroke"/>
+<path d="M170 120H196V146H170Z" vector-effect="non-scaling-stroke"/>
+</g>
+</svg>

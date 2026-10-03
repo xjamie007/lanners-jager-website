@@ -1,0 +1,24 @@
+# Abhängigkeiten und Build
+node_modules/
+dist/
+dist-loadtest/
+dist-check/
+.astro/
+
+# Umgebungsvariablen: niemals einchecken
+.env
+.env.*
+!.env.example
+
+# Lokale Demo-Laufzeit (PGlite-Datenbank, Foto-Ablage, Lasttest-Katalog)
+.demo-db/
+.demo-storage/
+.loadtest/
+
+# Supabase CLI
+supabase/.branches/
+supabase/.temp/
+
+# System
+.DS_Store
+*.log

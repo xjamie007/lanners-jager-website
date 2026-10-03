@@ -1,0 +1,84 @@
+---
+/**
+ * Kontakt (D8, F4): beide Häuser mit allen Daten und Öffnungszeiten, darunter
+ * das Formular. E-Mail oder Telefon: eins von beiden ist Pflicht.
+ * Funktioniert ohne JavaScript.
+ */
+import Page from "../layouts/Page.astro";
+import HouseSummary from "../components/HouseSummary.astro";
+import Field from "../components/form/Field.astro";
+import FormParts from "../components/form/FormParts.astro";
+import Consent from "../components/form/Consent.astro";
+import { houses } from "../config/houses.ts";
+import { FUNCTIONS_URL } from "../config/site.ts";
+import { t, type Lang } from "../i18n/index.ts";
+import { pathFor, staticRef } from "../i18n/routes.ts";
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const order = [...houses].sort((a, b) => Number(a.nr) - Number(b.nr));
+---
+<Page suchbar lang={lang} route="kontakt" section="service" foto="hero-boutique" fotoPosition="70% center" h1={t(lang, "kontakt.h1")} intro={t(lang, "kontakt.intro")} title={t(lang, "seo.kontakt.title")} description={t(lang, "seo.kontakt.desc")} breit strings={["form."]}>
+  <div class="kontakt-haeuser">
+    {order.map((h) => <HouseSummary lang={lang} haus={h.id} level={2} ausblick kurz={false} />)}
+  </div>
+
+  <div class="kontakt-form">
+    <h2 class="t-h2">{t(lang, "kontakt.formH2")}</h2>
+    <form class="formular" data-pagefind-ignore method="post" action={`${FUNCTIONS_URL}/forms`} data-formular="kontakt">
+      <input type="hidden" name="formular" value="kontakt" />
+      <FormParts lang={lang} ok={pathFor(staticRef("kontaktDanke"), lang)} back={pathFor(staticRef("kontakt"), lang)} />
+      <fieldset class="feld-gruppe" data-feld="haus" data-fehler="form.fehlerHaus" id="k-haus" aria-describedby="k-haus-fehler">
+        <legend class="feld-label">{t(lang, "kontakt.haus")}</legend>
+        <label class="auswahl"><input type="radio" name="haus" value="lanners" required /><span>{t(lang, "haus.lanners")}</span></label>
+        <label class="auswahl"><input type="radio" name="haus" value="jager" required /><span>{t(lang, "haus.jager")}</span></label>
+        <label class="auswahl"><input type="radio" name="haus" value="egal" required checked /><span>{t(lang, "kontakt.egal")}</span></label>
+        <p class="feld-fehler" id="k-haus-fehler" hidden></p>
+      </fieldset>
+      <Field lang={lang} id="k-name" name="name" label={t(lang, "form.name")} required autocomplete="name" fehler="form.fehlerName" />
+      <p class="t-klein nebentext" id="k-kontaktweg">{t(lang, "form.fehlerKontaktweg")}</p>
+      <Field lang={lang} id="k-email" name="email" type="email" label={t(lang, "form.email")} autocomplete="email" fehler="form.fehlerEmail" />
+      <Field lang={lang} id="k-telefon" name="telefon" type="tel" label={t(lang, "form.telefon")} autocomplete="tel" fehler="form.fehlerTelefon" />
+      <Field lang={lang} id="k-nachricht" name="nachricht" as="textarea" label={t(lang, "form.nachricht")} required fehler="form.fehlerNachricht" />
+      <Consent lang={lang} art="anfrage" haeuser={t(lang, "haus.beideNamen")} id="k-einwilligung" />
+      <div>
+        <button class="btn btn-primaer" type="submit">{t(lang, "kontakt.senden")}</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    import { initFormular } from "../scripts/formular.ts";
+    import { tr } from "../scripts/config.ts";
+    const form = document.querySelector<HTMLFormElement>('[data-formular="kontakt"]');
+    if (form) {
+      initFormular(form, {
+        entwurf: "lj-entwurf-kontakt",
+        gesamt: [
+          (f) => {
+            const email = f.querySelector<HTMLInputElement>('[name="email"]')!;
+            const tel = f.querySelector<HTMLInputElement>('[name="telefon"]')!;
+            return email.value.trim() || tel.value.trim() ? [] : [{ el: email, text: tr("form.fehlerKontaktweg") }];
+          },
+        ],
+      });
+    }
+  </script>
+</Page>
+
+<style>
+  .kontakt-haeuser {
+    display: grid;
+    gap: 52px;
+    margin-top: 52px;
+  }
+  @media (min-width: 768px) {
+    .kontakt-haeuser {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px;
+    }
+  }
+  .kontakt-form {
+    max-width: 640px;
+  }
+</style>

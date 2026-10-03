@@ -1,0 +1,52 @@
+---
+import { t, type Lang } from "../i18n/index.ts";
+interface Props {
+  lang: Lang;
+  items: { name: string; href: string }[];
+}
+const { lang, items } = Astro.props;
+---
+<nav class="pfad" data-pagefind-ignore aria-label={t(lang, "produkt.pfad")}>
+  <ol>
+    {
+      items.map((it, i) => (
+        <li>
+          {i < items.length - 1 ? <a href={it.href}>{it.name}</a> : <span aria-current="page">{it.name}</span>}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style is:global>
+  .pfad {
+    font-size: 0.875rem;
+    line-height: 1.45;
+    padding-top: 20px;
+  }
+  .pfad ol {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2px 0;
+  }
+  .pfad li {
+    display: flex;
+    align-items: center;
+  }
+  .pfad li + li::before {
+    content: "/";
+    color: var(--color-schiefer);
+    padding: 0 8px;
+  }
+  .pfad a {
+    display: inline-flex;
+    min-height: 24px;
+    align-items: center;
+  }
+  .pfad [aria-current] {
+    color: var(--color-schiefer);
+  }
+</style>
