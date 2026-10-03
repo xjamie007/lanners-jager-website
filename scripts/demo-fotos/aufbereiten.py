@@ -4,10 +4,10 @@ für Swift und Python mit Pillow).
 
   python3 scripts/demo-fotos/aufbereiten.py <ordner-mit-originalen> [uid …]
 
-Liest scripts/demo-fotos/fotos.json (je Artikel: Unsplash-Quelle, Fotograf, Warengruppe,
+Liest scripts/demo-fotos/fotos.json (je Artikel: Unsplash-Quelle und Bilddatei, Fotograf, Warengruppe,
 ob eine Person zu sehen ist, optional Ausschnitt, Retusche fremder
 Schriftzüge und Radieren störender Teile) und die Originale
-<ordner>/<uid>.jpg. Für jeden Artikel:
+<ordner>/<uid>.jpg (fehlende lädt es vom Unsplash-Bildserver). Für jeden Artikel:
   1. Motiv freistellen (Apple Vision, freisteller.swift), dabei Gesicht und Körperpunkte erkennen
   2. Person: Schnitt unter dem Kinn (Hosen: ab der Taille), Oberteile enden am Oberschenkel.
      Angeschnittene Kanten liegen bündig am Bildrand, wie bei Shop-Fotos üblich.
@@ -21,6 +21,7 @@ import json
 import subprocess
 import sys
 import tempfile
+import urllib.request
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFilter
@@ -195,6 +196,9 @@ def main() -> None:
             if nur and uid not in nur:
                 continue
             ein = originale / f"{uid}.jpg"
+            if not ein.exists():  # Original fehlt: in 2400 px Breite vom Unsplash-Bildserver holen
+                originale.mkdir(parents=True, exist_ok=True)
+                urllib.request.urlretrieve(f"https://images.unsplash.com/{f['bild']}?w=2400&q=90&fm=jpg", ein)
             if f.get("ausschnitt") or f.get("retusche"):
                 orig = Image.open(ein).convert("RGB")
                 if f.get("retusche"):
